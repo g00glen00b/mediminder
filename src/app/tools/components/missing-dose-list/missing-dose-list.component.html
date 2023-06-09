@@ -3,7 +3,7 @@
   (click)="onMatchClick(match)">
   <mat-list-item>
     <div matListItemTitle>{{match.medication.name}}</div>
-    <div matListItemLine>{{match.requiredDoses - match.availableDoses}} {{match.medication.type.unit}} missing</div>
+    <div matListItemLine>{{match.requiredDoses - match.availableDoses | number:'1.0-2'}} {{match.medication.type.unit}} missing</div>
   </mat-list-item>
 </mat-nav-list>
 <mediminder-empty-state

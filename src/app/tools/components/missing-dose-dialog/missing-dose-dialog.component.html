@@ -11,7 +11,7 @@
   <mat-divider></mat-divider>
   <mat-list>
     <mat-list-item>
-      <div matListItemTitle>{{match.requiredDoses - match.availableDoses}} {{match.medication.type.unit}}</div>
+      <div matListItemTitle>{{match.requiredDoses - match.availableDoses | number:'1.0-2'}} {{match.medication.type.unit}}</div>
       <div matListItemLine>Missing doses</div>
     </mat-list-item>
     <mat-list-item>
@@ -23,7 +23,7 @@
       <div matListItemLine>Average number of doses per prescription</div>
     </mat-list-item>
     <mat-list-item>
-      <div matListItemTitle>{{missingPrescriptions}} prescriptions</div>
+      <div matListItemTitle>{{missingPrescriptions}} prescription(s)</div>
       <div matListItemLine>Missing prescriptions</div>
     </mat-list-item>
   </mat-list>
