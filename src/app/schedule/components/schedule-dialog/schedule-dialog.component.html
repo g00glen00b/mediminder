@@ -1,0 +1,62 @@
+<mat-toolbar color="primary">
+  <span>Schedule details</span>
+  <button
+    mat-icon-button
+    (click)="dialogRef.close()">
+    <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-dialog-content>
+  <h1>{{schedule.medication.name}}</h1>
+  <p class="subtitle">{{schedule.dose}} {{schedule.medication.type.unit}} at {{schedule.time}}</p>
+  <mat-divider></mat-divider>
+  <mat-list>
+    <mat-list-item>
+      <div matListItemTitle>{{schedule.dose}} {{schedule.medication.type.unit}}</div>
+      <div matListItemLine>Dose</div>
+    </mat-list-item>
+    <mat-list-item>
+      <div matListItemTitle>Scheduled every {{schedule.recurrence.units}} {{schedule.recurrence.type | scheduleRecurrenceType}} at {{schedule.time}}.</div>
+      <div matListItemLine>Schedule</div>
+    </mat-list-item>
+    <mat-list-item>
+      <div matListItemTitle>{{schedule.period.startingAt | date:'longDate'}} - {{schedule.period.endingAtInclusive | date:'longDate'}}</div>
+      <div matListItemLine>Period</div>
+    </mat-list-item>
+    <mat-list-item>
+      <div matListItemTitle>
+        <ng-container *ngIf="schedule.description == null || schedule.description.length == 0;then emptyDescription; else description"></ng-container>
+        <ng-template #emptyDescription>No additional information is available.</ng-template>
+        <ng-template #description>{{schedule.description}}</ng-template>
+      </div>
+      <div matListItemLine>Additional information</div>
+    </mat-list-item>
+  </mat-list>
+  <mat-dialog-actions>
+    <div class="actions">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="dialogRef.close('edit')">
+        Edit
+      </button>
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="dialogRef.close('copy')">
+        Copy
+      </button>
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="dialogRef.close('delete')">
+        Delete
+      </button>
+      <button
+        mat-button
+        (click)="dialogRef.close()">
+        Close
+      </button>
+    </div>
+  </mat-dialog-actions>
+</mat-dialog-content>

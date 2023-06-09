@@ -1,0 +1,9 @@
+<mediminder-date-paginator
+  [date]="date$$.value"
+  (select)="date$$.next($event)">
+</mediminder-date-paginator>
+<mediminder-intake-list
+  [intakes]="(intakes$ | async) || []"
+  (complete)="onComplete($event)"
+  (openSchedule)="onOpenSchedule($event)">
+</mediminder-intake-list>

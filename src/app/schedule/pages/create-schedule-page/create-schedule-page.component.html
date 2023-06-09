@@ -1,0 +1,11 @@
+<mediminder-hero>
+  <hero-title>Create a new schedule</hero-title>
+  <hero-description>Here you can create a new medication intake schedule.</hero-description>
+</mediminder-hero>
+<mediminder-container>
+  <mediminder-schedule-form
+    [schedule]="schedule$ | async"
+    (submit)="onSubmit($event)"
+    (cancel)="onCancel()">
+  </mediminder-schedule-form>
+</mediminder-container>

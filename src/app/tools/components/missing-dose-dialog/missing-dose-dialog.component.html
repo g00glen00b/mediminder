@@ -1,0 +1,39 @@
+<mat-toolbar color="primary">
+  <span>Missing dose details</span>
+  <button
+    mat-icon-button
+    (click)="dialogRef.close()">
+    <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-dialog-content>
+  <h1>{{match.medication.name}}</h1>
+  <mat-divider></mat-divider>
+  <mat-list>
+    <mat-list-item>
+      <div matListItemTitle>{{match.requiredDoses - match.availableDoses}} {{match.medication.type.unit}}</div>
+      <div matListItemLine>Missing doses</div>
+    </mat-list-item>
+    <mat-list-item>
+      <div matListItemTitle>{{match.availableDoses}} {{match.medication.type.unit}}</div>
+      <div matListItemLine>Available doses prescriptions</div>
+    </mat-list-item>
+    <mat-list-item>
+      <div matListItemTitle>{{match.averageInitialDose}} {{match.medication.type.unit}}</div>
+      <div matListItemLine>Average number of doses per prescription</div>
+    </mat-list-item>
+    <mat-list-item>
+      <div matListItemTitle>{{missingPrescriptions}} prescriptions</div>
+      <div matListItemLine>Missing prescriptions</div>
+    </mat-list-item>
+  </mat-list>
+  <mat-dialog-actions>
+    <div class="actions">
+      <button
+        mat-button
+        (click)="dialogRef.close()">
+        Close
+      </button>
+    </div>
+  </mat-dialog-actions>
+</mat-dialog-content>

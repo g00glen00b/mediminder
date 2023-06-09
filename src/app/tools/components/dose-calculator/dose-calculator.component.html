@@ -1,0 +1,13 @@
+<h3>Required dose calculator</h3>
+<mediminder-date-paginator
+  [date]="date$$.value"
+  (select)="date$$.next($event)">
+</mediminder-date-paginator>
+<section
+  class="loading"
+  *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</section>
+<mediminder-missing-dose-list
+  [missingDoses]="(doseMatches$ | async) || []">
+</mediminder-missing-dose-list>

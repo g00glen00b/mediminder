@@ -1,0 +1,59 @@
+<mat-toolbar color="primary">
+  <span>Cabinet entry details</span>
+  <button
+    mat-icon-button
+    (click)="dialogRef.close()">
+    <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-dialog-content>
+  <h1>{{entry.medication.name}}</h1>
+  <mat-divider></mat-divider>
+  <mat-list>
+    <mat-list-item>
+      <div matListItemTitle>{{entry.units}} {{entry.medication.type.unit}} available.</div>
+      <div matListItemLine>Available units</div>
+    </mat-list-item>
+    <mat-list-item>
+      <div matListItemTitle>{{entry.initialUnits}} {{entry.medication.type.unit}} initially.</div>
+      <div matListItemLine>Initial units</div>
+    </mat-list-item>
+    <mat-list-item>
+      <div matListItemTitle>{{entry.expiryDate | date:'fullDate'}}</div>
+      <div matListItemLine>Expiry date</div>
+    </mat-list-item>
+  </mat-list>
+  <mat-dialog-actions>
+    <div class="actions">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="dialogRef.close('edit')">
+        Edit
+      </button>
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="dialogRef.close('takeOne')">
+        Take one
+      </button>
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="dialogRef.close('copy')">
+        Copy
+      </button>
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="dialogRef.close('delete')">
+        Delete
+      </button>
+      <button
+        mat-button
+        (click)="dialogRef.close()">
+        Close
+      </button>
+    </div>
+  </mat-dialog-actions>
+</mat-dialog-content>

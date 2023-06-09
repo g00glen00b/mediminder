@@ -1,0 +1,13 @@
+<mediminder-hero>
+  <hero-title>Edit schedule</hero-title>
+  <hero-description>Here you can edit a given schedule.</hero-description>
+</mediminder-hero>
+<mediminder-container>
+  <mediminder-schedule-form
+    submitLabel="Edit"
+    [scheduleReadonly]="true"
+    [schedule]="entry"
+    (submit)="onSubmit($event)"
+    (cancel)="onCancel()">
+  </mediminder-schedule-form>
+</mediminder-container>

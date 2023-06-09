@@ -1,0 +1,58 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+.alert {
+  padding: 16px;
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  grid-template-columns: 32px auto;
+  column-gap: 29px;
+  border-radius: 4px;
+  background: white;
+  margin-bottom: 1em;
+}
+
+.alert.warning {
+  border-left: solid 3px mat.get-color-from-palette(theme.$mediminder-warn, 500);
+}
+
+.alert.error {
+  border-left: solid 3px mat.get-color-from-palette(theme.$mediminder-danger, 500);
+}
+
+.alert h6 {
+  grid-row: 1;
+  grid-column: 2;
+  margin-top: 0;
+  @include mat.typography-level(theme.$mediminder-typography, 'headline-6');
+}
+
+.alert .description {
+  grid-row: 2;
+  grid-column: 2;
+  margin: 0;
+}
+
+.icon-wrapper {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-wrapper.success {
+  background-color: mat.get-color-from-palette(theme.$mediminder-success, 500);
+  color: mat.get-contrast-color-from-palette(theme.$mediminder-success, 500);
+}
+
+.icon-wrapper.warning {
+  background-color: mat.get-color-from-palette(theme.$mediminder-warn, 500);
+  color: mat.get-contrast-color-from-palette(theme.$mediminder-warn, 500);
+}
+
+.icon-wrapper.error {
+  background-color: mat.get-color-from-palette(theme.$mediminder-danger, 500);
+  color: mat.get-contrast-color-from-palette(theme.$mediminder-danger, 500);
+}

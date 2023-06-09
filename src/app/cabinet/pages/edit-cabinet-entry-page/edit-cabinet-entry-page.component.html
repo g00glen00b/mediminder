@@ -1,0 +1,13 @@
+<mediminder-hero>
+  <hero-title>Edit medication</hero-title>
+  <hero-description>Here you can edit which medication is available in your cabinet.</hero-description>
+</mediminder-hero>
+<mediminder-container>
+  <mediminder-cabinet-entry-form
+    submitLabel="Edit"
+    [medicationReadOnly]="true"
+    [entry]="entry"
+    (submit)="onSubmit($event)"
+    (cancel)="onCancel()">
+  </mediminder-cabinet-entry-form>
+</mediminder-container>

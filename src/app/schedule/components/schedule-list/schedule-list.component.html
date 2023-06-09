@@ -1,0 +1,25 @@
+<mat-nav-list>
+  <mat-list-item
+    *ngFor="let schedule of entries"
+    (click)="onClickItem(schedule)">
+    <h3 matListItemTitle>
+      {{schedule.medication.name}}
+    </h3>
+    <div
+      matListItemLine>
+      Repeats every {{schedule.recurrence.units}} {{schedule.recurrence.type | scheduleRecurrenceType}} at {{schedule.time}}
+    </div>
+    <div
+      matListItemLine>
+      {{schedule.period.startingAt | date:'longDate'}} -
+      <span *ngIf="schedule.period.endingAtInclusive != null">
+        {{schedule.period.endingAtInclusive | date:'longDate'}}
+      </span>
+    </div>
+  </mat-list-item>
+</mat-nav-list>
+<mediminder-empty-state
+  *ngIf="entries.length == 0"
+  icon="schedule"
+  title="Create some schedules first">
+</mediminder-empty-state>

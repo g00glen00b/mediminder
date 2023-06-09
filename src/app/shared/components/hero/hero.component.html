@@ -1,0 +1,11 @@
+<section
+  class="hero"
+  [class.breadcrumb]="breadcrumbs.length > 0">
+  <mediminder-breadcrumb
+    *ngIf="breadcrumbs.length > 0"
+    [breadcrumbs]="breadcrumbs">
+  </mediminder-breadcrumb>
+  <ng-content select="hero-title"></ng-content>
+  <ng-content select="hero-description"></ng-content>
+  <ng-content select="hero-actions"></ng-content>
+</section>

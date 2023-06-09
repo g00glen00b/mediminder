@@ -1,0 +1,65 @@
+<mat-toolbar color="primary">
+  <span>Intake details</span>
+  <button
+    mat-icon-button
+    (click)="dialogRef.close()">
+    <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-dialog-content>
+  <h1>{{intake.schedule.medication.name}}</h1>
+  <p class="subtitle">{{intake.schedule.dose}} {{intake.schedule.medication.type.unit}}</p>
+  <mat-divider></mat-divider>
+  <mat-list>
+    <mat-list-item>
+      <div matListItemTitle>Scheduled every {{intake.schedule.recurrence.units}} {{intake.schedule.recurrence.type | scheduleRecurrenceType}} at {{intake.schedule.time}}.</div>
+      <div matListItemLine>Schedule</div>
+    </mat-list-item>
+    <mat-list-item>
+      <div matListItemTitle>
+        <ng-container *ngIf="intake.schedule.description == null || intake.schedule.description.length == 0;then emptyDescription; else description"></ng-container>
+        <ng-template #emptyDescription>No additional information is available.</ng-template>
+        <ng-template #description>{{intake.schedule.description}}</ng-template>
+      </div>
+      <div matListItemLine>Additional information</div>
+    </mat-list-item>
+    <mat-list-item>
+      <div matListItemTitle>
+        <ng-container *ngIf="intake.schedule.period.endingAtInclusive == null;then emptyEnding; else ending"></ng-container>
+        <ng-template #emptyEnding>Indefinitely</ng-template>
+        <ng-template #ending>{{intake.schedule.period.endingAtInclusive | date:'fullDate'}}</ng-template>
+      </div>
+      <div matListItemLine>Take until</div>
+    </mat-list-item>
+    <mat-list-item>
+      <div matListItemTitle>
+        <ng-container *ngIf="intake.completed == null;then emptyCompleted; else completed"></ng-container>
+        <ng-template #emptyCompleted>Not yet taken.</ng-template>
+        <ng-template #completed>Taken at {{intake.completed!.completedDate | date:'HH:mm'}}</ng-template>
+      </div>
+      <div matListItemLine>Completed</div>
+    </mat-list-item>
+  </mat-list>
+  <mat-dialog-actions>
+    <div class="actions">
+      <button
+        mat-flat-button
+        [disabled]="intake.completed != null"
+        color="primary"
+        (click)="dialogRef.close('complete')">
+        Taken
+      </button>
+      <button
+        mat-button
+        (click)="dialogRef.close()">
+        Close
+      </button>
+      <button
+        class="schedule-button"
+        mat-button
+        (click)="dialogRef.close('openSchedule')">
+        Open schedule
+      </button>
+    </div>
+  </mat-dialog-actions>
+</mat-dialog-content>

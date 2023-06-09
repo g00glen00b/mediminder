@@ -1,0 +1,38 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+mat-toolbar button {
+  margin-left: auto;
+}
+
+h1 {
+  @include mat.typography-level(theme.$mediminder-typography, 'headline-5');
+  margin-bottom: 1em;
+  padding: 0 16px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.actions .schedule-button {
+  margin-left: auto;
+}
+
+@media only screen and (max-width: 480px) {
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions button,
+  .actions a {
+    width: 100%;
+    margin: 0 0 16px;
+  }
+
+  .actions .schedule-button {
+    margin-left: 0;
+  }
+}

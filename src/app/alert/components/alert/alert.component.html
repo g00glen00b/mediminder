@@ -1,0 +1,29 @@
+<div
+  class="mat-elevation-z1 alert"
+  [class]="alert.type">
+  <span
+    class="icon-wrapper"
+    [class]="alert.type"
+    [ngSwitch]="alert.type">
+  <mat-icon
+    fontSet="material-symbols-outlined"
+    *ngSwitchCase="'error'">
+    priority_high
+  </mat-icon>
+  <mat-icon
+    fontSet="material-symbols-outlined"
+    *ngSwitchCase="'warning'">
+    priority_high
+  </mat-icon>
+  <mat-icon
+    fontSet="material-symbols-outlined"
+    *ngSwitchCase="'success'">
+    check
+  </mat-icon>
+</span>
+
+  <h6>{{alert.title}}</h6>
+  <div class="description">
+    {{alert.text}}
+  </div>
+</div>

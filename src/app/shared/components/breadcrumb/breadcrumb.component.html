@@ -1,0 +1,22 @@
+<ul class="breadcrumb">
+  <li *ngFor="let breadcrumb of breadcrumbs">
+    <a
+      *ngIf="breadcrumb.link != null && breadcrumb.external"
+      [href]="breadcrumb.link"
+      [rel]="breadcrumb.rel"
+      [target]="breadcrumb.target">
+      {{breadcrumb.title}}
+    </a>
+    <a
+      *ngIf="breadcrumb.link != null && !breadcrumb.external"
+      [routerLink]="breadcrumb.link"
+      [rel]="breadcrumb.rel"
+      [target]="breadcrumb.target">
+      {{breadcrumb.title}}
+    </a>
+    <span
+      *ngIf="breadcrumb.link == null">
+      {{breadcrumb.title}}
+    </span>
+  </li>
+</ul>

@@ -1,0 +1,18 @@
+<mat-nav-list>
+  <ng-container
+    *ngFor="let group of intakesPerTime">
+    <div mat-subheader>{{group.time}}</div>
+    <mat-list-item
+      *ngFor="let intake of group.intakes"
+      (click)="onSelect(intake)"
+      [class.success]="intake.completed != null">
+      <div matListItemTitle>{{intake.schedule.medication.name}}</div>
+      <div matListItemLine>{{intake.schedule.dose}} {{intake.schedule.medication.type.unit}}</div>
+    </mat-list-item>
+  </ng-container>
+</mat-nav-list>
+<mediminder-empty-state
+  *ngIf="intakes.length == 0"
+  icon="schedule"
+  title="Create some schedules first">
+</mediminder-empty-state>

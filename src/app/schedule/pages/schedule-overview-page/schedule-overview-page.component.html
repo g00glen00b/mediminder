@@ -1,0 +1,26 @@
+<mediminder-hero>
+  <hero-title>My Schedules</hero-title>
+  <hero-description>Here you can find your planned medication intake.</hero-description>
+  <hero-actions>
+    <a
+      mat-flat-button
+      routerLink="create"
+      color="accent">
+      <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+      Add
+    </a>
+  </hero-actions>
+</mediminder-hero>
+<mediminder-container>
+  <mediminder-sort-button
+    [options]="sortOptions"
+    [value]="(activeSort$$ | async) || undefined"
+    (change)="activeSort$$.next($event)">
+  </mediminder-sort-button>
+  <mediminder-schedule-list
+    [entries]="(entries$ | async) || []"
+    (copy)="onCopyEntry($event)"
+    (edit)="onEditEntry($event)"
+    (delete)="onDeleteEntry($event)">
+  </mediminder-schedule-list>
+</mediminder-container>

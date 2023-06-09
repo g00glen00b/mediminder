@@ -1,0 +1,23 @@
+<button
+  mat-stroked-button
+  color="primary"
+  [matMenuTriggerFor]="sortMenu">
+  <mat-icon fontSet="material-symbols-outlined">sort</mat-icon>
+  <ng-container *ngIf="value != undefined; then buttonLabelWithValue; else buttonLabelWithoutValue">
+  </ng-container>
+  <ng-template #buttonLabelWithValue>
+    Sort by: {{value!.label}}
+  </ng-template>
+  <ng-template #buttonLabelWithoutValue>
+    Sort by
+  </ng-template>
+</button>
+<mat-menu #sortMenu="matMenu">
+  <button
+    mat-menu-item
+    *ngFor="let option of options"
+    (click)="change.emit(option)">
+    <mat-icon fontSet="material-symbols-outlined">{{option == value ? 'checkmark' : ''}}</mat-icon>
+    {{option.label}}
+  </button>
+</mat-menu>

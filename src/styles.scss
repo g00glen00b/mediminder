@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@use 'theme' as theme;
+@import 'material-symbols/outlined';
+@import 'roboto-fontface/css/roboto/roboto-fontface.css';
+@import 'ngx-toastr';
+
+@include mat.core();
+@include mat.all-component-themes(theme.$mediminder-theme);
+@include mat.typography-hierarchy(theme.$mediminder-typography);
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}

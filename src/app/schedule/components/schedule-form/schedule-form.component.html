@@ -1,0 +1,127 @@
+<form
+  [formGroup]="form"
+  (submit)="submitForm($event)">
+  <h3 class="basic">Basic information</h3>
+  <mat-form-field class="medication">
+    <mat-label>Medication</mat-label>
+    <mat-select
+      formControlName="medication"
+      [compareWith]="compareMedication">
+      <mat-option
+        *ngFor="let medication of medication$ | async"
+        [value]="medication">
+        {{medication.name}}
+      </mat-option>
+    </mat-select>
+    <mat-hint>You can only select medication that's available in your cabinet</mat-hint>
+    <mat-error *ngIf="form.get('medication')!.hasError('required')">
+      The medication is required
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="dose">
+    <mat-label>Dose</mat-label>
+    <input
+      matInput
+      formControlName="dose"
+      min="0"
+      type="number" />
+    <span matTextSuffix>{{unitType}}</span>
+    <mat-error *ngIf="form.get('dose')!.hasError('required')">
+      The dose is required
+    </mat-error>
+    <mat-error *ngIf="form.get('dose')!.hasError('min')">
+      The dose must be greater than zero
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="period">
+    <mat-label>Period</mat-label>
+    <mat-date-range-input
+      [rangePicker]="rangePicker">
+      <input
+        matStartDate
+        formControlName="startingAt" />
+      <input
+        matEndDate
+        formControlName="endingAtInclusive" />
+    </mat-date-range-input>
+    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle
+      matIconSuffix
+      [for]="rangePicker">
+    </mat-datepicker-toggle>
+    <mat-date-range-picker #rangePicker></mat-date-range-picker>
+    <mat-error *ngIf="form.get('startingAt')!.hasError('required')">
+      The start date is required
+    </mat-error>
+    <mat-error *ngIf="form.get('startingAt')!.hasError('matDatepickerParse')">
+      The start date should follow the MM/DD/YYYY format
+    </mat-error>
+    <mat-error *ngIf="form.get('endingAtInclusive')!.hasError('matEndDateInvalid')">
+      The end date should be greater than the start date
+    </mat-error>
+    <mat-error *ngIf="form.get('endingAtInclusive')!.hasError('matDatepickerParse')">
+      The end date should follow the MM/DD/YYYY format
+    </mat-error>
+  </mat-form-field>
+  <h3 class="recurrence">Recurrence</h3>
+  <mat-form-field class="recurrenceUnits">
+    <mat-label>Repeats every</mat-label>
+    <input
+      matInput
+      formControlName="recurrenceUnits"
+      min="1"
+      type="number" />
+    <mat-error *ngIf="form.get('recurrenceUnits')!.hasError('required')">
+      The recurrence units is required
+    </mat-error>
+    <mat-error *ngIf="form.get('startingAt')!.hasError('min')">
+      The schedule must repeat at least every one day or week
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="recurrenceType">
+    <mat-label>Type</mat-label>
+    <mat-select
+      formControlName="recurrenceType"
+      [compareWith]="compareRecurrenceType">
+      <mat-option
+        *ngFor="let type of recurrenceTypes"
+        [value]="type">
+        {{type.label}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.get('recurrenceType')!.hasError('required')">
+      The type of recurrence is required
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="time">
+    <mat-label>Time</mat-label>
+    <input
+      matInput
+      type="time"
+      formControlName="time" />
+    <mat-error *ngIf="form.get('time')!.hasError('required')">
+      The time is required
+    </mat-error>
+  </mat-form-field>
+  <h3 class="description">Description</h3>
+  <mat-form-field class="description">
+    <mat-label>Description</mat-label>
+    <textarea
+      matInput
+      formControlName="description">
+    </textarea>
+    <mat-hint>{{form.get('description')!.value.length}} / 256 characters</mat-hint>
+    <mat-error *ngIf="form.get('description')!.hasError('maxlength')">
+      The description cannot exceed 256 characters
+    </mat-error>
+  </mat-form-field>
+  <button mat-flat-button color="accent">
+    {{submitLabel}}
+  </button>
+  <button
+    mat-button
+    type="button"
+    (click)="cancel.emit()">
+    CANCEL
+  </button>
+</form>

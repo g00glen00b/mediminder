@@ -1,0 +1,21 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+}
+
+section mat-icon {
+  transform: scale(3);
+  color: mat.get-color-from-palette(theme.$mediminder-accent, 500);
+  height: 40px;
+}
+
+section h3 {
+  @include mat.typography-level(theme.$mediminder-typography, 'headline-5');
+}

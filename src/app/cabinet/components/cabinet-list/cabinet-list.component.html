@@ -1,0 +1,20 @@
+<mat-nav-list>
+  <mat-list-item
+    *ngFor="let entry of entries"
+    (click)="onItemClick(entry)">
+    <h3 matListItemTitle>
+      {{entry.medication.name}}
+    </h3>
+    <div matListItemLine>
+      {{entry.units}} / {{entry.initialUnits}} {{entry.medication.type.unit}}
+    </div>
+    <div matListItemLine>
+      Expires at {{entry.expiryDate | date:'longDate'}}
+    </div>
+  </mat-list-item>
+</mat-nav-list>
+<mediminder-empty-state
+  *ngIf="entries.length == 0"
+  icon="pill"
+  title="Create some entries first">
+</mediminder-empty-state>

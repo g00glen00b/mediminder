@@ -1,0 +1,7 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+.danger[matListItemLine] {
+  color: mat.get-color-from-palette(theme.$mediminder-danger, 500);
+  font-weight: 600;
+}

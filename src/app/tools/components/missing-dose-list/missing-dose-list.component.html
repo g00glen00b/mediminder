@@ -1,0 +1,13 @@
+<mat-nav-list
+  *ngFor="let match of missingDoses"
+  (click)="onMatchClick(match)">
+  <mat-list-item>
+    <div matListItemTitle>{{match.medication.name}}</div>
+    <div matListItemLine>{{match.requiredDoses - match.availableDoses}} {{match.medication.type.unit}} missing</div>
+  </mat-list-item>
+</mat-nav-list>
+<mediminder-empty-state
+  *ngIf="missingDoses.length == 0"
+  icon="check"
+  title="No prescriptions required until this date">
+</mediminder-empty-state>

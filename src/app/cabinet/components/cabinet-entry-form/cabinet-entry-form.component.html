@@ -1,0 +1,96 @@
+<form
+  [formGroup]="form"
+  (submit)="submitForm($event)">
+  <mat-form-field class="medicationName">
+    <mat-label>Medication</mat-label>
+    <input
+      type="text"
+      formControlName="medicationName"
+      matInput
+      [matAutocomplete]="medicationAutocomplete" />
+    <mat-autocomplete
+      #medicationAutocomplete="matAutocomplete"
+      [displayWith]="getMedicationName">
+      <mat-option
+        *ngFor="let medication of filteredMedication$ | async"
+        [value]="medication">
+        {{medication.name}}
+      </mat-option>
+    </mat-autocomplete>
+    <mat-hint>{{form.get('medicationName')!.value.length}} / 128 characters</mat-hint>
+    <mat-error *ngIf="form.get('medicationName')!.hasError('required')">
+      The name of the medication is required
+    </mat-error>
+    <mat-error *ngIf="form.get('medicationName')!.hasError('maxlength')">
+      The name of the medication cannot exceed 128 characters
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="medicationType">
+    <mat-label>Type</mat-label>
+    <mat-select
+      formControlName="medicationType"
+      [compareWith]="compareMedicationTypes">
+      <mat-option
+        *ngFor="let type of (medicationTypes$ | async) || []; trackBy: getMedicationTypeId"
+        [value]="type">
+        {{type.name}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.get('medicationName')!.hasError('required')">
+      The type of medication is required
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="units">
+    <mat-label>Units currently in package</mat-label>
+    <input
+      matInput
+      formControlName="units"
+      min="0"
+      type="number"
+      (change)="updateInitialUnits()" />
+    <span matTextSuffix>{{unitType}}</span>
+    <mat-error *ngIf="form.get('units')!.hasError('required')">
+      The amount of units is required
+    </mat-error>
+    <mat-error *ngIf="form.get('units')!.hasError('min')">
+      The amount must be zero or higher
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="initialUnits">
+    <mat-label>Initial units in package</mat-label>
+    <input
+      matInput
+      formControlName="initialUnits"
+      [min]="minimumInitialUnits"
+      type="number" />
+    <span matTextSuffix>{{unitType}}</span>
+    <mat-error *ngIf="form.get('initialUnits')!.hasError('required')">
+      The initial units is required
+    </mat-error>
+    <mat-error *ngIf="form.get('medicationName')!.hasError('min')">
+      There must be at least {{minimumInitialUnits}} in your package
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="expiryDate">
+    <mat-label>Expiry date</mat-label>
+    <input
+      matInput
+      formControlName="expiryDate"
+      [matDatepicker]="expiryDatePicker" />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="expiryDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #expiryDatePicker></mat-datepicker>
+    <mat-error *ngIf="form.get('expiryDate')!.hasError('matDatepickerParse')">
+      The date should follow the MM/DD/YYYY format
+    </mat-error>
+  </mat-form-field>
+  <button mat-flat-button color="accent">
+    {{submitLabel}}
+  </button>
+  <button
+    mat-button
+    type="button"
+    (click)="cancel.emit()">
+    Cancel
+  </button>
+</form>

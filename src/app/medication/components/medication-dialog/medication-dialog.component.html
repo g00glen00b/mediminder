@@ -1,0 +1,37 @@
+<mat-toolbar color="primary">
+  <span>Medication details</span>
+  <button
+    mat-icon-button
+    (click)="dialogRef.close()">
+    <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-dialog-content>
+  <h1>{{medication.name}}</h1>
+  <mat-divider></mat-divider>
+  <mat-list>
+    <mat-list-item>
+      <div matListItemTitle>{{medication.type.name}}</div>
+      <div matListItemLine>Type</div>
+    </mat-list-item>
+    <mat-list-item>
+      <div matListItemTitle>{{medication.type.unit}}</div>
+      <div matListItemLine>Unit type</div>
+    </mat-list-item>
+  </mat-list>
+  <mat-dialog-actions>
+    <div class="actions">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="dialogRef.close('delete')">
+        Delete
+      </button>
+      <button
+        mat-button
+        (click)="dialogRef.close()">
+        Close
+      </button>
+    </div>
+  </mat-dialog-actions>
+</mat-dialog-content>

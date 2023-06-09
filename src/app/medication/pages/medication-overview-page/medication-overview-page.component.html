@@ -1,0 +1,10 @@
+<mediminder-hero>
+  <hero-title>My Medication</hero-title>
+  <hero-description>Here you can find a list of all medication you ever registered in the application.</hero-description>
+</mediminder-hero>
+<mediminder-container>
+  <mediminder-medication-list
+    [medications]="(medications$ | async) || []"
+    (delete)="onDeleteEntry($event)">
+  </mediminder-medication-list>
+</mediminder-container>

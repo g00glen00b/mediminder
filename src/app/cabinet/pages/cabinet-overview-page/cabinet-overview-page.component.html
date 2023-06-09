@@ -1,0 +1,27 @@
+<mediminder-hero>
+  <hero-title>My Cabinet</hero-title>
+  <hero-description>Here you can find which medications you have available.</hero-description>
+  <hero-actions>
+    <a
+      mat-flat-button
+      color="accent"
+      routerLink="create">
+      <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+      Add
+    </a>
+  </hero-actions>
+</mediminder-hero>
+<mediminder-container>
+  <mediminder-sort-button
+    [options]="sortOptions"
+    [value]="(activeSort$$ | async) || undefined"
+    (change)="activeSort$$.next($event)">
+  </mediminder-sort-button>
+  <mediminder-cabinet-list
+    [entries]="(entries$ | async) || []"
+    (takeOne)="onSubtractUnits($event, 1)"
+    (copy)="onCopyEntry($event)"
+    (edit)="onEditEntry($event)"
+    (delete)="onDeleteEntry($event)">
+  </mediminder-cabinet-list>
+</mediminder-container>

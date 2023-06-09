@@ -1,0 +1,17 @@
+<mat-nav-list>
+  <mat-list-item
+    *ngFor="let medication of medications"
+    (click)="onClickItem(medication)">
+    <h3 matListItemTitle>
+      {{medication.name}}
+    </h3>
+    <div matListItemLine>
+      {{medication.type.name}}
+    </div>
+  </mat-list-item>
+</mat-nav-list>
+<mediminder-empty-state
+  *ngIf="medications.length == 0"
+  icon="pill"
+  title="Add your medication through the cabinet">
+</mediminder-empty-state>

@@ -1,0 +1,11 @@
+<mediminder-hero>
+  <hero-title>Add medication</hero-title>
+  <hero-description>Here you can add which medication is available in your cabinet.</hero-description>
+</mediminder-hero>
+<mediminder-container>
+  <mediminder-cabinet-entry-form
+    [entry]="entry$ | async"
+    (cancel)="onCancel()"
+    (submit)="onSubmit($event)">
+  </mediminder-cabinet-entry-form>
+</mediminder-container>
