@@ -33,7 +33,7 @@ export class IntakeListComponent implements OnChanges {
 
   onSelect(intake: Intake): void {
     this.dialog
-      .open(IntakeDialogComponent, {data: intake, height: '100vh', width: '100vw', maxWidth: '100vw'})
+      .open(IntakeDialogComponent, {data: intake, height: '100vh', width: '100vw', maxWidth: '100vw', maxHeight: '100vh'})
       .afterClosed()
       .subscribe(event => {
         if (event === 'complete') this.complete.emit(intake);

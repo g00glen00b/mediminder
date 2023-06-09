@@ -16,6 +16,6 @@ export class MissingDoseListComponent {
   }
 
   onMatchClick(match: DoseMatch) {
-    this.dialog.open(MissingDoseDialogComponent, {data: match, height: '100vh', width: '100vw', maxWidth: '100vw'});
+    this.dialog.open(MissingDoseDialogComponent, {data: match, height: '100vh', width: '100vw', maxWidth: '100vw', maxHeight: '100vh'});
   }
 }

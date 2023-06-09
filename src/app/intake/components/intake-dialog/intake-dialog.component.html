@@ -40,26 +40,26 @@
       <div matListItemLine>Completed</div>
     </mat-list-item>
   </mat-list>
-  <mat-dialog-actions>
-    <div class="actions">
-      <button
-        mat-flat-button
-        [disabled]="intake.completed != null"
-        color="primary"
-        (click)="dialogRef.close('complete')">
-        Taken
-      </button>
-      <button
-        mat-button
-        (click)="dialogRef.close()">
-        Close
-      </button>
-      <button
-        class="schedule-button"
-        mat-button
-        (click)="dialogRef.close('openSchedule')">
-        Open schedule
-      </button>
-    </div>
-  </mat-dialog-actions>
 </mat-dialog-content>
+<mat-dialog-actions>
+  <div class="actions">
+    <button
+      mat-flat-button
+      [disabled]="intake.completed != null"
+      color="primary"
+      (click)="dialogRef.close('complete')">
+      Taken
+    </button>
+    <button
+      mat-button
+      (click)="dialogRef.close()">
+      Close
+    </button>
+    <button
+      class="schedule-button"
+      mat-button
+      (click)="dialogRef.close('openSchedule')">
+      Open schedule
+    </button>
+  </div>
+</mat-dialog-actions>

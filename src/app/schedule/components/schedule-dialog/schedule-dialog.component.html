@@ -32,31 +32,31 @@
       <div matListItemLine>Additional information</div>
     </mat-list-item>
   </mat-list>
-  <mat-dialog-actions>
-    <div class="actions">
-      <button
-        mat-flat-button
-        color="primary"
-        (click)="dialogRef.close('edit')">
-        Edit
-      </button>
-      <button
-        mat-stroked-button
-        color="primary"
-        (click)="dialogRef.close('copy')">
-        Copy
-      </button>
-      <button
-        mat-stroked-button
-        color="primary"
-        (click)="dialogRef.close('delete')">
-        Delete
-      </button>
-      <button
-        mat-button
-        (click)="dialogRef.close()">
-        Close
-      </button>
-    </div>
-  </mat-dialog-actions>
 </mat-dialog-content>
+<mat-dialog-actions>
+  <div class="actions">
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="dialogRef.close('edit')">
+      Edit
+    </button>
+    <button
+      mat-stroked-button
+      color="primary"
+      (click)="dialogRef.close('copy')">
+      Copy
+    </button>
+    <button
+      mat-stroked-button
+      color="primary"
+      (click)="dialogRef.close('delete')">
+      Delete
+    </button>
+    <button
+      mat-button
+      (click)="dialogRef.close()">
+      Close
+    </button>
+  </div>
+</mat-dialog-actions>

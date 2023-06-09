@@ -19,7 +19,7 @@ export class MedicationListComponent {
 
   onClickItem(medication: Medication): void {
     this.dialog
-      .open(MedicationDialogComponent, {data: medication, height: '100vh', width: '100vw', maxWidth: '100vw'})
+      .open(MedicationDialogComponent, {data: medication, height: '100vh', width: '100vw', maxWidth: '100vw', maxHeight: '100vh'})
       .afterClosed()
       .subscribe(event => {
         if (event === 'delete') this.delete.emit(medication);

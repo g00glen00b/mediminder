@@ -25,7 +25,7 @@ export class CabinetListComponent {
 
   onItemClick(entry: CabinetEntry): void {
     this.dialog
-      .open(CabinetEntryDialogComponent, {data: entry, height: '100vh', width: '100vw', maxWidth: '100vw'})
+      .open(CabinetEntryDialogComponent, {data: entry, height: '100vh', width: '100vw', maxWidth: '100vw', maxHeight: '100vh'})
       .afterClosed()
       .subscribe(event => {
         if (event === 'copy') this.copy.emit(entry);

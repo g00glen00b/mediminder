@@ -23,7 +23,7 @@ export class ScheduleListComponent {
 
   onClickItem(schedule: Schedule) {
     this.dialog
-      .open(ScheduleDialogComponent, {data: schedule, height: '100vh', width: '100vw', maxWidth: '100vw'})
+      .open(ScheduleDialogComponent, {data: schedule, height: '100vh', width: '100vw', maxWidth: '100vw', maxHeight: '100vh'})
       .afterClosed()
       .subscribe(event => {
         if (event === 'delete') this.delete.emit(schedule);
