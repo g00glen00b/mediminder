@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ScheduleService} from "../../schedule/services/schedule.service";
 import {
-  combineLatest,
+  combineLatest, defaultIfEmpty,
   filter,
   from,
   generate,
@@ -16,7 +16,7 @@ import {
 } from "rxjs";
 import {Intake} from "../models/intake";
 import {Schedule} from "../../schedule/models/schedule";
-import {add, addDays, Duration, isAfter, isBefore, isEqual, isSameDay, parse, set} from "date-fns";
+import {add, addDays, differenceInDays, Duration, isAfter, isBefore, isEqual, isSameDay, parse, set} from "date-fns";
 import {ScheduleRecurrence} from "../../schedule/models/schedule-recurrence";
 import {compareByField} from "../../shared/utils/compare-utils";
 import {MIDNIGHT} from "../../shared/utils/date-fns-utils";
@@ -26,6 +26,8 @@ import {CompletedIntake} from "../models/completed-intake";
 import {TotalIntakeDose} from "../models/total-intake-dose";
 import {MediminderEventService} from "../../shared/services/mediminder-event.service";
 import {IntakeCompletedEvent} from "../models/intake-completed-event";
+import {da} from "date-fns/locale";
+import {ScheduleRecurrenceType} from "../../schedule/models/schedule-recurrence-type";
 
 const STORE_NAME = 'intake';
 
@@ -45,14 +47,8 @@ export class IntakeService {
       .findAll({field: 'name', direction: 'asc'})
       .pipe(
         mergeMap(schedules => from(schedules)),
-        filter(schedule => schedule.period.startingAt <= givenDateAtMidnight),
-        filter(schedule => schedule.period.endingAtInclusive == null || schedule.period.endingAtInclusive >= givenDateAtMidnight),
-        mergeMap(schedule => combineLatest([
-          this.findAllCompletedBySchedule(schedule),
-          this.findAllIntakeDatesUntil(schedule, givenDateAtMidnight)
-        ]).pipe(
-          filter(([, date]) => isSameDay(date, givenDateAtMidnight)),
-          map(([completedEntities, scheduledDate]) => this.mapCompletedEntitiesAndScheduleInfoToIntake(completedEntities, schedule, scheduledDate)))),
+        filter(schedule => this.isActiveAtDate(schedule, givenDateAtMidnight)),
+        mergeMap(schedule => this.mapScheduleToIntake(schedule, givenDateAtMidnight)),
         toArray(),
         map(results => results.sort(compareByField(result => result.scheduledDate))));
   }
@@ -89,15 +85,17 @@ export class IntakeService {
       toArray());
   }
 
-  private mapCompletedEntitiesAndScheduleInfoToIntake(completedEntities: CompletedIntakeEntity[], schedule: Schedule, scheduledDate: Date): Intake {
-    const completedEntity: CompletedIntakeEntity | undefined = completedEntities.find(({scheduledDate: completedScheduledDate}) => isEqual(completedScheduledDate, scheduledDate));
-    if (completedEntity == null) {
-      return {completed: null, schedule, scheduledDate};
-    } else {
-      const {completedDate, id} = completedEntity;
-      const completed: CompletedIntake = {completedDate, id};
-      return {completed, schedule, scheduledDate};
-    }
+  private mapScheduleToIntake(schedule: Schedule, date: Date): Observable<Intake> {
+    const scheduledDate = parse(schedule.time, 'HH:mm', date);
+    return this
+      .findAllCompletedBySchedule(schedule)
+      .pipe(
+        mergeMap(entities => from(entities)),
+        filter(entity => isEqual(entity.scheduledDate, scheduledDate)),
+        take(1),
+        map(({completedDate, id}) => ({completedDate, id}) as CompletedIntake),
+        defaultIfEmpty(null),
+        map(completed => ({completed, schedule, scheduledDate})));
   }
 
   private findAllCompletedBySchedule(schedule: Schedule): Observable<CompletedIntakeEntity[]> {
@@ -127,4 +125,19 @@ export class IntakeService {
     }
   }
 
+  private isActiveAtDate(schedule: Schedule, date: Date): boolean {
+    const {period: {startingAt, endingAtInclusive}, recurrence} = schedule;
+    if (isAfter(startingAt, date)) return false;
+    if (endingAtInclusive != null && isBefore(endingAtInclusive, date)) return false;
+    const days = this.calculateExpectedDaysInRecurrence(recurrence);
+    const startingAtMidnight: Date = set(startingAt, MIDNIGHT);
+    return differenceInDays(date, startingAtMidnight) % days === 0;
+  }
+
+  private calculateExpectedDaysInRecurrence(recurrence: ScheduleRecurrence): number {
+    switch (recurrence.type) {
+      case 'daily': return recurrence.units;
+      case 'weekly': return recurrence.units * 7;
+    }
+  }
 }
