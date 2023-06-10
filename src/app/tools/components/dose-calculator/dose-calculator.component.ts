@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {addDays, addMonths, addYears, set, subDays} from "date-fns";
+import {addDays, addMonths, set, subDays} from "date-fns";
 import {MIDNIGHT} from "../../../shared/utils/date-fns-utils";
-import {BehaviorSubject, delay, filter, finalize, from, mergeMap, Observable, take, tap, toArray} from "rxjs";
+import {BehaviorSubject, delay, filter, from, mergeMap, Observable, tap, toArray} from "rxjs";
 import {DoseMatch} from "../../models/dose-match";
 import {DoseCalculationService} from "../../services/dose-calculation.service";
-import {MatDialog} from "@angular/material/dialog";
-import {MissingDoseDialogComponent} from "../missing-dose-dialog/missing-dose-dialog.component";
 
 @Component({
   selector: 'mediminder-dose-calculator',
