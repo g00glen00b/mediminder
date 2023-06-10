@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {IntakeService} from '../../services/intake.service';
-import {BehaviorSubject, filter, mergeMap, Observable} from 'rxjs';
+import {BehaviorSubject, mergeMap, Observable} from 'rxjs';
 import {Intake} from '../../models/intake';
 import {ToastrService} from 'ngx-toastr';
-import {MatDialog} from '@angular/material/dialog';
-import {IntakeDialogComponent} from '../intake-dialog/intake-dialog.component';
 import {Router} from "@angular/router";
+import {addDays, subDays} from "date-fns";
 
 @Component({
   selector: 'mediminder-intake-overview',
@@ -40,6 +39,14 @@ export class IntakeOverviewComponent implements OnInit {
 
   onOpenSchedule(intake: Intake): void {
     this.router.navigate(['schedule', intake.schedule.id, 'edit']);
+  }
+
+  onSwipeRight(): void {
+    this.date$$.next(subDays(this.date$$.value, 1));
+  }
+
+  onSwipeLeft(): void {
+    this.date$$.next(addDays(this.date$$.value, 1));
   }
 
   private initializeIntakes() {

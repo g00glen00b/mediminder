@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {addMonths, addYears, set} from "date-fns";
+import {addDays, addMonths, addYears, set, subDays} from "date-fns";
 import {MIDNIGHT} from "../../../shared/utils/date-fns-utils";
 import {BehaviorSubject, delay, filter, finalize, from, mergeMap, Observable, take, tap, toArray} from "rxjs";
 import {DoseMatch} from "../../models/dose-match";
@@ -32,5 +32,13 @@ export class DoseCalculatorComponent implements OnInit {
             toArray()
           )),
         tap(() => this.loading = false));
+  }
+
+  onSwipeLeft(): void {
+    this.date$$.next(addDays(this.date$$.value, 1));
+  }
+
+  onSwipeRight(): void {
+    this.date$$.next(subDays(this.date$$.value, 1));
   }
 }

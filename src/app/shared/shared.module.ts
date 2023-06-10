@@ -22,6 +22,7 @@ import { DatePaginatorComponent } from './components/date-paginator/date-paginat
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import { EmptyStateComponent } from './components/empty-state/empty-state.component';
+import { SwipeGestureDirective } from './directives/swipe-gesture.directive';
 
 
 
@@ -40,6 +41,7 @@ import { EmptyStateComponent } from './components/empty-state/empty-state.compon
     ConfirmationModalComponent,
     DatePaginatorComponent,
     EmptyStateComponent,
+    SwipeGestureDirective,
   ],
   exports: [
     NavbarComponent,
@@ -54,6 +56,7 @@ import { EmptyStateComponent } from './components/empty-state/empty-state.compon
     SidenavComponent,
     DatePaginatorComponent,
     EmptyStateComponent,
+    SwipeGestureDirective,
   ],
   imports: [
     CommonModule,
