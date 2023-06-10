@@ -1,3 +1,5 @@
+![Logo](./src/assets/icons/icon-192x192.png)
+
 # Mediminder
 
 This project uses Angular and a themed Angular Material design to set up a mobile app for tracking medication intake.
