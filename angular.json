@@ -28,7 +28,8 @@
             "assets": [
               "src/favicon.svg",
               "src/assets",
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              "src/_redirects"
             ],
             "styles": [
               "src/styles.scss"
