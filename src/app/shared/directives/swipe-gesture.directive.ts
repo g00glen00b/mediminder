@@ -31,7 +31,7 @@ export class SwipeGestureDirective implements OnInit {
   }
 
   private isTouchSupported(): boolean {
-    return matchMedia('(hover: none)').matches;
+    return matchMedia('(pointer: coarse)').matches;
   }
 
   private emit(gesture: SwipeGesture): void {
