@@ -7,7 +7,9 @@ import {SwipeGesture} from "../models/swipe-gesture";
 })
 export class SwipeGestureDirective implements OnInit {
   @Input()
-  swipeGesture: 'element' | 'document' | '' = 'element';
+  swipeTarget: 'element' | 'document' = 'element';
+  @Input()
+  minimumSwipeDistance: number = 100;
   @Output()
   swipeLeft: EventEmitter<SwipeGesture> = new EventEmitter<SwipeGesture>();
   @Output()
@@ -21,7 +23,7 @@ export class SwipeGestureDirective implements OnInit {
 
   ngOnInit(): void {
     if (this.isTouchSupported()) {
-      const element = this.swipeGesture === 'document' ? document : this.el.nativeElement;
+      const element = this.swipeTarget === 'document' ? document : this.el.nativeElement;
       const touchStart: Observable<TouchEvent> = fromEvent(element, 'touchstart');
       const touchEnd: Observable<TouchEvent> = fromEvent(element, 'touchend');
       zip(touchStart, touchEnd)
@@ -39,10 +41,12 @@ export class SwipeGestureDirective implements OnInit {
     const {screenX: endX, screenY: endY} = gesture.end.changedTouches[0];
     const diffX = endX - startX;
     const diffY = endY - startY;
-    if (Math.abs(diffX) > Math.abs(diffY)) {
+    const absoluteDiffX = Math.abs(diffX);
+    const absoluteDiffY = Math.abs(diffY);
+    if (absoluteDiffX > this.minimumSwipeDistance && absoluteDiffX > absoluteDiffY) {
       if (diffX > 0) this.swipeRight.emit(gesture);
       else this.swipeLeft.emit(gesture);
-    } else {
+    } else if (absoluteDiffY > this.minimumSwipeDistance && absoluteDiffY > absoluteDiffX) {
       if (diffY > 0) this.swipeDown.emit(gesture);
       else this.swipeUp.emit(gesture);
     }

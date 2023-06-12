@@ -9,7 +9,8 @@
   <mat-spinner></mat-spinner>
 </section>
 <mediminder-missing-dose-list
-  swipeGesture="document"
+  swipeGesture
+  swipeTarget="document"
   (swipeRight)="onSwipeRight()"
   (swipeLeft)="onSwipeLeft()"
   [missingDoses]="(doseMatches$ | async) || []">
