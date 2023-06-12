@@ -6,7 +6,7 @@
       {{entry.medication.name}}
     </h3>
     <div matListItemLine>
-      {{entry.units}} / {{entry.initialUnits}} {{entry.medication.type.unit}}
+      {{entry.units | number: '1.0-2'}} / {{entry.initialUnits}} {{entry.medication.type.unit}}
     </div>
     <div matListItemLine>
       Expires at {{entry.expiryDate | date:'longDate'}}
