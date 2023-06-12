@@ -4,6 +4,7 @@ import {IntakePerTime} from "../../models/intake-per-time";
 import {format} from "date-fns";
 import {IntakeDialogComponent} from "../intake-dialog/intake-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {compareByField} from "../../../shared/utils/compare-utils";
 
 @Component({
   selector: 'mediminder-intake-list',
@@ -28,7 +29,7 @@ export class IntakeListComponent implements OnChanges {
       const existingIntakesAtTime: Intake[] = entryMap.get(time) || [];
       return entryMap.set(time, [...existingIntakesAtTime, intake]);
     }, new Map());
-    this.intakesPerTime = Array.from(groups, ([time, intakes]) => ({time, intakes}));
+    this.intakesPerTime = Array.from(groups, ([time, intakes]) => ({time, intakes: intakes.sort(compareByField(intake => intake.schedule.medication.name))}));
   }
 
   onSelect(intake: Intake): void {
