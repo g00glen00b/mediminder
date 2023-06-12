@@ -3,7 +3,7 @@
   (select)="date$$.next($event)">
 </mediminder-date-paginator>
 <mediminder-intake-list
-  swipeGesture
+  swipeGesture="document"
   (swipeLeft)="onSwipeLeft()"
   (swipeRight)="onSwipeRight()"
   [intakes]="(intakes$ | async) || []"

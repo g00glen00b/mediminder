@@ -1,4 +1,4 @@
-import {Directive, ElementRef, EventEmitter, OnInit, Output} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {fromEvent, map, Observable, zip} from "rxjs";
 import {SwipeGesture} from "../models/swipe-gesture";
 
@@ -6,6 +6,8 @@ import {SwipeGesture} from "../models/swipe-gesture";
   selector: '[swipeGesture]'
 })
 export class SwipeGestureDirective implements OnInit {
+  @Input()
+  swipeGesture: 'element' | 'document' | '' = 'element';
   @Output()
   swipeLeft: EventEmitter<SwipeGesture> = new EventEmitter<SwipeGesture>();
   @Output()
@@ -19,7 +21,7 @@ export class SwipeGestureDirective implements OnInit {
 
   ngOnInit(): void {
     if (this.isTouchSupported()) {
-      const element = this.el.nativeElement;
+      const element = this.swipeGesture === 'document' ? document : this.el.nativeElement;
       const touchStart: Observable<TouchEvent> = fromEvent(element, 'touchstart');
       const touchEnd: Observable<TouchEvent> = fromEvent(element, 'touchend');
       zip(touchStart, touchEnd)
