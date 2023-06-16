@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, DestroyRef, inject} from '@angular/core';
 import {SortOption} from "../../../shared/models/sort-option";
 import {BehaviorSubject, map, mergeMap, Observable} from "rxjs";
 import {ConfirmationService} from "../../../shared/services/confirmation.service";
@@ -17,6 +17,7 @@ import {HeroActionsDirective} from '../../../shared/components/hero/hero-actions
 import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
 import {HeroTitleDirective} from '../../../shared/components/hero/hero-title.directive';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 export const SORT_OPTIONS: SortOption[] = [
   {sort: {direction: 'asc', field: 'name'}, label: 'Name'},
@@ -53,6 +54,7 @@ export class ScheduleOverviewPageComponent {
   private confirmationService = inject(ConfirmationService);
   private toastrService = inject(ToastrService);
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   ngOnInit() {
     this.initializeEntries();
@@ -61,6 +63,7 @@ export class ScheduleOverviewPageComponent {
   private initializeEntries() {
     this.entries$ = this.activeSort$$
       .pipe(
+        takeUntilDestroyed(this.destroyRef),
         map(({sort}) => sort),
         mergeMap(sort => this.service.findAll(sort)));
   }

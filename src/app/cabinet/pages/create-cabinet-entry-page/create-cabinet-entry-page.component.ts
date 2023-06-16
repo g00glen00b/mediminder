@@ -1,4 +1,4 @@
-import {Component, inject, Input} from '@angular/core';
+import {Component, DestroyRef, inject, Input} from '@angular/core';
 import {CabinetService} from "../../services/cabinet.service";
 import {CreateCabinetEntry} from "../../models/create-cabinet-entry";
 import {Router} from "@angular/router";
@@ -13,6 +13,7 @@ import {ContainerComponent} from '../../../shared/components/container/container
 import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
 import {HeroTitleDirective} from '../../../shared/components/hero/hero-title.directive';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'mediminder-create-cabinet-entry-page',
@@ -34,10 +35,11 @@ export class CreateCabinetEntryPageComponent {
   private router = inject(Router);
   private toastrService = inject(ToastrService);
   private confirmationService = inject(ConfirmationService);
+  private destroyRef = inject(DestroyRef);
 
   @Input()
   set id(id: string) {
-    this.entry$ = this.service.findById(id);
+    this.entry$ = this.service.findById(id).pipe(takeUntilDestroyed(this.destroyRef));
   }
 
   onCancel() {

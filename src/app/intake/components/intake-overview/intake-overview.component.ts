@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {IntakeService} from '../../services/intake.service';
 import {BehaviorSubject, mergeMap, Observable} from 'rxjs';
 import {Intake} from '../../models/intake';
@@ -9,6 +9,7 @@ import {AsyncPipe} from '@angular/common';
 import {SwipeGestureDirective} from '../../../shared/directives/swipe-gesture.directive';
 import {IntakeListComponent} from '../intake-list/intake-list.component';
 import {DatePaginatorComponent} from '../../../shared/components/date-paginator/date-paginator.component';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'mediminder-intake-overview',
@@ -28,6 +29,7 @@ export class IntakeOverviewComponent implements OnInit {
   private service = inject(IntakeService);
   private router = inject(Router);
   private toastrService = inject(ToastrService);
+  private destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
     this.initializeIntakes();
@@ -58,6 +60,8 @@ export class IntakeOverviewComponent implements OnInit {
   }
 
   private initializeIntakes() {
-    this.intakes$ = this.date$$.pipe(mergeMap(date => this.service.findByDate(date)));
+    this.intakes$ = this.date$$.pipe(
+      takeUntilDestroyed(this.destroyRef),
+      mergeMap(date => this.service.findByDate(date)));
   }
 }

@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {CabinetService} from "../../services/cabinet.service";
 import {BehaviorSubject, map, mergeMap, Observable} from "rxjs";
 import {CabinetEntry} from "../../models/cabinet-entry";
@@ -17,6 +17,7 @@ import {HeroActionsDirective} from '../../../shared/components/hero/hero-actions
 import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
 import {HeroTitleDirective} from '../../../shared/components/hero/hero-title.directive';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 export const SORT_OPTIONS: SortOption[] = [
   {sort: {direction: 'asc', field: 'name'}, label: 'Name'},
@@ -53,6 +54,7 @@ export class CabinetOverviewPageComponent implements OnInit {
   private confirmationService = inject(ConfirmationService);
   private toastrService = inject(ToastrService);
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   ngOnInit() {
     this.initializeEntries();
@@ -61,6 +63,7 @@ export class CabinetOverviewPageComponent implements OnInit {
   private initializeEntries() {
     this.entries$ = this.activeSort$$
       .pipe(
+        takeUntilDestroyed(this.destroyRef),
         map(({sort}) => sort),
         mergeMap(sort => this.service.findAll(sort)));
   }

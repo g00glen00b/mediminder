@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {addDays, addMonths, set, subDays} from "date-fns";
 import {MIDNIGHT} from "../../../shared/utils/date-fns-utils";
 import {BehaviorSubject, delay, filter, from, mergeMap, Observable, tap, toArray} from "rxjs";
@@ -9,6 +9,7 @@ import { MissingDoseListComponent } from '../missing-dose-list/missing-dose-list
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgIf, AsyncPipe } from '@angular/common';
 import { DatePaginatorComponent } from '../../../shared/components/date-paginator/date-paginator.component';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'mediminder-dose-calculator',
@@ -29,10 +30,12 @@ export class DoseCalculatorComponent implements OnInit {
   doseMatches$!: Observable<DoseMatch[]>;
   loading: boolean = false;
   private doseCalculationService = inject(DoseCalculationService);
+  private destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
     this.doseMatches$ = this.date$$
       .pipe(
+        takeUntilDestroyed(this.destroyRef),
         delay(0),
         tap(() => this.loading = true),
         mergeMap(date => this.doseCalculationService.findUntil(date)),

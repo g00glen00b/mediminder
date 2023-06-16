@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, DestroyRef, inject} from '@angular/core';
 import {mergeMap, Observable} from "rxjs";
 import {ConfirmationService} from "../../../shared/services/confirmation.service";
 import {ToastrService} from "ngx-toastr";
@@ -11,6 +11,7 @@ import {ContainerComponent} from '../../../shared/components/container/container
 import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
 import {HeroTitleDirective} from '../../../shared/components/hero/hero-title.directive';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'mediminder-medication-overview-page',
@@ -31,13 +32,14 @@ export class MedicationOverviewPageComponent {
   private service = inject(MedicationService);
   private confirmationService = inject(ConfirmationService);
   private toastrService = inject(ToastrService);
+  private destroyRef = inject(DestroyRef);
 
   ngOnInit() {
     this.initializeMedications();
   }
 
   private initializeMedications() {
-    this.medications$ = this.service.findAll();
+    this.medications$ = this.service.findAll().pipe(takeUntilDestroyed(this.destroyRef));
   }
 
   onDeleteEntry(medication: Medication) {

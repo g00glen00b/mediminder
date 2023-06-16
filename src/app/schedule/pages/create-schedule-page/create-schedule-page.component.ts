@@ -1,4 +1,4 @@
-import {Component, inject, Input} from '@angular/core';
+import {Component, DestroyRef, inject, Input} from '@angular/core';
 import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {ConfirmationService} from "../../../shared/services/confirmation.service";
@@ -13,6 +13,7 @@ import {ContainerComponent} from '../../../shared/components/container/container
 import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
 import {HeroTitleDirective} from '../../../shared/components/hero/hero-title.directive';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'mediminder-create-schedule-page',
@@ -34,10 +35,11 @@ export class CreateSchedulePageComponent {
   private router = inject(Router);
   private toastrService = inject(ToastrService);
   private confirmationService = inject(ConfirmationService);
+  private destroyRef = inject(DestroyRef);
 
   @Input()
   set id(id: string) {
-    this.schedule$ = this.service.findById(id);
+    this.schedule$ = this.service.findById(id).pipe(takeUntilDestroyed(this.destroyRef));
   }
 
   onCancel() {
