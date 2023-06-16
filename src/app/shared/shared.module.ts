@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
-import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { HeroComponent } from './components/hero/hero.component';
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {HeroTitleDirective} from "./components/hero/hero-title.directive";
@@ -29,7 +28,6 @@ import { SwipeGestureDirective } from './directives/swipe-gesture.directive';
 @NgModule({
   declarations: [
     NavbarComponent,
-    BreadcrumbComponent,
     HeroComponent,
     HeroTitleDirective,
     HeroActionsDirective,
@@ -45,7 +43,6 @@ import { SwipeGestureDirective } from './directives/swipe-gesture.directive';
   ],
   exports: [
     NavbarComponent,
-    BreadcrumbComponent,
     HeroComponent,
     HeroTitleDirective,
     HeroActionsDirective,

@@ -1,5 +1,4 @@
-import {Component, Input} from '@angular/core';
-import {Breadcrumb} from "../../models/breadcrumb";
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'mediminder-hero',
@@ -7,6 +6,4 @@ import {Breadcrumb} from "../../models/breadcrumb";
   styleUrls: ['./hero.component.scss']
 })
 export class HeroComponent {
-  @Input()
-  breadcrumbs: Breadcrumb[] = [];
 }
