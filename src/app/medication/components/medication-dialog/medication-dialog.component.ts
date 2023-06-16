@@ -8,11 +8,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
-    selector: 'mediminder-medication-dialog',
-    templateUrl: './medication-dialog.component.html',
-    styleUrls: ['./medication-dialog.component.scss'],
-    standalone: true,
-    imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatDialogModule, MatDividerModule, MatListModule]
+  selector: 'mediminder-medication-dialog',
+  templateUrl: './medication-dialog.component.html',
+  styleUrls: ['./medication-dialog.component.scss'],
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatListModule
+  ]
 })
 export class MedicationDialogComponent {
   constructor(

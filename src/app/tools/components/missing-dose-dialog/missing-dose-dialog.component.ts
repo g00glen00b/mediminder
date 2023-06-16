@@ -9,11 +9,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
-    selector: 'mediminder-missing-dose-dialog',
-    templateUrl: './missing-dose-dialog.component.html',
-    styleUrls: ['./missing-dose-dialog.component.scss'],
-    standalone: true,
-    imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatDialogModule, MatDividerModule, MatListModule, DecimalPipe]
+  selector: 'mediminder-missing-dose-dialog',
+  templateUrl: './missing-dose-dialog.component.html',
+  styleUrls: ['./missing-dose-dialog.component.scss'],
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatListModule,
+    DecimalPipe
+  ]
 })
 export class MissingDoseDialogComponent implements OnInit {
   missingPrescriptions: number = 0;

@@ -11,11 +11,16 @@ import { IntakeListComponent } from '../intake-list/intake-list.component';
 import { DatePaginatorComponent } from '../../../shared/components/date-paginator/date-paginator.component';
 
 @Component({
-    selector: 'mediminder-intake-overview',
-    templateUrl: './intake-overview.component.html',
-    styleUrls: ['./intake-overview.component.scss'],
-    standalone: true,
-    imports: [DatePaginatorComponent, IntakeListComponent, SwipeGestureDirective, AsyncPipe]
+  selector: 'mediminder-intake-overview',
+  templateUrl: './intake-overview.component.html',
+  styleUrls: ['./intake-overview.component.scss'],
+  standalone: true,
+  imports: [
+    DatePaginatorComponent,
+    IntakeListComponent,
+    SwipeGestureDirective,
+    AsyncPipe
+  ]
 })
 export class IntakeOverviewComponent implements OnInit {
   date$$: BehaviorSubject<Date> = new BehaviorSubject<Date>(new Date());

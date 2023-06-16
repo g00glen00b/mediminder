@@ -11,11 +11,18 @@ import { NgIf, AsyncPipe } from '@angular/common';
 import { DatePaginatorComponent } from '../../../shared/components/date-paginator/date-paginator.component';
 
 @Component({
-    selector: 'mediminder-dose-calculator',
-    templateUrl: './dose-calculator.component.html',
-    styleUrls: ['./dose-calculator.component.scss'],
-    standalone: true,
-    imports: [DatePaginatorComponent, NgIf, MatProgressSpinnerModule, MissingDoseListComponent, SwipeGestureDirective, AsyncPipe]
+  selector: 'mediminder-dose-calculator',
+  templateUrl: './dose-calculator.component.html',
+  styleUrls: ['./dose-calculator.component.scss'],
+  standalone: true,
+  imports: [
+    DatePaginatorComponent,
+    NgIf,
+    MatProgressSpinnerModule,
+    MissingDoseListComponent,
+    SwipeGestureDirective,
+    AsyncPipe
+  ]
 })
 export class DoseCalculatorComponent implements OnInit {
   date$$: BehaviorSubject<Date> = new BehaviorSubject<Date>(addMonths(set(new Date(), MIDNIGHT), 1));

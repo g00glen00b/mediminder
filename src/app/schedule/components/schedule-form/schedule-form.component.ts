@@ -1,12 +1,8 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {CabinetEntry} from "../../../cabinet/models/cabinet-entry";
-import {CreateCabinetEntry} from "../../../cabinet/models/create-cabinet-entry";
-import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import {combineLatest, map, Observable, startWith} from "rxjs";
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {Observable} from "rxjs";
 import {Medication} from "../../../medication/models/medication";
-import {MedicationType} from "../../../medication/models/medication-type";
 import {MedicationService} from "../../../medication/services/medication.service";
-import {MedicationTypeService} from "../../../medication/services/medication-type.service";
 import {Schedule} from "../../models/schedule";
 import {CreateSchedule} from "../../models/create-schedule";
 import {RECURRENCE_TYPES, ScheduleRecurrenceTypeWrapper} from "../../models/schedule-recurrence-type-wrapper";
@@ -15,20 +11,32 @@ import {ScheduleRecurrenceType} from "../../models/schedule-recurrence-type";
 import {SchedulePeriod} from "../../models/schedule-period";
 import {ScheduleRecurrence} from "../../models/schedule-recurrence";
 import {ToastrService} from "ngx-toastr";
-import { MatButtonModule } from '@angular/material/button';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
-import { MatOptionModule } from '@angular/material/core';
-import { NgFor, NgIf, AsyncPipe } from '@angular/common';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatOptionModule} from '@angular/material/core';
+import {AsyncPipe, NgFor, NgIf} from '@angular/common';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
-    selector: 'mediminder-schedule-form',
-    templateUrl: './schedule-form.component.html',
-    styleUrls: ['./schedule-form.component.scss'],
-    standalone: true,
-    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, NgFor, MatOptionModule, NgIf, MatInputModule, MatDatepickerModule, MatButtonModule, AsyncPipe]
+  selector: 'mediminder-schedule-form',
+  templateUrl: './schedule-form.component.html',
+  styleUrls: ['./schedule-form.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    NgFor,
+    MatOptionModule,
+    NgIf,
+    MatInputModule,
+    MatDatepickerModule,
+    MatButtonModule,
+    AsyncPipe
+  ]
 })
 export class ScheduleFormComponent implements OnInit, OnChanges {
   @Input()

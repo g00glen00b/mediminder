@@ -27,11 +27,23 @@ export const SORT_OPTIONS: SortOption[] = [
 ];
 
 @Component({
-    selector: 'mediminder-cabinet-overview-page',
-    templateUrl: './cabinet-overview-page.component.html',
-    styleUrls: ['./cabinet-overview-page.component.scss'],
-    standalone: true,
-    imports: [HeroComponent, HeroTitleDirective, HeroDescriptionDirective, HeroActionsDirective, MatButtonModule, RouterLink, MatIconModule, ContainerComponent, SortButtonComponent, CabinetListComponent, AsyncPipe]
+  selector: 'mediminder-cabinet-overview-page',
+  templateUrl: './cabinet-overview-page.component.html',
+  styleUrls: ['./cabinet-overview-page.component.scss'],
+  standalone: true,
+  imports: [
+    HeroComponent,
+    HeroTitleDirective,
+    HeroDescriptionDirective,
+    HeroActionsDirective,
+    MatButtonModule,
+    RouterLink,
+    MatIconModule,
+    ContainerComponent,
+    SortButtonComponent,
+    CabinetListComponent,
+    AsyncPipe
+  ]
 })
 export class CabinetOverviewPageComponent implements OnInit {
   entries$!: Observable<CabinetEntry[]>;

@@ -22,21 +22,27 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(BrowserModule, AppRoutingModule, AppDbModule, MatToolbarModule, MatSidenavModule, MatMenuModule, MatListModule, MatButtonModule, MatIconModule, MatDateFnsModule, ToastrModule.forRoot({
-            timeOut: 5000,
-            positionClass: 'toast-bottom-full-width',
-            preventDuplicates: true,
-        }), ServiceWorkerModule.register('ngsw-worker.js', {
-            enabled: !isDevMode(),
-            // Register the ServiceWorker as soon as the application is stable
-            // or after 30 seconds (whichever comes first).
-            registrationStrategy: 'registerWhenStable:30000'
-        })),
-        {
-            provide: MAT_DATE_LOCALE,
-            useValue: enUS,
-        },
-        provideAnimations()
+      importProvidersFrom(
+        BrowserModule,
+        AppRoutingModule,
+        AppDbModule,
+        MatDateFnsModule,
+        ToastrModule.forRoot({
+          timeOut: 5000,
+          positionClass: 'toast-bottom-full-width',
+          preventDuplicates: true,
+        }),
+        ServiceWorkerModule.register('ngsw-worker.js', {
+          enabled: !isDevMode(),
+          // Register the ServiceWorker as soon as the application is stable
+          // or after 30 seconds (whichever comes first).
+          registrationStrategy: 'registerWhenStable:30000'
+        })
+      ), {
+        provide: MAT_DATE_LOCALE,
+        useValue: enUS,
+      },
+      provideAnimations()
     ]
 })
   .catch(err => console.error(err));

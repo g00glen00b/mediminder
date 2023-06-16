@@ -8,11 +8,18 @@ import { NgFor, NgIf, DatePipe } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 
 @Component({
-    selector: 'mediminder-schedule-list',
-    templateUrl: './schedule-list.component.html',
-    styleUrls: ['./schedule-list.component.scss'],
-    standalone: true,
-    imports: [MatListModule, NgFor, NgIf, EmptyStateComponent, DatePipe, ScheduleRecurrenceTypePipe]
+  selector: 'mediminder-schedule-list',
+  templateUrl: './schedule-list.component.html',
+  styleUrls: ['./schedule-list.component.scss'],
+  standalone: true,
+  imports: [
+    MatListModule,
+    NgFor,
+    NgIf,
+    EmptyStateComponent,
+    DatePipe,
+    ScheduleRecurrenceTypePipe
+  ]
 })
 export class ScheduleListComponent {
   @Input()

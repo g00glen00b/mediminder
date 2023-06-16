@@ -6,11 +6,17 @@ import { HeroTitleDirective } from '../../../shared/components/hero/hero-title.d
 import { HeroComponent } from '../../../shared/components/hero/hero.component';
 
 @Component({
-    selector: 'mediminder-tools-overview',
-    templateUrl: './tools-overview.component.html',
-    styleUrls: ['./tools-overview.component.scss'],
-    standalone: true,
-    imports: [HeroComponent, HeroTitleDirective, HeroDescriptionDirective, ContainerComponent, DoseCalculatorComponent]
+  selector: 'mediminder-tools-overview',
+  templateUrl: './tools-overview.component.html',
+  styleUrls: ['./tools-overview.component.scss'],
+  standalone: true,
+  imports: [
+    HeroComponent,
+    HeroTitleDirective,
+    HeroDescriptionDirective,
+    ContainerComponent,
+    DoseCalculatorComponent
+  ]
 })
 export class ToolsOverviewComponent {
 

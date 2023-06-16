@@ -6,11 +6,17 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-    selector: 'mediminder-sort-button',
-    templateUrl: './sort-button.component.html',
-    styleUrls: ['./sort-button.component.scss'],
-    standalone: true,
-    imports: [MatButtonModule, MatMenuModule, MatIconModule, NgIf, NgFor]
+  selector: 'mediminder-sort-button',
+  templateUrl: './sort-button.component.html',
+  styleUrls: ['./sort-button.component.scss'],
+  standalone: true,
+  imports: [
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule,
+    NgIf,
+    NgFor
+  ]
 })
 export class SortButtonComponent {
   @Input()

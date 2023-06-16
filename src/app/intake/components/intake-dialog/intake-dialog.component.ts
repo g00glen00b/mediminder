@@ -10,11 +10,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
-    selector: 'mediminder-intake-dialog',
-    templateUrl: './intake-dialog.component.html',
-    styleUrls: ['./intake-dialog.component.scss'],
-    standalone: true,
-    imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatDialogModule, MatDividerModule, MatListModule, NgIf, DatePipe, ScheduleRecurrenceTypePipe]
+  selector: 'mediminder-intake-dialog',
+  templateUrl: './intake-dialog.component.html',
+  styleUrls: ['./intake-dialog.component.scss'],
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatListModule,
+    NgIf,
+    DatePipe,
+    ScheduleRecurrenceTypePipe
+  ]
 })
 export class IntakeDialogComponent {
   constructor(

@@ -6,11 +6,15 @@ import { AlertComponent } from '../alert/alert.component';
 import { NgFor, AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'mediminder-alert-list',
-    templateUrl: './alert-list.component.html',
-    styleUrls: ['./alert-list.component.scss'],
-    standalone: true,
-    imports: [NgFor, AlertComponent, AsyncPipe]
+  selector: 'mediminder-alert-list',
+  templateUrl: './alert-list.component.html',
+  styleUrls: ['./alert-list.component.scss'],
+  standalone: true,
+  imports: [
+    NgFor,
+    AlertComponent,
+    AsyncPipe
+  ]
 })
 export class AlertListComponent implements OnInit {
   alerts$!: Observable<Alert[]>;

@@ -10,11 +10,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
-    selector: 'mediminder-schedule-dialog',
-    templateUrl: './schedule-dialog.component.html',
-    styleUrls: ['./schedule-dialog.component.scss'],
-    standalone: true,
-    imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatDialogModule, MatDividerModule, MatListModule, NgIf, DatePipe, ScheduleRecurrenceTypePipe]
+  selector: 'mediminder-schedule-dialog',
+  templateUrl: './schedule-dialog.component.html',
+  styleUrls: ['./schedule-dialog.component.scss'],
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatListModule,
+    NgIf,
+    DatePipe,
+    ScheduleRecurrenceTypePipe
+  ]
 })
 export class ScheduleDialogComponent {
   constructor(

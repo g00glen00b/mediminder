@@ -7,11 +7,17 @@ import { MatListModule } from '@angular/material/list';
 import { NgFor, NgIf, DecimalPipe } from '@angular/common';
 
 @Component({
-    selector: 'mediminder-missing-dose-list',
-    templateUrl: './missing-dose-list.component.html',
-    styleUrls: ['./missing-dose-list.component.scss'],
-    standalone: true,
-    imports: [NgFor, MatListModule, NgIf, EmptyStateComponent, DecimalPipe]
+  selector: 'mediminder-missing-dose-list',
+  templateUrl: './missing-dose-list.component.html',
+  styleUrls: ['./missing-dose-list.component.scss'],
+  standalone: true,
+  imports: [
+    NgFor,
+    MatListModule,
+    NgIf,
+    EmptyStateComponent,
+    DecimalPipe
+  ]
 })
 export class MissingDoseListComponent {
   @Input()

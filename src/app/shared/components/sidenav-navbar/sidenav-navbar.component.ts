@@ -4,11 +4,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
-    selector: 'mediminder-sidenav-navbar',
-    templateUrl: './sidenav-navbar.component.html',
-    styleUrls: ['./sidenav-navbar.component.scss'],
-    standalone: true,
-    imports: [MatToolbarModule, MatButtonModule, MatIconModule]
+  selector: 'mediminder-sidenav-navbar',
+  templateUrl: './sidenav-navbar.component.html',
+  styleUrls: ['./sidenav-navbar.component.scss'],
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule
+  ]
 })
 export class SidenavNavbarComponent {
   @Output()

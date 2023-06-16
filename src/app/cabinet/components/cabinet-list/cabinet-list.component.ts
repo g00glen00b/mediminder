@@ -7,11 +7,18 @@ import { NgFor, NgIf, DecimalPipe, DatePipe } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 
 @Component({
-    selector: 'mediminder-cabinet-list',
-    templateUrl: './cabinet-list.component.html',
-    styleUrls: ['./cabinet-list.component.scss'],
-    standalone: true,
-    imports: [MatListModule, NgFor, NgIf, EmptyStateComponent, DecimalPipe, DatePipe]
+  selector: 'mediminder-cabinet-list',
+  templateUrl: './cabinet-list.component.html',
+  styleUrls: ['./cabinet-list.component.scss'],
+  standalone: true,
+  imports: [
+    MatListModule,
+    NgFor,
+    NgIf,
+    EmptyStateComponent,
+    DecimalPipe,
+    DatePipe
+  ]
 })
 export class CabinetListComponent {
   @Input()

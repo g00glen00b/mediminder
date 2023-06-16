@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import {combineLatest, filter, map, Observable, startWith} from "rxjs";
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {combineLatest, map, Observable, startWith} from "rxjs";
 import {Medication} from "../../../medication/models/medication";
 import {MedicationService} from "../../../medication/services/medication.service";
 import {MedicationTypeService} from "../../../medication/services/medication-type.service";
@@ -8,21 +8,34 @@ import {MedicationType} from "../../../medication/models/medication-type";
 import {CreateCabinetEntry} from "../../models/create-cabinet-entry";
 import {CabinetEntry} from "../../models/cabinet-entry";
 import {ToastrService} from "ngx-toastr";
-import { MatButtonModule } from '@angular/material/button';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
-import { NgFor, NgIf, AsyncPipe } from '@angular/common';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatSelectModule} from '@angular/material/select';
+import {MatOptionModule} from '@angular/material/core';
+import {AsyncPipe, NgFor, NgIf} from '@angular/common';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
-    selector: 'mediminder-cabinet-entry-form',
-    templateUrl: './cabinet-entry-form.component.html',
-    styleUrls: ['./cabinet-entry-form.component.scss'],
-    standalone: true,
-    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, NgFor, MatOptionModule, NgIf, MatSelectModule, MatDatepickerModule, MatButtonModule, AsyncPipe]
+  selector: 'mediminder-cabinet-entry-form',
+  templateUrl: './cabinet-entry-form.component.html',
+  styleUrls: ['./cabinet-entry-form.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    NgFor,
+    MatOptionModule,
+    NgIf,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatButtonModule,
+    AsyncPipe
+  ]
 })
 export class CabinetEntryFormComponent implements OnInit, OnChanges {
   @Input()

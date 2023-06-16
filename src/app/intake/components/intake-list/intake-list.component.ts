@@ -10,11 +10,16 @@ import { NgFor, NgIf } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 
 @Component({
-    selector: 'mediminder-intake-list',
-    templateUrl: './intake-list.component.html',
-    styleUrls: ['./intake-list.component.scss'],
-    standalone: true,
-    imports: [MatListModule, NgFor, NgIf, EmptyStateComponent]
+  selector: 'mediminder-intake-list',
+  templateUrl: './intake-list.component.html',
+  styleUrls: ['./intake-list.component.scss'],
+  standalone: true,
+  imports: [
+    MatListModule,
+    NgFor,
+    NgIf,
+    EmptyStateComponent
+  ]
 })
 export class IntakeListComponent implements OnChanges {
   @Input()

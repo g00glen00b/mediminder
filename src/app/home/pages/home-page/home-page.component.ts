@@ -7,11 +7,18 @@ import { HeroTitleDirective } from '../../../shared/components/hero/hero-title.d
 import { HeroComponent } from '../../../shared/components/hero/hero.component';
 
 @Component({
-    selector: 'mediminder-home-page',
-    templateUrl: './home-page.component.html',
-    styleUrls: ['./home-page.component.scss'],
-    standalone: true,
-    imports: [HeroComponent, HeroTitleDirective, HeroDescriptionDirective, ContainerComponent, AlertListComponent, IntakeOverviewComponent]
+  selector: 'mediminder-home-page',
+  templateUrl: './home-page.component.html',
+  styleUrls: ['./home-page.component.scss'],
+  standalone: true,
+  imports: [
+    HeroComponent,
+    HeroTitleDirective,
+    HeroDescriptionDirective,
+    ContainerComponent,
+    AlertListComponent,
+    IntakeOverviewComponent
+  ]
 })
 export class HomePageComponent {
 

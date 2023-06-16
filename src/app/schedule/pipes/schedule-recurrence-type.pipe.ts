@@ -3,8 +3,8 @@ import {ScheduleRecurrenceType} from "../models/schedule-recurrence-type";
 import {RECURRENCE_TYPES, ScheduleRecurrenceTypeWrapper} from "../models/schedule-recurrence-type-wrapper";
 
 @Pipe({
-    name: 'scheduleRecurrenceType',
-    standalone: true
+  name: 'scheduleRecurrenceType',
+  standalone: true
 })
 export class ScheduleRecurrenceTypePipe implements PipeTransform {
 
