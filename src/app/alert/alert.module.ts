@@ -7,17 +7,15 @@ import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
-  declarations: [
-    AlertComponent,
-    AlertListComponent
-  ],
-  exports: [
-    AlertComponent,
-    AlertListComponent
-  ],
-  imports: [
-    CommonModule,
-    MatIconModule
-  ]
+    exports: [
+        AlertComponent,
+        AlertListComponent
+    ],
+    imports: [
+        CommonModule,
+        MatIconModule,
+        AlertComponent,
+        AlertListComponent
+    ]
 })
 export class AlertModule { }

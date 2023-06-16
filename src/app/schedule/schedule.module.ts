@@ -26,37 +26,35 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 
 
 @NgModule({
-  declarations: [
-    ScheduleOverviewPageComponent,
-    CreateSchedulePageComponent,
-    ScheduleFormComponent,
-    ScheduleListComponent,
-    ScheduleRecurrenceTypePipe,
-    EditSchedulePageComponent,
-    ScheduleDialogComponent
-  ],
-  exports: [
-    ScheduleRecurrenceTypePipe
-  ],
-  imports: [
-    CommonModule,
-    ScheduleRoutingModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    SharedModule,
-    FormsModule,
-    MatAutocompleteModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatOptionModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatCheckboxModule,
-    MatListModule,
-    MatDialogModule,
-    MatToolbarModule,
-  ]
+    exports: [
+        ScheduleRecurrenceTypePipe
+    ],
+    imports: [
+        CommonModule,
+        ScheduleRoutingModule,
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        SharedModule,
+        FormsModule,
+        MatAutocompleteModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatOptionModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatCheckboxModule,
+        MatListModule,
+        MatDialogModule,
+        MatToolbarModule,
+        ScheduleOverviewPageComponent,
+        CreateSchedulePageComponent,
+        ScheduleFormComponent,
+        ScheduleListComponent,
+        ScheduleRecurrenceTypePipe,
+        EditSchedulePageComponent,
+        ScheduleDialogComponent,
+    ]
 })
 export class ScheduleModule { }

@@ -1,10 +1,16 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {SortOption} from "../../models/sort-option";
+import { NgIf, NgFor } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'mediminder-sort-button',
-  templateUrl: './sort-button.component.html',
-  styleUrls: ['./sort-button.component.scss']
+    selector: 'mediminder-sort-button',
+    templateUrl: './sort-button.component.html',
+    styleUrls: ['./sort-button.component.scss'],
+    standalone: true,
+    imports: [MatButtonModule, MatMenuModule, MatIconModule, NgIf, NgFor]
 })
 export class SortButtonComponent {
   @Input()

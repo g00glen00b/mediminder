@@ -8,11 +8,19 @@ import {ConfirmationDialogData} from "../../../shared/models/confirmation-dialog
 import {da} from "date-fns/locale";
 import {filter, map, mergeMap, Observable} from "rxjs";
 import {CabinetEntry} from "../../models/cabinet-entry";
+import { AsyncPipe } from '@angular/common';
+import { CabinetEntryFormComponent } from '../../components/cabinet-entry-form/cabinet-entry-form.component';
+import { ContainerComponent } from '../../../shared/components/container/container.component';
+import { HeroDescriptionDirective } from '../../../shared/components/hero/hero-description.directive';
+import { HeroTitleDirective } from '../../../shared/components/hero/hero-title.directive';
+import { HeroComponent } from '../../../shared/components/hero/hero.component';
 
 @Component({
-  selector: 'mediminder-create-cabinet-entry-page',
-  templateUrl: './create-cabinet-entry-page.component.html',
-  styleUrls: ['./create-cabinet-entry-page.component.scss']
+    selector: 'mediminder-create-cabinet-entry-page',
+    templateUrl: './create-cabinet-entry-page.component.html',
+    styleUrls: ['./create-cabinet-entry-page.component.scss'],
+    standalone: true,
+    imports: [HeroComponent, HeroTitleDirective, HeroDescriptionDirective, ContainerComponent, CabinetEntryFormComponent, AsyncPipe]
 })
 export class CreateCabinetEntryPageComponent implements OnInit {
   entry$!: Observable<CabinetEntry>;

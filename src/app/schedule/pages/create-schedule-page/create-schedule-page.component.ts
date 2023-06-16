@@ -9,11 +9,19 @@ import {ScheduleService} from "../../services/schedule.service";
 import {CreateSchedule} from "../../models/create-schedule";
 import {filter, map, mergeMap, Observable} from "rxjs";
 import {Schedule} from "../../models/schedule";
+import { AsyncPipe } from '@angular/common';
+import { ScheduleFormComponent } from '../../components/schedule-form/schedule-form.component';
+import { ContainerComponent } from '../../../shared/components/container/container.component';
+import { HeroDescriptionDirective } from '../../../shared/components/hero/hero-description.directive';
+import { HeroTitleDirective } from '../../../shared/components/hero/hero-title.directive';
+import { HeroComponent } from '../../../shared/components/hero/hero.component';
 
 @Component({
-  selector: 'mediminder-create-schedule-page',
-  templateUrl: './create-schedule-page.component.html',
-  styleUrls: ['./create-schedule-page.component.scss']
+    selector: 'mediminder-create-schedule-page',
+    templateUrl: './create-schedule-page.component.html',
+    styleUrls: ['./create-schedule-page.component.scss'],
+    standalone: true,
+    imports: [HeroComponent, HeroTitleDirective, HeroDescriptionDirective, ContainerComponent, ScheduleFormComponent, AsyncPipe]
 })
 export class CreateSchedulePageComponent implements OnInit {
   schedule$!: Observable<Schedule>;

@@ -1,10 +1,17 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {addDays, isToday, subDays} from "date-fns";
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMenuModule } from '@angular/material/menu';
+import { NgIf, DatePipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'mediminder-date-paginator',
-  templateUrl: './date-paginator.component.html',
-  styleUrls: ['./date-paginator.component.scss']
+    selector: 'mediminder-date-paginator',
+    templateUrl: './date-paginator.component.html',
+    styleUrls: ['./date-paginator.component.scss'],
+    standalone: true,
+    imports: [MatButtonModule, MatIconModule, NgIf, MatMenuModule, MatDatepickerModule, DatePipe]
 })
 export class DatePaginatorComponent implements OnChanges {
   @Input()

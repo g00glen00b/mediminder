@@ -3,10 +3,20 @@ import {SortOption} from "../../../shared/models/sort-option";
 import {BehaviorSubject, map, mergeMap, Observable} from "rxjs";
 import {ConfirmationService} from "../../../shared/services/confirmation.service";
 import {ToastrService} from "ngx-toastr";
-import {Router} from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import {ConfirmationDialogData} from "../../../shared/models/confirmation-dialog-data";
 import {Schedule} from "../../models/schedule";
 import {ScheduleService} from "../../services/schedule.service";
+import { AsyncPipe } from '@angular/common';
+import { ScheduleListComponent } from '../../components/schedule-list/schedule-list.component';
+import { SortButtonComponent } from '../../../shared/components/sort-button/sort-button.component';
+import { ContainerComponent } from '../../../shared/components/container/container.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { HeroActionsDirective } from '../../../shared/components/hero/hero-actions.directive';
+import { HeroDescriptionDirective } from '../../../shared/components/hero/hero-description.directive';
+import { HeroTitleDirective } from '../../../shared/components/hero/hero-title.directive';
+import { HeroComponent } from '../../../shared/components/hero/hero.component';
 
 export const SORT_OPTIONS: SortOption[] = [
   {sort: {direction: 'asc', field: 'name'}, label: 'Name'},
@@ -17,9 +27,11 @@ export const SORT_OPTIONS: SortOption[] = [
 ];
 
 @Component({
-  selector: 'mediminder-schedule-overview-page',
-  templateUrl: './schedule-overview-page.component.html',
-  styleUrls: ['./schedule-overview-page.component.scss']
+    selector: 'mediminder-schedule-overview-page',
+    templateUrl: './schedule-overview-page.component.html',
+    styleUrls: ['./schedule-overview-page.component.scss'],
+    standalone: true,
+    imports: [HeroComponent, HeroTitleDirective, HeroDescriptionDirective, HeroActionsDirective, MatButtonModule, RouterLink, MatIconModule, ContainerComponent, SortButtonComponent, ScheduleListComponent, AsyncPipe]
 })
 export class ScheduleOverviewPageComponent {
   entries$!: Observable<Schedule[]>;

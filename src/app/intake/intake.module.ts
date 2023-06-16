@@ -16,26 +16,24 @@ import {RouterLink} from "@angular/router";
 
 
 @NgModule({
-  declarations: [
-    IntakeOverviewComponent,
-    IntakeListComponent,
-    IntakeDialogComponent
-  ],
-  exports: [
-    IntakeOverviewComponent
-  ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatIconModule,
-    MatListModule,
-    MatMenuModule,
-    MatToolbarModule,
-    MatDialogModule,
-    ScheduleModule,
-    RouterLink
-  ]
+    exports: [
+        IntakeOverviewComponent
+    ],
+    imports: [
+        CommonModule,
+        SharedModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatIconModule,
+        MatListModule,
+        MatMenuModule,
+        MatToolbarModule,
+        MatDialogModule,
+        ScheduleModule,
+        RouterLink,
+        IntakeOverviewComponent,
+        IntakeListComponent,
+        IntakeDialogComponent
+    ]
 })
 export class IntakeModule { }

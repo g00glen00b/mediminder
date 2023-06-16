@@ -3,7 +3,8 @@ import {fromEvent, map, Observable, zip} from "rxjs";
 import {SwipeGesture} from "../models/swipe-gesture";
 
 @Directive({
-  selector: '[swipeGesture]'
+    selector: '[swipeGesture]',
+    standalone: true
 })
 export class SwipeGestureDirective implements OnInit {
   @Input()

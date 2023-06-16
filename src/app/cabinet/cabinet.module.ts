@@ -25,32 +25,30 @@ import {ScheduleModule} from "../schedule/schedule.module";
 
 
 @NgModule({
-  declarations: [
-    CabinetOverviewPageComponent,
-    CabinetListComponent,
-    CreateCabinetEntryPageComponent,
-    CabinetEntryFormComponent,
-    EditCabinetEntryPageComponent,
-    CabinetEntryDialogComponent,
-  ],
-  imports: [
-    CommonModule,
-    CabinetRoutingModule,
-    SharedModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    MatListModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatAutocompleteModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatToolbarModule,
-    ScheduleModule,
-  ]
+    imports: [
+        CommonModule,
+        CabinetRoutingModule,
+        SharedModule,
+        MatCheckboxModule,
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        MatListModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatInputModule,
+        MatAutocompleteModule,
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        MatDialogModule,
+        MatToolbarModule,
+        ScheduleModule,
+        CabinetOverviewPageComponent,
+        CabinetListComponent,
+        CreateCabinetEntryPageComponent,
+        CabinetEntryFormComponent,
+        EditCabinetEntryPageComponent,
+        CabinetEntryDialogComponent,
+    ]
 })
 export class CabinetModule { }

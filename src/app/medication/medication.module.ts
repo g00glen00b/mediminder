@@ -16,23 +16,21 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 
 
 @NgModule({
-  declarations: [
-    MedicationOverviewPageComponent,
-    MedicationListComponent,
-    MedicationDialogComponent,
-  ],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    RouterLink,
-    SharedModule,
-    MedicationRoutingModule,
-    MatCheckboxModule,
-    MatListModule,
-    MatDialogModule,
-    MatToolbarModule,
-  ]
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        RouterLink,
+        SharedModule,
+        MedicationRoutingModule,
+        MatCheckboxModule,
+        MatListModule,
+        MatDialogModule,
+        MatToolbarModule,
+        MedicationOverviewPageComponent,
+        MedicationListComponent,
+        MedicationDialogComponent,
+    ]
 })
 export class MedicationModule { }

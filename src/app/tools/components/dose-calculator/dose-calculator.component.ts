@@ -4,11 +4,18 @@ import {MIDNIGHT} from "../../../shared/utils/date-fns-utils";
 import {BehaviorSubject, delay, filter, from, mergeMap, Observable, tap, toArray} from "rxjs";
 import {DoseMatch} from "../../models/dose-match";
 import {DoseCalculationService} from "../../services/dose-calculation.service";
+import { SwipeGestureDirective } from '../../../shared/directives/swipe-gesture.directive';
+import { MissingDoseListComponent } from '../missing-dose-list/missing-dose-list.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { DatePaginatorComponent } from '../../../shared/components/date-paginator/date-paginator.component';
 
 @Component({
-  selector: 'mediminder-dose-calculator',
-  templateUrl: './dose-calculator.component.html',
-  styleUrls: ['./dose-calculator.component.scss']
+    selector: 'mediminder-dose-calculator',
+    templateUrl: './dose-calculator.component.html',
+    styleUrls: ['./dose-calculator.component.scss'],
+    standalone: true,
+    imports: [DatePaginatorComponent, NgIf, MatProgressSpinnerModule, MissingDoseListComponent, SwipeGestureDirective, AsyncPipe]
 })
 export class DoseCalculatorComponent implements OnInit {
   date$$: BehaviorSubject<Date> = new BehaviorSubject<Date>(addMonths(set(new Date(), MIDNIGHT), 1));

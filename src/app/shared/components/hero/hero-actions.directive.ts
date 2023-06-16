@@ -1,7 +1,8 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: 'hero-actions'
+    selector: 'hero-actions',
+    standalone: true
 })
 export class HeroActionsDirective {
   // No behaviour

@@ -2,11 +2,16 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CabinetEntry} from "../../models/cabinet-entry";
 import {MatDialog} from "@angular/material/dialog";
 import {CabinetEntryDialogComponent} from "../cabinet-entry-dialog/cabinet-entry-dialog.component";
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
+import { NgFor, NgIf, DecimalPipe, DatePipe } from '@angular/common';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
-  selector: 'mediminder-cabinet-list',
-  templateUrl: './cabinet-list.component.html',
-  styleUrls: ['./cabinet-list.component.scss']
+    selector: 'mediminder-cabinet-list',
+    templateUrl: './cabinet-list.component.html',
+    styleUrls: ['./cabinet-list.component.scss'],
+    standalone: true,
+    imports: [MatListModule, NgFor, NgIf, EmptyStateComponent, DecimalPipe, DatePipe]
 })
 export class CabinetListComponent {
   @Input()

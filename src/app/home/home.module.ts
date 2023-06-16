@@ -12,18 +12,16 @@ import {AlertModule} from "../alert/alert.module";
 
 
 @NgModule({
-  declarations: [
-    HomePageComponent
-  ],
-  imports: [
-    CommonModule,
-    HomeRoutingModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    SharedModule,
-    IntakeModule,
-    AlertModule,
-  ]
+    imports: [
+        CommonModule,
+        HomeRoutingModule,
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        SharedModule,
+        IntakeModule,
+        AlertModule,
+        HomePageComponent,
+    ]
 })
 export class HomeModule { }

@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 
 @Component({
-  selector: 'mediminder-hero',
-  templateUrl: './hero.component.html',
-  styleUrls: ['./hero.component.scss']
+    selector: 'mediminder-hero',
+    templateUrl: './hero.component.html',
+    styleUrls: ['./hero.component.scss'],
+    standalone: true
 })
 export class HeroComponent {
 }

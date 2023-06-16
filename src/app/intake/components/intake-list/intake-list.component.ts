@@ -5,11 +5,16 @@ import {format} from "date-fns";
 import {IntakeDialogComponent} from "../intake-dialog/intake-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {compareByField} from "../../../shared/utils/compare-utils";
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
+import { NgFor, NgIf } from '@angular/common';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
-  selector: 'mediminder-intake-list',
-  templateUrl: './intake-list.component.html',
-  styleUrls: ['./intake-list.component.scss']
+    selector: 'mediminder-intake-list',
+    templateUrl: './intake-list.component.html',
+    styleUrls: ['./intake-list.component.scss'],
+    standalone: true,
+    imports: [MatListModule, NgFor, NgIf, EmptyStateComponent]
 })
 export class IntakeListComponent implements OnChanges {
   @Input()

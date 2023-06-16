@@ -8,11 +8,18 @@ import {CreateCabinetEntry} from "../../models/create-cabinet-entry";
 import {ConfirmationService} from "../../../shared/services/confirmation.service";
 import {ToastrService} from "ngx-toastr";
 import {EditCabinetEntry} from "../../models/edit-cabinet-entry";
+import { CabinetEntryFormComponent } from '../../components/cabinet-entry-form/cabinet-entry-form.component';
+import { ContainerComponent } from '../../../shared/components/container/container.component';
+import { HeroDescriptionDirective } from '../../../shared/components/hero/hero-description.directive';
+import { HeroTitleDirective } from '../../../shared/components/hero/hero-title.directive';
+import { HeroComponent } from '../../../shared/components/hero/hero.component';
 
 @Component({
-  selector: 'mediminder-edit-cabinet-entry-page',
-  templateUrl: './edit-cabinet-entry-page.component.html',
-  styleUrls: ['./edit-cabinet-entry-page.component.scss']
+    selector: 'mediminder-edit-cabinet-entry-page',
+    templateUrl: './edit-cabinet-entry-page.component.html',
+    styleUrls: ['./edit-cabinet-entry-page.component.scss'],
+    standalone: true,
+    imports: [HeroComponent, HeroTitleDirective, HeroDescriptionDirective, ContainerComponent, CabinetEntryFormComponent]
 })
 export class EditCabinetEntryPageComponent implements OnInit {
   entry: CabinetEntry | null = null;

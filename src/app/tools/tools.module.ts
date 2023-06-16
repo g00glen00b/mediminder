@@ -17,23 +17,21 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 
 @NgModule({
-  declarations: [
-    ToolsOverviewComponent,
-    DoseCalculatorComponent,
-    MissingDoseDialogComponent,
-    MissingDoseListComponent,
-  ],
-  imports: [
-    CommonModule,
-    ToolsRoutingModule,
-    SharedModule,
-    MatListModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatIconModule,
-    MatToolbarModule,
-    ScheduleModule,
-    MatProgressSpinnerModule,
-  ]
+    imports: [
+        CommonModule,
+        ToolsRoutingModule,
+        SharedModule,
+        MatListModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatIconModule,
+        MatToolbarModule,
+        ScheduleModule,
+        MatProgressSpinnerModule,
+        ToolsOverviewComponent,
+        DoseCalculatorComponent,
+        MissingDoseDialogComponent,
+        MissingDoseListComponent,
+    ]
 })
 export class ToolsModule { }

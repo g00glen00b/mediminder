@@ -12,11 +12,18 @@ import {ScheduleService} from "../../services/schedule.service";
 import {Schedule} from "../../models/schedule";
 import {CreateSchedule} from "../../models/create-schedule";
 import {EditSchedule} from "../../models/edit-schedule";
+import { ScheduleFormComponent } from '../../components/schedule-form/schedule-form.component';
+import { ContainerComponent } from '../../../shared/components/container/container.component';
+import { HeroDescriptionDirective } from '../../../shared/components/hero/hero-description.directive';
+import { HeroTitleDirective } from '../../../shared/components/hero/hero-title.directive';
+import { HeroComponent } from '../../../shared/components/hero/hero.component';
 
 @Component({
-  selector: 'mediminder-edit-schedule-page',
-  templateUrl: './edit-schedule-page.component.html',
-  styleUrls: ['./edit-schedule-page.component.scss']
+    selector: 'mediminder-edit-schedule-page',
+    templateUrl: './edit-schedule-page.component.html',
+    styleUrls: ['./edit-schedule-page.component.scss'],
+    standalone: true,
+    imports: [HeroComponent, HeroTitleDirective, HeroDescriptionDirective, ContainerComponent, ScheduleFormComponent]
 })
 export class EditSchedulePageComponent {
   entry: Schedule | null = null;

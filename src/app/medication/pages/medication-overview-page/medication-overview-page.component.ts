@@ -6,11 +6,19 @@ import {Router} from "@angular/router";
 import {ConfirmationDialogData} from "../../../shared/models/confirmation-dialog-data";
 import {Medication} from "../../models/medication";
 import {MedicationService} from "../../services/medication.service";
+import { AsyncPipe } from '@angular/common';
+import { MedicationListComponent } from '../../components/medication-list/medication-list.component';
+import { ContainerComponent } from '../../../shared/components/container/container.component';
+import { HeroDescriptionDirective } from '../../../shared/components/hero/hero-description.directive';
+import { HeroTitleDirective } from '../../../shared/components/hero/hero-title.directive';
+import { HeroComponent } from '../../../shared/components/hero/hero.component';
 
 @Component({
-  selector: 'mediminder-medication-overview-page',
-  templateUrl: './medication-overview-page.component.html',
-  styleUrls: ['./medication-overview-page.component.scss']
+    selector: 'mediminder-medication-overview-page',
+    templateUrl: './medication-overview-page.component.html',
+    styleUrls: ['./medication-overview-page.component.scss'],
+    standalone: true,
+    imports: [HeroComponent, HeroTitleDirective, HeroDescriptionDirective, ContainerComponent, MedicationListComponent, AsyncPipe]
 })
 export class MedicationOverviewPageComponent {
   medications$!: Observable<Medication[]>;
