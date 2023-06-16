@@ -1,14 +1,16 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {NavigationEnd, Router} from "@angular/router";
+import { NavigationEnd, Router, RouterOutlet } from "@angular/router";
 import {filter} from "rxjs";
-import {MatDrawer} from "@angular/material/sidenav";
+import { MatDrawer, MatSidenavModule } from "@angular/material/sidenav";
 import {MedicationTypeService} from "./medication/services/medication-type.service";
 import {ToastrService} from "ngx-toastr";
 
 @Component({
-  selector: 'mediminder-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'mediminder-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: true,
+    imports: [MatSidenavModule, RouterOutlet]
 })
 export class AppComponent implements OnInit {
   @ViewChild(MatDrawer)
