@@ -90,7 +90,7 @@ export class ScheduleService {
         take(1),
         filter(value => value),
         throwIfEmpty(),
-        map(value => void 0));
+        map(() => void 0));
   }
 
   edit(id: string, request: EditSchedule): Observable<Schedule> {

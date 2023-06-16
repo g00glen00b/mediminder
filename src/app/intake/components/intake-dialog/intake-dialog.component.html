@@ -25,7 +25,7 @@
     </mat-list-item>
     <mat-list-item>
       <div matListItemTitle>
-        <ng-container *ngIf="intake.schedule.period.endingAtInclusive == null;then emptyEnding; else ending"></ng-container>
+        <ng-container *ngIf="intake.schedule.period.endingAtInclusive == undefined;then emptyEnding; else ending"></ng-container>
         <ng-template #emptyEnding>Indefinitely</ng-template>
         <ng-template #ending>{{intake.schedule.period.endingAtInclusive | date:'fullDate'}}</ng-template>
       </div>

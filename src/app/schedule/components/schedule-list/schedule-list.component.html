@@ -12,7 +12,7 @@
     <div
       matListItemLine>
       {{schedule.period.startingAt | date:'longDate'}} -
-      <span *ngIf="schedule.period.endingAtInclusive != null">
+      <span *ngIf="schedule.period.endingAtInclusive != undefined">
         {{schedule.period.endingAtInclusive | date:'longDate'}}
       </span>
     </div>

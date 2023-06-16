@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {filter, from, groupBy, map, mergeMap, Observable, of, reduce, take, tap, throwIfEmpty, toArray} from "rxjs";
+import {filter, from, groupBy, map, mergeMap, Observable, take, tap, throwIfEmpty, toArray} from "rxjs";
 import {CabinetEntry} from "../models/cabinet-entry";
 import {Sort} from "../../shared/models/sort";
 import {Comparator, compareBy, compareByField, reversed} from "../../shared/utils/compare-utils";
@@ -112,7 +112,7 @@ export class CabinetService {
         take(1),
         filter(value => value),
         throwIfEmpty(),
-        map(value => void 0));
+        map(() => void 0));
   }
 
   edit(id: string, request: EditCabinetEntry): Observable<CabinetEntry> {
