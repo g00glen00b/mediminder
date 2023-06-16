@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {Medication} from "../../models/medication";
 import {MatDialog} from "@angular/material/dialog";
 import {MedicationDialogComponent} from "../medication-dialog/medication-dialog.component";
@@ -23,9 +23,7 @@ export class MedicationListComponent {
   medications: Medication[] = [];
   @Output()
   delete: EventEmitter<Medication> = new EventEmitter<Medication>();
-
-  constructor(private dialog: MatDialog) {
-  }
+  private dialog = inject(MatDialog);
 
   onClickItem(medication: Medication): void {
     this.dialog

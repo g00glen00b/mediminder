@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {ScheduleService} from "../../schedule/services/schedule.service";
 import {defaultIfEmpty, filter, from, groupBy, map, mergeMap, Observable, reduce, take, tap, toArray} from "rxjs";
 import {Intake} from "../models/intake";
@@ -20,11 +20,9 @@ const STORE_NAME = 'intake';
   providedIn: 'root'
 })
 export class IntakeService {
-
-  constructor(
-    private scheduleService: ScheduleService,
-    private dbService: NgxIndexedDBService,
-    private eventService: MediminderEventService) { }
+  private scheduleService = inject(ScheduleService);
+  private dbService = inject(NgxIndexedDBService);
+  private eventService = inject(MediminderEventService);
 
   findByDate(givenDate: Date): Observable<Intake[]> {
     const givenDateAtMidnight: Date = set(givenDate, MIDNIGHT);

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {CreateMedication} from "../models/create-medication";
 import {filter, from, map, mergeMap, Observable, take, tap, throwIfEmpty, toArray} from "rxjs";
 import {Medication} from "../models/medication";
@@ -16,11 +16,9 @@ const STORE_NAME = 'medication';
   providedIn: 'root'
 })
 export class MedicationService {
-
-  constructor(
-    private medicationTypeService: MedicationTypeService,
-    private eventService: MediminderEventService,
-    private dbService: NgxIndexedDBService) { }
+  private medicationTypeService = inject(MedicationTypeService);
+  private eventService = inject(MediminderEventService);
+  private dbService = inject(NgxIndexedDBService);
 
   findAll(): Observable<Medication[]> {
     return this.dbService

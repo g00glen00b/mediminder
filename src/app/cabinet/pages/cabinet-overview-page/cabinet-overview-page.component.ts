@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {CabinetService} from "../../services/cabinet.service";
 import {BehaviorSubject, map, mergeMap, Observable} from "rxjs";
 import {CabinetEntry} from "../../models/cabinet-entry";
@@ -49,13 +49,10 @@ export class CabinetOverviewPageComponent implements OnInit {
   entries$!: Observable<CabinetEntry[]>;
   activeSort$$: BehaviorSubject<SortOption> = new BehaviorSubject<SortOption>(SORT_OPTIONS[0]);
   sortOptions: SortOption[] = [...SORT_OPTIONS];
-
-  constructor(
-    private service: CabinetService,
-    private confirmationService: ConfirmationService,
-    private toastrService: ToastrService,
-    private router: Router) {
-  }
+  private service = inject(CabinetService);
+  private confirmationService = inject(ConfirmationService);
+  private toastrService = inject(ToastrService);
+  private router = inject(Router);
 
   ngOnInit() {
     this.initializeEntries();

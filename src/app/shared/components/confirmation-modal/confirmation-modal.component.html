@@ -9,7 +9,7 @@
 <div mat-dialog-actions>
   <button
     mat-button
-    (click)="onCancelClick()">
+    (click)="dialogRef.close()">
     {{data.cancelLabel}}
   </button>
   <button

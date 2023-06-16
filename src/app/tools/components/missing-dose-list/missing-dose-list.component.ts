@@ -1,10 +1,10 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {DoseMatch} from "../../models/dose-match";
 import {MissingDoseDialogComponent} from "../missing-dose-dialog/missing-dose-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
-import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
-import { MatListModule } from '@angular/material/list';
-import { NgFor, NgIf, DecimalPipe } from '@angular/common';
+import {EmptyStateComponent} from '../../../shared/components/empty-state/empty-state.component';
+import {MatListModule} from '@angular/material/list';
+import {DecimalPipe, NgFor, NgIf} from '@angular/common';
 
 @Component({
   selector: 'mediminder-missing-dose-list',
@@ -22,9 +22,7 @@ import { NgFor, NgIf, DecimalPipe } from '@angular/common';
 export class MissingDoseListComponent {
   @Input()
   missingDoses: DoseMatch[] = [];
-
-  constructor(private dialog: MatDialog) {
-  }
+  private dialog = inject(MatDialog);
 
   onMatchClick(match: DoseMatch) {
     this.dialog.open(MissingDoseDialogComponent, {data: match, height: '100vh', width: '100vw', maxWidth: '100vw', maxHeight: '100vh'});

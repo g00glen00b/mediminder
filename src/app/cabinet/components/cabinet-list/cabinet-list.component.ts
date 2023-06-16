@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {CabinetEntry} from "../../models/cabinet-entry";
 import {MatDialog} from "@angular/material/dialog";
 import {CabinetEntryDialogComponent} from "../cabinet-entry-dialog/cabinet-entry-dialog.component";
-import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
-import { NgFor, NgIf, DecimalPipe, DatePipe } from '@angular/common';
-import { MatListModule } from '@angular/material/list';
+import {EmptyStateComponent} from '../../../shared/components/empty-state/empty-state.component';
+import {DatePipe, DecimalPipe, NgFor, NgIf} from '@angular/common';
+import {MatListModule} from '@angular/material/list';
 
 @Component({
   selector: 'mediminder-cabinet-list',
@@ -31,9 +31,7 @@ export class CabinetListComponent {
   edit: EventEmitter<CabinetEntry> = new EventEmitter<CabinetEntry>();
   @Output()
   takeOne: EventEmitter<CabinetEntry> = new EventEmitter<CabinetEntry>();
-
-  constructor(private dialog: MatDialog) {
-  }
+  private dialog = inject(MatDialog);
 
   onItemClick(entry: CabinetEntry): void {
     this.dialog

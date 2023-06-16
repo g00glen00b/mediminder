@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {mergeMap, Observable} from "rxjs";
 import {ConfirmationService} from "../../../shared/services/confirmation.service";
 import {ToastrService} from "ngx-toastr";
@@ -28,12 +28,9 @@ import {HeroComponent} from '../../../shared/components/hero/hero.component';
 })
 export class MedicationOverviewPageComponent {
   medications$!: Observable<Medication[]>;
-
-  constructor(
-    private service: MedicationService,
-    private confirmationService: ConfirmationService,
-    private toastrService: ToastrService) {
-  }
+  private service = inject(MedicationService);
+  private confirmationService = inject(ConfirmationService);
+  private toastrService = inject(ToastrService);
 
   ngOnInit() {
     this.initializeMedications();

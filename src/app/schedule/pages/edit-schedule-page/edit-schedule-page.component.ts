@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {Router} from "@angular/router";
 import {ConfirmationService} from "../../../shared/services/confirmation.service";
 import {ToastrService} from "ngx-toastr";
@@ -28,13 +28,10 @@ import {HeroComponent} from '../../../shared/components/hero/hero.component';
 })
 export class EditSchedulePageComponent {
   schedule: Schedule | null = null;
-
-  constructor(
-    private service: ScheduleService,
-    private confirmationService: ConfirmationService,
-    private toastrService: ToastrService,
-    private router: Router) {
-  }
+  private service = inject(ScheduleService);
+  private confirmationService = inject(ConfirmationService);
+  private toastrService = inject(ToastrService);
+  private router = inject(Router);
 
   @Input()
   set id(id: string) {

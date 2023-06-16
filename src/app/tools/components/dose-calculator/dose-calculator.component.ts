@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {addDays, addMonths, set, subDays} from "date-fns";
 import {MIDNIGHT} from "../../../shared/utils/date-fns-utils";
 import {BehaviorSubject, delay, filter, from, mergeMap, Observable, tap, toArray} from "rxjs";
@@ -28,9 +28,7 @@ export class DoseCalculatorComponent implements OnInit {
   date$$: BehaviorSubject<Date> = new BehaviorSubject<Date>(addMonths(set(new Date(), MIDNIGHT), 1));
   doseMatches$!: Observable<DoseMatch[]>;
   loading: boolean = false;
-
-  constructor(private doseCalculationService: DoseCalculationService) {
-  }
+  private doseCalculationService = inject(DoseCalculationService);
 
   ngOnInit(): void {
     this.doseMatches$ = this.date$$

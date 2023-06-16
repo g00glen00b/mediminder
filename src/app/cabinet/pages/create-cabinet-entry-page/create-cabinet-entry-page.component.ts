@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {CabinetService} from "../../services/cabinet.service";
 import {CreateCabinetEntry} from "../../models/create-cabinet-entry";
 import {Router} from "@angular/router";
@@ -30,13 +30,10 @@ import {HeroComponent} from '../../../shared/components/hero/hero.component';
 })
 export class CreateCabinetEntryPageComponent {
   entry$!: Observable<CabinetEntry>;
-
-  constructor(
-    private service: CabinetService,
-    private router: Router,
-    private toastrService: ToastrService,
-    private confirmationService: ConfirmationService) {
-  }
+  private service = inject(CabinetService);
+  private router = inject(Router);
+  private toastrService = inject(ToastrService);
+  private confirmationService = inject(ConfirmationService);
 
   @Input()
   set id(id: string) {

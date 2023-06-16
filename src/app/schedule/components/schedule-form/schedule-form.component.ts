@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
 import {Medication} from "../../../medication/models/medication";
@@ -53,12 +53,9 @@ export class ScheduleFormComponent implements OnInit, OnChanges {
   medication$!: Observable<Medication[]>;
   unitType: string = '';
   recurrenceTypes: ScheduleRecurrenceTypeWrapper[] = [...RECURRENCE_TYPES];
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private medicationService: MedicationService,
-    private toastrService: ToastrService) {
-  }
+  private formBuilder = inject(FormBuilder);
+  private medicationService = inject(MedicationService);
+  private toastrService = inject(ToastrService);
 
   ngOnInit(): void {
     this.initializeFormGroup();

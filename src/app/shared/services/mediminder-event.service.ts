@@ -8,8 +8,6 @@ import {MediminderEvent} from "../models/mediminder-event";
 export class MediminderEventService {
   private events$$: Subject<MediminderEvent> = new Subject<MediminderEvent>();
 
-  constructor() { }
-
   publish(event: MediminderEvent): void {
     this.events$$.next(event);
   }

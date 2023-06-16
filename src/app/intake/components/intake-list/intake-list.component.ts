@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {Intake} from "../../models/intake";
 import {IntakePerTime} from "../../models/intake-per-time";
 import {format} from "date-fns";
@@ -29,9 +29,7 @@ export class IntakeListComponent implements OnChanges {
   @Output()
   openSchedule: EventEmitter<Intake> = new EventEmitter<Intake>();
   intakesPerTime: IntakePerTime[] = [];
-
-  constructor(private dialog: MatDialog) {
-  }
+  private dialog = inject(MatDialog);
 
   ngOnChanges(changes: SimpleChanges): void {
     const groups: Map<string, Intake[]> = this.intakes.reduce((entryMap, intake) => {

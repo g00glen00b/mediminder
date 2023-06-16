@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {CabinetService} from "../../cabinet/services/cabinet.service";
 import {IntakeService} from "../../intake/services/intake.service";
 import {MedicationService} from "../../medication/services/medication.service";
@@ -14,11 +14,9 @@ import {DoseMatchTuple} from "../models/dose-match-tuple";
   providedIn: 'root'
 })
 export class DoseCalculationService {
-
-  constructor(
-    private cabinetService: CabinetService,
-    private intakeService: IntakeService,
-    private medicationService: MedicationService) { }
+  private cabinetService = inject(CabinetService);
+  private intakeService = inject(IntakeService);
+  private medicationService = inject(MedicationService);
 
   findUntil(date: Date): Observable<DoseMatch[]> {
     const dateAtMidnight: Date = set(date, MIDNIGHT);

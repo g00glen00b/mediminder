@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {CabinetService} from "../../cabinet/services/cabinet.service";
 import {combineLatest, filter, from, map, mergeMap, Observable, toArray} from "rxjs";
 import {Alert} from "../models/alert";
@@ -14,10 +14,8 @@ import {DoseMatch} from "../../tools/models/dose-match";
   providedIn: 'root'
 })
 export class AlertService {
-
-  constructor(
-    private cabinetService: CabinetService,
-    private doseCalculationService: DoseCalculationService) { }
+  private cabinetService = inject(CabinetService);
+  private doseCalculationService = inject(DoseCalculationService);
 
   findAllAlerts(): Observable<Alert[]> {
     return combineLatest([

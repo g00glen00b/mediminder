@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {combineLatest, map, Observable, startWith} from "rxjs";
 import {Medication} from "../../../medication/models/medication";
@@ -53,13 +53,10 @@ export class CabinetEntryFormComponent implements OnInit, OnChanges {
   medicationTypes$!: Observable<MedicationType[]>;
   unitType: string = '';
   minimumInitialUnits: number = 0;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private medicationService: MedicationService,
-    private medicationTypeService: MedicationTypeService,
-    private toastrService: ToastrService) {
-  }
+  private formBuilder = inject(FormBuilder);
+  private medicationService = inject(MedicationService);
+  private medicationTypeService = inject(MedicationTypeService);
+  private toastrService = inject(ToastrService);
 
   ngOnInit(): void {
     this.initializeFormGroup();

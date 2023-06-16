@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {AlertService} from "../../services/alert.service";
 import {Observable} from "rxjs";
 import {Alert} from "../../models/alert";
@@ -18,9 +18,7 @@ import { NgFor, AsyncPipe } from '@angular/common';
 })
 export class AlertListComponent implements OnInit {
   alerts$!: Observable<Alert[]>;
-
-  constructor(private alertService: AlertService) {
-  }
+  private alertService = inject(AlertService);
 
   ngOnInit(): void {
     this.alerts$ = this.alertService.findAllAlerts();

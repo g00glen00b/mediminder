@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {NavigationEnd, Router, RouterOutlet} from "@angular/router";
 import {filter} from "rxjs";
 import {MatDrawer, MatSidenavModule} from "@angular/material/sidenav";
@@ -22,9 +22,7 @@ import {SidenavComponent} from "./shared/components/sidenav/sidenav.component";
 export class AppComponent implements OnInit {
   @ViewChild(MatDrawer)
   drawer!: MatDrawer;
-
-  constructor(private router: Router) {
-  }
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.router.events

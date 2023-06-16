@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {Schedule} from "../../models/schedule";
 import {MatDialog} from "@angular/material/dialog";
 import {ScheduleDialogComponent} from "../schedule-dialog/schedule-dialog.component";
-import { ScheduleRecurrenceTypePipe } from '../../pipes/schedule-recurrence-type.pipe';
-import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
-import { NgFor, NgIf, DatePipe } from '@angular/common';
-import { MatListModule } from '@angular/material/list';
+import {ScheduleRecurrenceTypePipe} from '../../pipes/schedule-recurrence-type.pipe';
+import {EmptyStateComponent} from '../../../shared/components/empty-state/empty-state.component';
+import {DatePipe, NgFor, NgIf} from '@angular/common';
+import {MatListModule} from '@angular/material/list';
 
 @Component({
   selector: 'mediminder-schedule-list',
@@ -30,9 +30,7 @@ export class ScheduleListComponent {
   edit: EventEmitter<Schedule> = new EventEmitter<Schedule>();
   @Output()
   copy: EventEmitter<Schedule> = new EventEmitter<Schedule>();
-
-  constructor(private dialog: MatDialog) {
-  }
+  private dialog = inject(MatDialog);
 
   onClickItem(schedule: Schedule) {
     this.dialog

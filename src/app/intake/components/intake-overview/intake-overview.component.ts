@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {IntakeService} from '../../services/intake.service';
 import {BehaviorSubject, mergeMap, Observable} from 'rxjs';
 import {Intake} from '../../models/intake';
 import {ToastrService} from 'ngx-toastr';
 import {Router} from "@angular/router";
 import {addDays, subDays} from "date-fns";
-import { AsyncPipe } from '@angular/common';
-import { SwipeGestureDirective } from '../../../shared/directives/swipe-gesture.directive';
-import { IntakeListComponent } from '../intake-list/intake-list.component';
-import { DatePaginatorComponent } from '../../../shared/components/date-paginator/date-paginator.component';
+import {AsyncPipe} from '@angular/common';
+import {SwipeGestureDirective} from '../../../shared/directives/swipe-gesture.directive';
+import {IntakeListComponent} from '../intake-list/intake-list.component';
+import {DatePaginatorComponent} from '../../../shared/components/date-paginator/date-paginator.component';
 
 @Component({
   selector: 'mediminder-intake-overview',
@@ -25,12 +25,9 @@ import { DatePaginatorComponent } from '../../../shared/components/date-paginato
 export class IntakeOverviewComponent implements OnInit {
   date$$: BehaviorSubject<Date> = new BehaviorSubject<Date>(new Date());
   intakes$: Observable<Intake[]> = new Observable<Intake[]>();
-
-  constructor(
-    private service: IntakeService,
-    private router: Router,
-    private toastrService: ToastrService) {
-  }
+  private service = inject(IntakeService);
+  private router = inject(Router);
+  private toastrService = inject(ToastrService);
 
   ngOnInit(): void {
     this.initializeIntakes();

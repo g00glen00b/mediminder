@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {SortOption} from "../../../shared/models/sort-option";
 import {BehaviorSubject, map, mergeMap, Observable} from "rxjs";
 import {ConfirmationService} from "../../../shared/services/confirmation.service";
@@ -49,14 +49,10 @@ export class ScheduleOverviewPageComponent {
   entries$!: Observable<Schedule[]>;
   activeSort$$: BehaviorSubject<SortOption> = new BehaviorSubject<SortOption>(SORT_OPTIONS[0]);
   sortOptions: SortOption[] = [...SORT_OPTIONS];
-  selectedEntries: Schedule[] = [];
-
-  constructor(
-    private service: ScheduleService,
-    private confirmationService: ConfirmationService,
-    private toastrService: ToastrService,
-    private router: Router) {
-  }
+  private service = inject(ScheduleService);
+  private confirmationService = inject(ConfirmationService);
+  private toastrService = inject(ToastrService);
+  private router = inject(Router);
 
   ngOnInit() {
     this.initializeEntries();
