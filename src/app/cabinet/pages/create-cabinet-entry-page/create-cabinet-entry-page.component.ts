@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {CabinetService} from "../../services/cabinet.service";
 import {CreateCabinetEntry} from "../../models/create-cabinet-entry";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {ConfirmationService} from "../../../shared/services/confirmation.service";
 import {ConfirmationDialogData} from "../../../shared/models/confirmation-dialog-data";
-import {filter, map, mergeMap, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {CabinetEntry} from "../../models/cabinet-entry";
 import {AsyncPipe} from '@angular/common';
 import {CabinetEntryFormComponent} from '../../components/cabinet-entry-form/cabinet-entry-form.component';
@@ -28,23 +28,19 @@ import {HeroComponent} from '../../../shared/components/hero/hero.component';
     AsyncPipe
   ]
 })
-export class CreateCabinetEntryPageComponent implements OnInit {
+export class CreateCabinetEntryPageComponent {
   entry$!: Observable<CabinetEntry>;
 
   constructor(
     private service: CabinetService,
-    private activatedRoute: ActivatedRoute,
     private router: Router,
     private toastrService: ToastrService,
     private confirmationService: ConfirmationService) {
   }
 
-  ngOnInit(): void {
-    this.entry$ = this.activatedRoute.paramMap
-      .pipe(
-        map(params => params.get('id')),
-        filter(id => id != null),
-        mergeMap(id => this.service.findById(id as string)));
+  @Input()
+  set id(id: string) {
+    this.entry$ = this.service.findById(id);
   }
 
   onCancel() {

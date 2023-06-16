@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {map, mergeMap} from "rxjs";
+import {Component, Input} from '@angular/core';
+import {Router} from "@angular/router";
 import {CabinetService} from "../../services/cabinet.service";
 import {CabinetEntry} from "../../models/cabinet-entry";
 import {ConfirmationDialogData} from "../../../shared/models/confirmation-dialog-data";
@@ -27,23 +26,19 @@ import {HeroComponent} from '../../../shared/components/hero/hero.component';
     CabinetEntryFormComponent
   ]
 })
-export class EditCabinetEntryPageComponent implements OnInit {
+export class EditCabinetEntryPageComponent {
   entry: CabinetEntry | null = null;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private service: CabinetService,
     private confirmationService: ConfirmationService,
     private toastrService: ToastrService,
     private router: Router) {
   }
 
-  ngOnInit(): void {
-    this.activatedRoute.paramMap
-      .pipe(
-        map(params => params.get('id')!),
-        mergeMap(id => this.service.findById(id)))
-      .subscribe(entry => this.entry = entry);
+  @Input()
+  set id(id: string) {
+    this.service.findById(id).subscribe(entry => this.entry = entry);
   }
 
   onCancel() {

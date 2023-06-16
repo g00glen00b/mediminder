@@ -1,8 +1,7 @@
-import {Component} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component, Input} from '@angular/core';
+import {Router} from "@angular/router";
 import {ConfirmationService} from "../../../shared/services/confirmation.service";
 import {ToastrService} from "ngx-toastr";
-import {map, mergeMap} from "rxjs";
 import {ConfirmationDialogData} from "../../../shared/models/confirmation-dialog-data";
 import {ScheduleService} from "../../services/schedule.service";
 import {Schedule} from "../../models/schedule";
@@ -28,22 +27,18 @@ import {HeroComponent} from '../../../shared/components/hero/hero.component';
   ]
 })
 export class EditSchedulePageComponent {
-  entry: Schedule | null = null;
+  schedule: Schedule | null = null;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private service: ScheduleService,
     private confirmationService: ConfirmationService,
     private toastrService: ToastrService,
     private router: Router) {
   }
 
-  ngOnInit(): void {
-    this.activatedRoute.paramMap
-      .pipe(
-        map(params => params.get('id')!),
-        mergeMap(id => this.service.findById(id)))
-      .subscribe(entry => this.entry = entry);
+  @Input()
+  set id(id: string) {
+    this.service.findById(id).subscribe(schedule => this.schedule = schedule);
   }
 
   onCancel() {
@@ -59,11 +54,11 @@ export class EditSchedulePageComponent {
   }
 
   onSubmit(input: CreateSchedule) {
-    if (this.entry != null) {
+    if (this.schedule != null) {
       const {dose, recurrence, description, time, period} = input;
       const request: EditSchedule = {dose, recurrence, description, time, period};
       this.service
-        .edit(this.entry.id, request)
+        .edit(this.schedule.id, request)
         .subscribe({
           next: (result) => {
             this.toastrService.success(`Schedule for ${result.medication.name} was successfully updated`, `Medication added to cabinet`);

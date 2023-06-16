@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component, Input} from '@angular/core';
+import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {ConfirmationService} from "../../../shared/services/confirmation.service";
 import {ConfirmationDialogData} from "../../../shared/models/confirmation-dialog-data";
 import {ScheduleService} from "../../services/schedule.service";
 import {CreateSchedule} from "../../models/create-schedule";
-import {filter, map, mergeMap, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {Schedule} from "../../models/schedule";
 import {AsyncPipe} from '@angular/common';
 import {ScheduleFormComponent} from '../../components/schedule-form/schedule-form.component';
@@ -28,23 +28,19 @@ import {HeroComponent} from '../../../shared/components/hero/hero.component';
     AsyncPipe
   ]
 })
-export class CreateSchedulePageComponent implements OnInit {
+export class CreateSchedulePageComponent {
   schedule$!: Observable<Schedule>;
 
   constructor(
     private service: ScheduleService,
-    private activatedRoute: ActivatedRoute,
     private router: Router,
     private toastrService: ToastrService,
     private confirmationService: ConfirmationService) {
   }
 
-  ngOnInit(): void {
-    this.schedule$ = this.activatedRoute.paramMap
-      .pipe(
-        map(params => params.get('id')),
-        filter(id => id != null),
-        mergeMap(id => this.service.findById(id as string)));
+  @Input()
+  set id(id: string) {
+    this.schedule$ = this.service.findById(id);
   }
 
   onCancel() {

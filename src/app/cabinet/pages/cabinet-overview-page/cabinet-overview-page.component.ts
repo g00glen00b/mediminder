@@ -6,17 +6,17 @@ import {SortOption} from "../../../shared/models/sort-option";
 import {ConfirmationService} from "../../../shared/services/confirmation.service";
 import {ConfirmationDialogData} from "../../../shared/models/confirmation-dialog-data";
 import {ToastrService} from "ngx-toastr";
-import { Router, RouterLink } from "@angular/router";
-import { AsyncPipe } from '@angular/common';
-import { CabinetListComponent } from '../../components/cabinet-list/cabinet-list.component';
-import { SortButtonComponent } from '../../../shared/components/sort-button/sort-button.component';
-import { ContainerComponent } from '../../../shared/components/container/container.component';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { HeroActionsDirective } from '../../../shared/components/hero/hero-actions.directive';
-import { HeroDescriptionDirective } from '../../../shared/components/hero/hero-description.directive';
-import { HeroTitleDirective } from '../../../shared/components/hero/hero-title.directive';
-import { HeroComponent } from '../../../shared/components/hero/hero.component';
+import {Router, RouterLink} from "@angular/router";
+import {AsyncPipe} from '@angular/common';
+import {CabinetListComponent} from '../../components/cabinet-list/cabinet-list.component';
+import {SortButtonComponent} from '../../../shared/components/sort-button/sort-button.component';
+import {ContainerComponent} from '../../../shared/components/container/container.component';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {HeroActionsDirective} from '../../../shared/components/hero/hero-actions.directive';
+import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
+import {HeroTitleDirective} from '../../../shared/components/hero/hero-title.directive';
+import {HeroComponent} from '../../../shared/components/hero/hero.component';
 
 export const SORT_OPTIONS: SortOption[] = [
   {sort: {direction: 'asc', field: 'name'}, label: 'Name'},
@@ -42,7 +42,7 @@ export const SORT_OPTIONS: SortOption[] = [
     ContainerComponent,
     SortButtonComponent,
     CabinetListComponent,
-    AsyncPipe
+    AsyncPipe,
   ]
 })
 export class CabinetOverviewPageComponent implements OnInit {

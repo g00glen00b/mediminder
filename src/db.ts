@@ -1,7 +1,6 @@
-import {NgModule} from "@angular/core";
-import {DBConfig, NgxIndexedDBModule} from "ngx-indexed-db";
+import {DBConfig} from "ngx-indexed-db";
 
-const dbConfig: DBConfig = {
+export const dbConfig: DBConfig = {
   name: 'mediminderDB',
   version: 3,
   objectStoresMeta: [{
@@ -49,11 +48,3 @@ const dbConfig: DBConfig = {
     ]
   }],
 };
-
-@NgModule({
-  imports: [NgxIndexedDBModule.forRoot(dbConfig)],
-  exports: [NgxIndexedDBModule]
-})
-export class AppDbModule {
-
-}
