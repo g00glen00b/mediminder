@@ -5,7 +5,7 @@ import {ScheduleRoutingModule} from "./schedule-routing.module";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
-import {SharedModule} from "../shared/shared.module";
+
 import {CreateSchedulePageComponent} from './pages/create-schedule-page/create-schedule-page.component';
 import {ScheduleFormComponent} from './components/schedule-form/schedule-form.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -30,31 +30,30 @@ import {MatToolbarModule} from "@angular/material/toolbar";
         ScheduleRecurrenceTypePipe
     ],
     imports: [
-        CommonModule,
-        ScheduleRoutingModule,
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        SharedModule,
-        FormsModule,
-        MatAutocompleteModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatOptionModule,
-        MatSelectModule,
-        ReactiveFormsModule,
-        MatCheckboxModule,
-        MatListModule,
-        MatDialogModule,
-        MatToolbarModule,
-        ScheduleOverviewPageComponent,
-        CreateSchedulePageComponent,
-        ScheduleFormComponent,
-        ScheduleListComponent,
-        ScheduleRecurrenceTypePipe,
-        EditSchedulePageComponent,
-        ScheduleDialogComponent,
-    ]
+    CommonModule,
+    ScheduleRoutingModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    FormsModule,
+    MatAutocompleteModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatOptionModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatCheckboxModule,
+    MatListModule,
+    MatDialogModule,
+    MatToolbarModule,
+    ScheduleOverviewPageComponent,
+    CreateSchedulePageComponent,
+    ScheduleFormComponent,
+    ScheduleListComponent,
+    ScheduleRecurrenceTypePipe,
+    EditSchedulePageComponent,
+    ScheduleDialogComponent,
+]
 })
 export class ScheduleModule { }

@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {IntakeOverviewComponent} from './components/intake-overview/intake-overview.component';
 import {IntakeListComponent} from './components/intake-list/intake-list.component';
-import {SharedModule} from "../shared/shared.module";
+
 import {MatButtonModule} from "@angular/material/button";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatIconModule} from "@angular/material/icon";
@@ -20,20 +20,19 @@ import {RouterLink} from "@angular/router";
         IntakeOverviewComponent
     ],
     imports: [
-        CommonModule,
-        SharedModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatIconModule,
-        MatListModule,
-        MatMenuModule,
-        MatToolbarModule,
-        MatDialogModule,
-        ScheduleModule,
-        RouterLink,
-        IntakeOverviewComponent,
-        IntakeListComponent,
-        IntakeDialogComponent
-    ]
+    CommonModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatListModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatDialogModule,
+    ScheduleModule,
+    RouterLink,
+    IntakeOverviewComponent,
+    IntakeListComponent,
+    IntakeDialogComponent
+]
 })
 export class IntakeModule { }

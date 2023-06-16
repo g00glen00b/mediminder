@@ -5,7 +5,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
 import {RouterLink} from "@angular/router";
-import {SharedModule} from "../shared/shared.module";
+
 import {MedicationRoutingModule} from "./medication-routing.module";
 import {MedicationListComponent} from './components/medication-list/medication-list.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
@@ -17,20 +17,19 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 
 @NgModule({
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        RouterLink,
-        SharedModule,
-        MedicationRoutingModule,
-        MatCheckboxModule,
-        MatListModule,
-        MatDialogModule,
-        MatToolbarModule,
-        MedicationOverviewPageComponent,
-        MedicationListComponent,
-        MedicationDialogComponent,
-    ]
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    RouterLink,
+    MedicationRoutingModule,
+    MatCheckboxModule,
+    MatListModule,
+    MatDialogModule,
+    MatToolbarModule,
+    MedicationOverviewPageComponent,
+    MedicationListComponent,
+    MedicationDialogComponent,
+]
 })
 export class MedicationModule { }

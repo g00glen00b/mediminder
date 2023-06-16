@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {CabinetOverviewPageComponent} from './pages/cabinet-overview-page/cabinet-overview-page.component';
 import {CabinetRoutingModule} from "./cabinet-routing.module";
-import {SharedModule} from "../shared/shared.module";
+
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
@@ -26,29 +26,28 @@ import {ScheduleModule} from "../schedule/schedule.module";
 
 @NgModule({
     imports: [
-        CommonModule,
-        CabinetRoutingModule,
-        SharedModule,
-        MatCheckboxModule,
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        MatListModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatInputModule,
-        MatAutocompleteModule,
-        ReactiveFormsModule,
-        MatDatepickerModule,
-        MatDialogModule,
-        MatToolbarModule,
-        ScheduleModule,
-        CabinetOverviewPageComponent,
-        CabinetListComponent,
-        CreateCabinetEntryPageComponent,
-        CabinetEntryFormComponent,
-        EditCabinetEntryPageComponent,
-        CabinetEntryDialogComponent,
-    ]
+    CommonModule,
+    CabinetRoutingModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    MatListModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatToolbarModule,
+    ScheduleModule,
+    CabinetOverviewPageComponent,
+    CabinetListComponent,
+    CreateCabinetEntryPageComponent,
+    CabinetEntryFormComponent,
+    EditCabinetEntryPageComponent,
+    CabinetEntryDialogComponent,
+]
 })
 export class CabinetModule { }

@@ -5,23 +5,21 @@ import {HomeRoutingModule} from "./home-routing.module";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
-import {SharedModule} from "../shared/shared.module";
+
 import {IntakeModule} from "../intake/intake.module";
-import {AlertModule} from "../alert/alert.module";
+
 
 
 
 @NgModule({
     imports: [
-        CommonModule,
-        HomeRoutingModule,
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        SharedModule,
-        IntakeModule,
-        AlertModule,
-        HomePageComponent,
-    ]
+    CommonModule,
+    HomeRoutingModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    IntakeModule,
+    HomePageComponent,
+]
 })
 export class HomeModule { }

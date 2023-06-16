@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatToolbarModule} from "@angular/material/toolbar";
-import {SharedModule} from "./shared/shared.module";
+
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatListModule} from "@angular/material/list";
@@ -28,7 +28,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AppDbModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    SharedModule,
     MatSidenavModule,
     MatMenuModule,
     MatListModule,
@@ -36,17 +35,17 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     MatIconModule,
     MatDateFnsModule,
     ToastrModule.forRoot({
-      timeOut: 5000,
-      positionClass: 'toast-bottom-full-width',
-      preventDuplicates: true,
+        timeOut: 5000,
+        positionClass: 'toast-bottom-full-width',
+        preventDuplicates: true,
     }),
     ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
+        enabled: !isDevMode(),
+        // Register the ServiceWorker as soon as the application is stable
+        // or after 30 seconds (whichever comes first).
+        registrationStrategy: 'registerWhenStable:30000'
     }),
-  ],
+],
   providers: [{
     provide: MAT_DATE_LOCALE,
     useValue: enUS,
