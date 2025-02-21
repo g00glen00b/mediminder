@@ -1,13 +1,16 @@
-<form [formGroup]="form" (submit)="submit()">
+<form (submit)="submit()" #form="ngForm">
   <mat-form-field appearance="fill">
     <mat-label>Name</mat-label>
     <input
       matInput
       type="text"
-      placeholder="Albert Einstein"
-      formControlName="name" />
+      name="name"
+      required
+      maxlength="128"
+      [(ngModel)]="name"
+      placeholder="Albert Einstein" />
     <mat-hint>Enter your name or nickname</mat-hint>
-    @if (form.get('name')!.errors?.['required']) {
+    @if (isNameEmpty()) {
       <mat-error>
         Please enter your name
       </mat-error>
@@ -19,7 +22,9 @@
       type="text"
       placeholder="UTC"
       matInput
-      formControlName="timezone"
+      name="timezone"
+      maxlength="64"
+      [(ngModel)]="timezone"
       [matAutocomplete]="timezoneAutocomplete">
     <mat-autocomplete
       autoActiveFirstOption
@@ -29,13 +34,18 @@
       }
     </mat-autocomplete>
     <mat-hint>Enter the timezone you live in</mat-hint>
+    @if (isTimezoneNotFromList()) {
+      <mat-error>
+        Please select a valid timezone from the list
+      </mat-error>
+    }
   </mat-form-field>
   <div class="actions">
     <button
+      [disabled]="form.invalid || isTimezoneNotFromList()"
       mat-flat-button
-      [disabled]="form.invalid"
       color="primary">
-      {{okLabel}}
+      {{okLabel()}}
     </button>
   </div>
 </form>
