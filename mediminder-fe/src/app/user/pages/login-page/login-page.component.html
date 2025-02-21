@@ -1,0 +1,79 @@
+<mediminder-central-card>
+  <form [formGroup]="form" (submit)="submit()">
+    <h1>Sign in to your account</h1>
+    @if (error != undefined) {
+      <mediminder-alert type="error">
+        @if (error.type == 'https://mediminder/authentication/disabled') {
+          <div>
+            <p>Your account isn't verified yet. Please check your inbox and confirm your e-mail.</p>
+            <button mat-button (click)="resetVerification()">Re-send e-mail</button>
+          </div>
+        }
+        @else {
+          <p>{{error.detail}}</p>
+        }
+      </mediminder-alert>
+    }
+    @if (successVerification) {
+      <mediminder-alert type="success">
+        Verification e-mail was resent. Please check your e-mail to verify your account.
+      </mediminder-alert>
+    }
+    <mat-form-field appearance="fill">
+      <mat-label>E-mail</mat-label>
+      <input
+        matInput
+        required
+        type="email"
+        placeholder="me@example.org"
+        formControlName="email" />
+      <mat-hint>Enter the same e-mail you used during registration</mat-hint>
+      @if (form.get('email')!.errors?.['required']) {
+        <mat-error>
+          Please enter a valid e-mail address
+        </mat-error>
+      }
+      @if (form.get('email')!.errors?.['maxlength']) {
+        <mat-error>
+          We don't allow e-mail addresses longer than 128 characters
+        </mat-error>
+      }
+      @if (form.get('email')!.errors?.['email']) {
+        <mat-error>
+          Please enter a valid e-mail address
+        </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        required
+        type="password"
+        placeholder="********"
+        formControlName="password" />
+      <mat-hint>Enter your password</mat-hint>
+      @if (form.get('password')!.errors?.['required']) {
+        <mat-error>
+          Please enter your password
+        </mat-error>
+      }
+    </mat-form-field>
+    <button
+      mat-flat-button
+      [disabled]="form.invalid"
+      color="primary">
+      Log in
+    </button>
+    <a
+      mat-button
+      routerLink="/user/register">
+      I don't have an account
+    </a>
+    <a
+      mat-button
+      routerLink="/user/password-reset">
+      I forgot my password
+    </a>
+  </form>
+</mediminder-central-card>

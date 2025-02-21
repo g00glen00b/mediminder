@@ -1,0 +1,16 @@
+<div class="picker">
+  @for (color of colors; track color.color) {
+    <div class="ripple" matRipple [matRippleTrigger]="trigger"></div>
+    <input
+      id="color-{{color.color}}"
+      name="color"
+      type="radio"
+      title="{{color.name}}"
+      #trigger
+      [value]="color.color"
+      [disabled]="disabled"
+      [checked]="color.color == value"
+      (change)="colorChange.emit(color.color)"/>
+    <label for="color-{{color.color}}">{{color.name}}</label>
+  }
+</div>

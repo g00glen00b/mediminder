@@ -1,0 +1,125 @@
+<mediminder-central-card>
+  <form [formGroup]="form" (submit)="submit()">
+    <h1>Create an account</h1>
+    @if (error != undefined) {
+      <mediminder-alert type="error">
+        {{error.detail}}
+      </mediminder-alert>
+    }
+    @if (success) {
+      <mediminder-alert type="success">
+        Your account was successfully created. Please check your e-mail to verify your account.
+        <button mat-button (click)="resetVerification()">Re-send e-mail</button>
+      </mediminder-alert>
+    }
+    @if (successVerification) {
+      <mediminder-alert type="success">
+        Verification e-mail was resent. Please check your e-mail to verify your account.
+      </mediminder-alert>
+    }
+    <mat-form-field appearance="fill">
+      <mat-label>E-mail</mat-label>
+      <input
+        matInput
+        required
+        type="email"
+        placeholder="me@example.org"
+        formControlName="email" />
+      <mat-hint>Enter your e-mail address</mat-hint>
+      @if (form.get('email')!.errors?.['required']) {
+        <mat-error>
+          Please enter a valid e-mail address
+        </mat-error>
+      }
+      @if (form.get('email')!.errors?.['maxlength']) {
+        <mat-error>
+          We don't allow e-mail addresses longer than 128 characters
+        </mat-error>
+      }
+      @if (form.get('email')!.errors?.['email']) {
+        <mat-error>
+          Please enter a valid e-mail address
+        </mat-error>
+      }
+    </mat-form-field>
+    <ng-container formGroupName="passwords">
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          required
+          type="password"
+          placeholder="********"
+          formControlName="password" />
+        <mat-hint>Enter your chosen password</mat-hint>
+        @if (form.get('passwords')!.get('password')!.errors?.['required']) {
+          <mat-error>
+            Please enter your password
+          </mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Repeat password</mat-label>
+        <input
+          matInput
+          required
+          type="password"
+          placeholder="********"
+          formControlName="repeatPassword" />
+        <mat-hint>Enter the same password again</mat-hint>
+        @if (form.get('passwords')!.get('repeatPassword')!.errors?.['required']) {
+          <mat-error>
+            Please enter your password again
+          </mat-error>
+        }
+      </mat-form-field>
+      @if (form.get('passwords')!.errors?.['samePassword']) {
+        <mat-error>
+          The passwords do not match
+        </mat-error>
+      }
+    </ng-container>
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Albert Einstein"
+        formControlName="name" />
+      <mat-hint>Enter your name or nickname</mat-hint>
+      @if (form.get('name')!.errors?.['required']) {
+        <mat-error>
+          Please enter your name
+        </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Timezone</mat-label>
+      <input
+        type="text"
+        placeholder="UTC"
+        matInput
+        formControlName="timezone"
+        [matAutocomplete]="timezoneAutocomplete">
+      <mat-autocomplete
+        autoActiveFirstOption
+        #timezoneAutocomplete="matAutocomplete">
+        @for (timezone of timezones(); track timezone) {
+          <mat-option [value]="timezone">{{timezone}}</mat-option>
+        }
+      </mat-autocomplete>
+      <mat-hint>Enter the timezone you live in</mat-hint>
+    </mat-form-field>
+    <button
+      mat-flat-button
+      [disabled]="form.invalid"
+      color="primary">
+      Create account
+    </button>
+    <a
+      mat-button
+      routerLink="/user/login">
+      I already have an account
+    </a>
+  </form>
+</mediminder-central-card>

@@ -1,0 +1,18 @@
+<mediminder-hero>
+  <hero-title>Create a cabinet entry</hero-title>
+  <hero-description>Add the information of the medication that is available in your cabinet</hero-description>
+</mediminder-hero>
+<mediminder-container>
+  @if (error != undefined) {
+    <mediminder-alert type="error">
+      {{error.detail}}
+    </mediminder-alert>
+  }
+  <mediminder-cabinet-entry-form
+    [cabinetEntry]="originalCabinetEntry"
+    [disableBasicFields]="false"
+    okLabel="Add"
+    (onCancel)="cancel()"
+    (onSubmit)="submit($event)">
+  </mediminder-cabinet-entry-form>
+</mediminder-container>

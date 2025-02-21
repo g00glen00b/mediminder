@@ -1,0 +1,23 @@
+<mediminder-hero>
+  <hero-title>Planner</hero-title>
+  <hero-description>Plan how much medication you require until certain date.</hero-description>
+</mediminder-hero>
+<mediminder-container>
+  <mediminder-date-paginator
+    [date]="date()"
+    [minDate]="minDate"
+    (select)="date.set($event)">
+  </mediminder-date-paginator>
+  <mediminder-planner-list
+    [plans]="plans().content">
+  </mediminder-planner-list>
+  @if (!plans().empty) {
+    <mat-paginator
+      [length]="plans().totalElements"
+      [pageSize]="plans().pageable.pageSize"
+      [showFirstLastButtons]="true"
+      [pageSizeOptions]="[5, 10, 20, 50]"
+      (page)="onPageChange($event)">
+    </mat-paginator>
+  }
+</mediminder-container>

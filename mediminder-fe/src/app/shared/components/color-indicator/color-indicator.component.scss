@@ -1,0 +1,50 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+span {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  border-radius: 50%;
+  border: solid 1px mat.m2-get-contrast-color-from-palette(theme.$mediminder-accent, 400);
+}
+
+.RED {
+  background-color: red;
+}
+
+.ORANGE {
+  background-color: orange;
+}
+
+.YELLOW {
+  background-color: yellow;
+}
+
+.GREEN {
+  background-color: green;
+}
+
+.BLUE {
+  background-color: blue;
+}
+
+.INDIGO {
+  background-color: indigo;
+}
+
+.VIOLET {
+  background-color: violet;
+}
+
+.BLACK {
+  background-color: black;
+}
+
+.GRAY {
+  background-color: gray;
+}
+
+.WHITE {
+  background-color: white;
+}

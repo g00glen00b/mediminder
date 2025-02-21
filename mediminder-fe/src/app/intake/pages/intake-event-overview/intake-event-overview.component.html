@@ -1,0 +1,21 @@
+<mediminder-date-paginator
+  [date]="targetDate()"
+  (select)="targetDate.set($event)">
+</mediminder-date-paginator>
+@if (events().length > 0) {
+  <mediminder-intake-event-list
+    swipeGesture
+    swipeTarget="document"
+    (swipeLeft)="onSwipeLeft()"
+    (swipeRight)="onSwipeRight()"
+    [events]="events()"
+    (complete)="complete($event)"
+    (delete)="delete($event)">
+  </mediminder-intake-event-list>
+}
+@else {
+  <mediminder-empty-state
+    icon="done"
+    title="All done, you have no medication to take this day!">
+  </mediminder-empty-state>
+}

@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+@use 'theme' as theme;
+@use 'ngx-toastr';
+@use 'material-symbols/outlined';
+@use 'roboto-fontface/css/roboto/roboto-fontface';
+
+
+@include mat.elevation-classes();
+@include mat.app-background();
+@include mat.all-component-themes(theme.$mediminder-theme);
+@include mat.typography-hierarchy(theme.$mediminder-typography);
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

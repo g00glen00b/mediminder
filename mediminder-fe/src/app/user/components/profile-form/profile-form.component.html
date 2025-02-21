@@ -1,0 +1,41 @@
+<form [formGroup]="form" (submit)="submit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="Albert Einstein"
+      formControlName="name" />
+    <mat-hint>Enter your name or nickname</mat-hint>
+    @if (form.get('name')!.errors?.['required']) {
+      <mat-error>
+        Please enter your name
+      </mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Timezone</mat-label>
+    <input
+      type="text"
+      placeholder="UTC"
+      matInput
+      formControlName="timezone"
+      [matAutocomplete]="timezoneAutocomplete">
+    <mat-autocomplete
+      autoActiveFirstOption
+      #timezoneAutocomplete="matAutocomplete">
+      @for (timezone of timezones(); track timezone) {
+        <mat-option [value]="timezone">{{timezone}}</mat-option>
+      }
+    </mat-autocomplete>
+    <mat-hint>Enter the timezone you live in</mat-hint>
+  </mat-form-field>
+  <div class="actions">
+    <button
+      mat-flat-button
+      [disabled]="form.invalid"
+      color="primary">
+      {{okLabel}}
+    </button>
+  </div>
+</form>

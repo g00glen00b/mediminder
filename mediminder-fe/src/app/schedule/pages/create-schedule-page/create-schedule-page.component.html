@@ -1,0 +1,18 @@
+<mediminder-hero>
+  <hero-title>Create a schedule</hero-title>
+  <hero-description>Create a recurring schedule for when you need to take your medication</hero-description>
+</mediminder-hero>
+<mediminder-container>
+  @if (error != undefined) {
+    <mediminder-alert type="error">
+      {{error.detail}}
+    </mediminder-alert>
+  }
+  <mediminder-schedule-form
+    [schedule]="originalSchedule"
+    [disableBasicFields]="false"
+    okLabel="Add"
+    (onCancel)="cancel()"
+    (onSubmit)="submit($event)">
+  </mediminder-schedule-form>
+</mediminder-container>

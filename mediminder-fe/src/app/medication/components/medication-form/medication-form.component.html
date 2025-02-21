@@ -1,0 +1,76 @@
+<form [formGroup]="form" (submit)="submit()">
+  <h2>General</h2>
+  <div class="grid">
+    <mat-form-field appearance="fill" id="name">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        required
+        type="text"
+        formControlName="name" />
+    </mat-form-field>
+    <mat-form-field appearance="fill" id="medicationType">
+      <mat-label>Medication type</mat-label>
+      <mat-select formControlName="medicationType" required>
+        @for (type of medicationTypes().content; track type.id) {
+          <mat-option [value]="type.id">{{type.name}}</mat-option>
+        }
+      </mat-select>
+      <mat-hint>Select the type of medication from the list</mat-hint>
+      @if (form.get('medicationType')!.errors?.['required']) {
+        <mat-error>
+          Please select a valid medication type
+        </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="fill" id="administrationType">
+      <mat-label>Administration type</mat-label>
+      <mat-select formControlName="administrationType" required>
+        @for (type of administrationTypes.content; track type.id) {
+          <mat-option [value]="type.id">{{type.name}}</mat-option>
+        }
+      </mat-select>
+      <mat-hint>Select the type of administration from the list</mat-hint>
+      @if (form.get('administrationType')!.errors?.['required']) {
+        <mat-error>
+          Please select a valid administration type
+        </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="fill" id="dosesPerPackage">
+      <mat-label>Doses per package</mat-label>
+      <input
+        type="number"
+        matInput
+        required
+        min="0"
+        formControlName="dosesPerPackage" />
+    </mat-form-field>
+    <mat-form-field appearance="fill" id="doseType">
+      <mat-label>Dose type</mat-label>
+      <mat-select formControlName="doseType" required>
+        @for (type of doseTypes.content; track type.id) {
+        <mat-option [value]="type.id">{{type.name}}</mat-option>
+        }
+      </mat-select>
+      <mat-hint>Select the type of dose from the list</mat-hint>
+      @if (form.get('doseType')!.errors?.['required']) {
+        <mat-error>
+          Please select a valid dose type
+        </mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <h2>Color</h2>
+  <mediminder-color-picker
+    [value]="form.get('color')!.value!"
+    [disabled]="form.get('color')!.disabled"
+    (colorChange)="form.get('color')!.setValue($event)">
+  </mediminder-color-picker>
+  <button mat-flat-button color="accent">
+    {{okLabel}}
+  </button>
+  <button mat-button type="button" (click)="onCancel.emit()">
+    Cancel
+  </button>
+</form>

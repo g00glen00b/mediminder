@@ -1,0 +1,64 @@
+<form [formGroup]="form" (submit)="submit()">
+  <div class="grid">
+    <mat-form-field appearance="fill" id="medication">
+      <mat-label>Medication</mat-label>
+      <input
+        matInput
+        required
+        type="text"
+        formControlName="medication"
+        [matAutocomplete]="medicationAutocomplete" />
+      @if (!disableBasicFields) {
+        <a
+          mat-button
+          matSuffix
+          routerLink="/medication/create">
+          Create
+        </a>
+      }
+      <mat-autocomplete
+        requireSelection
+        #medicationAutocomplete="matAutocomplete"
+        [displayWith]="getMedicationLabel">
+        @for (medication of medications.content; track medication.id) {
+          <mat-option [value]="medication">{{medication.name}}</mat-option>
+        }
+      </mat-autocomplete>
+      <mat-hint>Enter the name of the medication</mat-hint>
+      @if (form.get('medication')!.errors?.['required']) {
+        <mat-error>
+          Please enter a valid medication name
+        </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="fill" id="remainingDoses">
+      <mat-label>Remaining doses</mat-label>
+      <input
+        type="number"
+        matInput
+        required
+        min="0"
+        formControlName="remainingDoses" />
+      <span matTextSuffix>{{form.get('medication')!.value?.doseType?.name || 'doses'}}</span>
+    </mat-form-field>
+    <mat-form-field appearance="fill" id="expiryDate">
+      <mat-label>Expiry date</mat-label>
+      <input
+        matInput
+        required
+        formControlName="expiryDate"
+        [matDatepicker]="expiryDatePicker" />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="expiryDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #expiryDatePicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="actions">
+    <button mat-flat-button color="accent">
+      {{okLabel}}
+    </button>
+    <button mat-button type="button" (click)="onCancel.emit()">
+      Cancel
+    </button>
+  </div>
+</form>

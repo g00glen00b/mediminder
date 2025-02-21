@@ -1,0 +1,22 @@
+<ng-container>
+  @for (notification of notifications().content; track notification.id) {
+    @if (notification.type == 'INFO') {
+      <mediminder-alert
+        type="info"
+        [title]="notification.title"
+        [closeable]="true"
+        (onClose)="delete(notification)">
+        {{notification.message}}
+      </mediminder-alert>
+    }
+    @else if (notification.type == 'WARNING') {
+      <mediminder-alert
+        type="warning"
+        [title]="notification.title"
+        [closeable]="true"
+        (onClose)="delete(notification)">
+        {{notification.message}}
+      </mediminder-alert>
+    }
+  }
+</ng-container>

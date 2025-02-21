@@ -1,0 +1,30 @@
+mat-form-field {
+  width: 100%;
+}
+
+.actions button {
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+@media only screen and (min-width: 600px) {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, auto);
+    grid-gap: 1em;
+  }
+
+  #medication {
+    grid-column: 1 / 4;
+  }
+
+  #description {
+    grid-column: 1 / 4;
+  }
+
+  .actions button {
+    margin-right: 1em;
+    width: inherit;
+  }
+}

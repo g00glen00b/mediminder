@@ -1,0 +1,16 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: mat.m2-get-color-from-palette(theme.$mediminder-accent, 200);
+}
+
+.container > mat-card {
+  width: 400px;
+  padding: 1em;
+}

@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+<p>Welcome <span th:text="${name == null ? 'new user' : name}"></span> to Mediminder!</p>
+<p>Before you can use the application, you first need to verify your account by clicking the following link:</p>
+<p><a th:href="${applicationUrl}" th:text="${applicationUrl}"></a></p>
+<p>Be aware, this link is valid for only 24 hours.</p>
+</body>
+</html>

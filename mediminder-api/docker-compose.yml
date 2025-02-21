@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: mediminder
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: dbpass
+    ports:
+      - 5432:5432
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - 1025:1025
+      - 8025:8025

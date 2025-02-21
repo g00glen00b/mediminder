@@ -1,0 +1,44 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+mat-card > mat-expansion-panel {
+  box-shadow: none;
+  background: transparent;
+}
+
+mat-card.taken {
+  background-color: mat.m2-get-color-from-palette(mat.$m2-gray-palette, 50);
+}
+
+mat-card > mat-expansion-panel mat-expansion-panel-header mat-icon {
+  margin-left: auto;
+  color: mat.m2-get-color-from-palette(theme.$mediminder-success, 900);
+}
+
+mat-card {
+  margin-bottom: 1em;
+}
+
+mat-panel-description > .text span + span::before {
+  content: '/';
+  display: inline-block;
+  margin: 0 0.3em;
+}
+
+mat-panel-description .text {
+  display: none;
+}
+
+mat-panel-title {
+  flex-grow: 5;
+}
+
+@media only screen and (min-width: 600px) {
+  mat-panel-description .text {
+    display: inherit;
+  }
+
+  mat-panel-title {
+    flex-grow: 1;
+  }
+}

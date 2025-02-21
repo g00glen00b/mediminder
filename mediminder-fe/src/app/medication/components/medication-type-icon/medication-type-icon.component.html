@@ -1,0 +1,8 @@
+<ng-container [ngSwitch]="medicationType.id">
+  <mat-icon svgIcon="contraceptives-implant" *ngSwitchCase="'IMPLANT'" />
+  <mat-icon svgIcon="medications-pills-2" *ngSwitchCase="'TABLET'" />
+  <mat-icon svgIcon="contraceptives-contraceptive-patch" *ngSwitchCase="'PATCH'" />
+  <mat-icon svgIcon="devices-syringe" *ngSwitchCase="'INJECTION'" />
+  <mat-icon svgIcon="devices-asthma-inhaler" *ngSwitchCase="'INHALER'" />
+  <mat-icon svgIcon="devices-medicine-bottle" *ngSwitchDefault />
+</ng-container>

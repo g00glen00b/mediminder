@@ -1,0 +1,27 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  color: mat.m2-get-color-from-palette(theme.$mediminder-primary, 300);
+}
+
+h3 {
+  margin: 0;
+  @include mat.m2-typography-level(theme.$mediminder-typography, 'subtitle-1');
+}
+
+.previous {
+  margin-right: auto;
+}
+
+.next {
+  margin-left: auto;
+}
+
+.calendar-wrapper {
+  width: 280px;
+}

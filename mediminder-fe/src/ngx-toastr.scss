@@ -1,0 +1,203 @@
+@use '@angular/material' as mat;
+@use 'theme' as theme;
+
+.toast-center-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.toast-top-center {
+  top: 0;
+  right: 0;
+  width: 100%;
+}
+
+.toast-bottom-center {
+  bottom: 0;
+  right: 0;
+  width: 100%;
+}
+
+.toast-top-full-width {
+  top: 0;
+  right: 0;
+  width: 100%;
+}
+
+.toast-bottom-full-width {
+  bottom: 0;
+  right: 0;
+  width: 100%;
+}
+
+.toast-top-left {
+  top: 12px;
+  left: 12px;
+}
+
+.toast-top-right {
+  top: 12px;
+  right: 12px;
+}
+
+.toast-bottom-right {
+  right: 12px;
+  bottom: 12px;
+}
+
+.toast-bottom-left {
+  bottom: 12px;
+  left: 12px;
+}
+
+.toast-title {
+  @include mat.m2-typography-level(theme.$mediminder-typography, 'headline-6');
+}
+
+.toast-message {
+  word-wrap: break-word;
+}
+
+.toast-message a,
+.toast-message label {
+  color: mat.m2-get-color-from-palette(theme.$mediminder-primary, 500);
+}
+
+.toast-message a:hover {
+  color: mat.m2-get-color-from-palette(theme.$mediminder-primary, 500);
+  text-decoration: none;
+}
+
+.toast-close-button {
+  position: relative;
+  right: -0.3em;
+  top: calc(50% - 20px);
+  float: right;
+  font-size: 16px;
+  padding: 7.8px 14.3px 10.8px;
+  color: mat.m2-get-color-from-palette(theme.$mediminder-primary, 500);
+  font-family: 'Material Icons Outlined', sans-serif;
+  content: 'close';
+  border-radius: 50%;
+  border: solid 1px mat.m2-get-color-from-palette(theme.$mediminder-primary, 500);
+  cursor: pointer;
+  background: transparent;
+}
+
+.toast-close-button:hover,
+.toast-close-button:focus {
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+.toast-container {
+  pointer-events: none;
+  position: fixed;
+  z-index: 999999;
+}
+
+.toast-container * {
+  box-sizing: border-box;
+}
+
+.toast-container .ngx-toastr {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 10px;
+  padding: 15px 15px 15px 50px;
+  width: 659px;
+  border-radius: 4px;
+  color: mat.m2-get-color-from-palette(theme.$mediminder-primary, 500);
+  pointer-events: auto;
+  @include mat.elevation(1);
+}
+
+.toast-container .ngx-toastr:hover {
+  @include mat.elevation(2);
+  cursor: pointer;
+}
+
+.toast-container .ngx-toastr::before {
+  display: block;
+  position: absolute;
+  font-size: 16px;
+  font-family: 'Material Symbols Outlined', sans-serif;
+  line-height: 16px;
+  left: 16px;
+  top: calc(50% - 8px);
+}
+
+.toast-info::before {
+  content: 'info';
+}
+
+.toast-error::before {
+  content: 'error';
+  color: mat.m2-get-color-from-palette(theme.$mediminder-danger, 500);
+}
+
+.toast-success::before {
+  content: 'check_circle';
+  color: mat.m2-get-color-from-palette(theme.$mediminder-success, 800);
+}
+
+.toast-warning::before {
+  content: 'warning';
+  color: mat.m2-get-color-from-palette(theme.$mediminder-warn, 900);
+}
+
+.toast-container.toast-top-center .ngx-toastr,
+.toast-container.toast-bottom-center .ngx-toastr {
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.toast-container.toast-top-full-width .ngx-toastr,
+.toast-container.toast-bottom-full-width .ngx-toastr {
+  width: 96%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.toast-success {
+  background-color: mat.m2-get-color-from-palette(theme.$mediminder-success, 100);
+}
+
+.toast-error {
+  background-color: mat.m2-get-color-from-palette(theme.$mediminder-danger, 100);
+}
+
+.toast-info {
+  background-color: mat.m2-get-color-from-palette(theme.$mediminder-primary, 100);
+}
+
+.toast-warning {
+  background-color: mat.m2-get-color-from-palette(theme.$mediminder-warn, 100);
+}
+
+.toast-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+}
+
+.toast-success .toast-progress {
+  background-color: mat.m2-get-color-from-palette(theme.$mediminder-success, 800);
+}
+
+.toast-info .toast-progress {
+  background-color: mat.m2-get-color-from-palette(theme.$mediminder-primary, 500);
+}
+
+.toast-warning .toast-progress {
+  background-color: mat.m2-get-color-from-palette(theme.$mediminder-warn, 900);
+}
+
+.toast-error .toast-progress {
+  background-color: mat.m2-get-color-from-palette(theme.$mediminder-danger, 500);
+}

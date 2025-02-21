@@ -1,0 +1,10 @@
+@use '@angular/material' as mat;
+@use '../theme' as theme;
+
+main {
+  min-height: calc(100vh - 64px);
+}
+
+mat-drawer-container {
+  background: white;
+}

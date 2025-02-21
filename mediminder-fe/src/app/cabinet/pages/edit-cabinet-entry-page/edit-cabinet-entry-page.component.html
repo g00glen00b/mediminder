@@ -1,0 +1,22 @@
+<mediminder-hero>
+  <hero-title>Edit cabinet entry</hero-title>
+  <hero-description>Edit the information of the medication that is available in your cabinet</hero-description>
+</mediminder-hero>
+<mediminder-container>
+  <mediminder-alert type="info">
+    <p>Certain fields cannot be edited because they are generic for all cabinet entries of the same medication.</p>
+    <a mat-button [routerLink]="['/medication', entry?.medication?.id, 'edit']">Edit the medication</a>
+  </mediminder-alert>
+  @if (error != undefined) {
+    <mediminder-alert type="error">
+      {{error.detail}}
+    </mediminder-alert>
+  }
+  <mediminder-cabinet-entry-form
+    [cabinetEntry]="entry"
+    [disableBasicFields]="true"
+    okLabel="Edit"
+    (onSubmit)="submit($event)"
+    (onCancel)="cancel()">
+  </mediminder-cabinet-entry-form>
+</mediminder-container>

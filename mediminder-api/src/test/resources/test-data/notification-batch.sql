@@ -1,0 +1,4 @@
+insert into notification (id, user_id, type, initiator_id, title, message, delete_at, active) values
+    ('db1a169c-376d-4d77-8d3d-17962911d468', '329b4906-af8e-4dfc-8516-781b3d5bef72', 'CABINET_ENTRY_EXPIRED', '6ea65093-ce6f-4869-857a-184e7281e0b0', 'Title 1', 'Message 1', '2024-06-01 10:00:00', true),
+    ('3dd0fd05-baee-4445-b9ec-432cf4b8f13d', '329b4906-af8e-4dfc-8516-781b3d5bef72', 'CABINET_ENTRY_EXPIRED', '33d86efb-1a3a-452c-8711-39b02ad77941', 'Title 2', 'Message 2', '2024-06-02 10:00:00', false),
+    ('c92bab88-37ce-494b-a5ff-46ce0c2cff31', '329b4906-af8e-4dfc-8516-781b3d5bef72', 'CABINET_ENTRY_ALMOST_EXPIRED', '6ea65093-ce6f-4869-857a-184e7281e0b0', 'Title 3', 'Message 3', '2024-06-03 10:00:00', false);

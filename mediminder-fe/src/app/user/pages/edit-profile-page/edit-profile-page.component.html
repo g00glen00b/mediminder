@@ -1,0 +1,29 @@
+<mediminder-hero>
+  <hero-title>Edit profile</hero-title>
+  <hero-description>Edit your profile information</hero-description>
+</mediminder-hero>
+<mediminder-container>
+  @if (error != undefined) {
+    <mediminder-alert type="error">
+      {{error.detail}}
+    </mediminder-alert>
+  }
+  <h2>Edit profile</h2>
+  <mediminder-profile-form
+    [user]="user()"
+    okLabel="Edit"
+    (onSubmit)="submitProfileForm($event)">
+  </mediminder-profile-form>
+  <h2>Edit password</h2>
+  <mediminder-password-form
+    okLabel="Edit"
+    (onSubmit)="submitCredentialsForm($event)">
+  </mediminder-password-form>
+  <h2>Push notifications</h2>
+  <button
+    mat-flat-button
+    color="accent"
+    (click)="enablePushNotifications()">
+    Enable push notifications
+  </button>
+</mediminder-container>

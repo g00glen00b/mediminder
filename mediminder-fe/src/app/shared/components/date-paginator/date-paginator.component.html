@@ -1,0 +1,44 @@
+<section>
+  <button
+    class="previous"
+    mat-icon-button
+    [disabled]="previousDisabled"
+    (click)="onPreviousClick()">
+    <mat-icon fontSet="material-symbols-outlined">
+      chevron_left
+    </mat-icon>
+  </button>
+  <h3>
+    @if (isToday) {
+      <span>Today</span>
+    }
+    {{date | date: 'longDate'}}
+  </h3>
+  <button
+    class="next"
+    mat-icon-button
+    (click)="onNextClick()">
+    <mat-icon fontSet="material-symbols-outlined">
+      chevron_right
+    </mat-icon>
+  </button>
+  <button
+    class="calendar"
+    [matMenuTriggerFor]="pickerMenu"
+    mat-icon-button>
+    <mat-icon fontSet="material-symbols-outlined">
+      calendar_today
+    </mat-icon>
+  </button>
+</section>
+<mat-menu #pickerMenu="matMenu">
+  <div
+    class="calendar-wrapper"
+    (click)="$event.stopPropagation()">
+    <mat-calendar
+      [selected]="date"
+      [minDate]="minDate"
+      (selectedChange)="select.emit($event || undefined)">
+    </mat-calendar>
+  </div>
+</mat-menu>

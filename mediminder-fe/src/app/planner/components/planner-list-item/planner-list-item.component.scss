@@ -1,0 +1,47 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+mat-expansion-panel-header::before {
+  content: '';
+  display: block;
+  position: absolute;
+  background-color: rgba(0, 0, 0, .1);
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--percentage);
+}
+
+mat-expansion-panel {
+  margin-bottom: 1em;
+}
+
+mat-expansion-panel-header mat-icon {
+  margin-left: auto;
+}
+
+mat-expansion-panel-header mat-icon.success {
+  color: mat.m2-get-color-from-palette(theme.$mediminder-success, 900);
+}
+
+mat-expansion-panel-header mat-icon.warning {
+  color: mat.m2-get-color-from-palette(theme.$mediminder-danger, 500);
+}
+
+mat-panel-description .text {
+  display: none;
+}
+
+mat-panel-title {
+  flex-grow: 5;
+}
+
+@media only screen and (min-width: 600px) {
+  mat-panel-description .text {
+    display: inherit;
+  }
+
+  mat-panel-title {
+    flex-grow: 1;
+  }
+}

@@ -1,0 +1,18 @@
+<mediminder-hero>
+  <hero-title>Edit medication</hero-title>
+  <hero-description>Edit the information of the medication</hero-description>
+</mediminder-hero>
+<mediminder-container>
+  @if (error != undefined) {
+    <mediminder-alert type="error">
+      {{error.detail}}
+    </mediminder-alert>
+  }
+  <mediminder-medication-form
+    [medication]="medication"
+    [disableBasicFields]="true"
+    okLabel="Edit"
+    (onSubmit)="submit($event)"
+    (onCancel)="cancel()">
+  </mediminder-medication-form>
+</mediminder-container>

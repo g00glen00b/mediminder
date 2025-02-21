@@ -1,0 +1,45 @@
+<div
+  class="alert"
+  [class]="type"
+  [class.no-title]="title == null"
+  [class.closeable]="closeable">
+    <span
+      class="icon-circle"
+      [class]="type"
+      [ngSwitch]="type">
+      <mat-icon
+        fontSet="material-symbols-outlined"
+        *ngSwitchCase="'error'">
+        priority_high
+      </mat-icon>
+      <mat-icon
+        fontSet="material-symbols-outlined"
+        *ngSwitchCase="'warning'">
+        priority_high
+      </mat-icon>
+      <mat-icon
+        fontSet="material-symbols-outlined"
+        *ngSwitchCase="'success'">
+        check
+      </mat-icon>
+      <mat-icon
+        fontSet="material-symbols-outlined"
+        *ngSwitchCase="'info'">
+        info
+      </mat-icon>
+    </span>
+
+  @if (title != null) {
+    <h6>{{title}}</h6>
+  }
+  <div class="description">
+    <ng-content></ng-content>
+  </div>
+  @if (closeable) {
+    <button
+      (click)="onClose.emit()"
+      mat-icon-button>
+      <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
+    </button>
+  }
+</div>

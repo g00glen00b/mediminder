@@ -1,0 +1,77 @@
+<ng-container>
+  @for (group of eventsPerTime; track group.time) {
+    <h2>{{group.time}}</h2>
+    @for (event of group.events; track event.scheduleId) {
+      <mat-card [class.taken]="event.completedDate != null">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mediminder-color-indicator [color]="event.medication.color"></mediminder-color-indicator>
+              <mediminder-medication-type-icon [medicationType]="event.medication.medicationType"></mediminder-medication-type-icon>
+              {{event.medication.name}}
+            </mat-panel-title>
+            <mat-panel-description>
+              <div class="text">
+                <span>{{event.dose}} {{event.medication.doseType.name}}</span>
+                <span>{{event.medication.administrationType.name}}</span>
+                @if (event.description != null && event.description.length > 0) {
+                  <span>{{event.description}}</span>
+                }
+              </div>
+              @if (event.completedDate != null) {
+                <mat-icon
+                  fontSet="material-symbols-outlined">
+                  done
+                </mat-icon>
+              }
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-list>
+            <mat-list-item>
+              <span matListItemTitle>{{event.dose}} {{event.medication.doseType.name}}</span>
+              <span matListItemLine>Dose</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>{{event.description || 'n/a'}}</span>
+              <span matListItemLine>Description</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>{{event.medication.administrationType.name}}</span>
+              <span matListItemLine>Administration type</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>{{event.medication.medicationType.name}}</span>
+              <span matListItemLine>Medication type</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>
+                @if (event.completedDate != null) {
+                  <span>{{event.completedDate | dfnsParseIso | dfnsFormat: 'MMMM do, yyyy'}}</span>
+                }
+                @else {
+                  <span>n/a</span>
+                }
+              </span>
+              <span matListItemLine>Taken at</span>
+            </mat-list-item>
+          </mat-list>
+        </mat-expansion-panel>
+        <mat-card-actions>
+          <button
+            mat-button
+            [disabled]="event.completedDate != null"
+            (click)="complete.emit(event)">
+            Taken
+          </button>
+          <button
+            mat-button
+            color="warn"
+            [disabled]="event.completedDate == null"
+            (click)="delete.emit(event)">
+            Not taken
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    }
+  }
+</ng-container>
