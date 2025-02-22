@@ -1,5 +1,5 @@
 <ng-container>
-  @for (group of eventsPerTime; track group.time) {
+  @for (group of eventsPerTime(); track group.time) {
     <h2>{{group.time}}</h2>
     @for (event of group.events; track event.scheduleId) {
       <mat-card [class.taken]="event.completedDate != null">

@@ -32,7 +32,7 @@ export class ProfileFormComponent implements OnChanges {
   private readonly userService = inject(UserService);
   okLabel = input('Add');
   user = input<User>();
-  onSubmit = output<UpdateUserRequest>();
+  confirm = output<UpdateUserRequest>();
 
   name = model('');
   timezone = model('');
@@ -42,16 +42,13 @@ export class ProfileFormComponent implements OnChanges {
   ), {initialValue: []});
   isNameEmpty = computed(() => !this.name());
   isTimezoneNotFromList = computed(() => !this.timezones().includes(this.timezone()));
+  request = computed<UpdateUserRequest>(() => ({
+    name: this.name(),
+    timezone: this.timezone(),
+  }));
 
   ngOnChanges() {
     this.name.set(this.user()?.name || '');
     this.timezone.set(this.user()?.timezone || '');
-  }
-
-  submit() {
-    this.onSubmit.emit({
-      name: this.name(),
-      timezone: this.timezone(),
-    });
   }
 }

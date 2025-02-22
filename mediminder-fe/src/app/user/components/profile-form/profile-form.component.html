@@ -1,4 +1,4 @@
-<form (submit)="submit()" #form="ngForm">
+<form (submit)="confirm.emit(request())" #form="ngForm">
   <mat-form-field appearance="fill">
     <mat-label>Name</mat-label>
     <input

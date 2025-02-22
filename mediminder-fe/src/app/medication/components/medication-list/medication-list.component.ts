@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {FormatDistanceToNowPurePipeModule, FormatPipeModule, ParseIsoPipeModule} from 'ngx-date-fns';
 import {MatListModule} from '@angular/material/list';
@@ -25,8 +25,6 @@ import {Medication} from '../../models/medication';
     styleUrl: './medication-list.component.scss'
 })
 export class MedicationListComponent {
-  @Input({required: true})
-  medications!: Medication[];
-  @Output()
-  delete: EventEmitter<Medication> = new EventEmitter<Medication>();
+  medications = input.required<Medication[]>();
+  delete = output<Medication>();
 }

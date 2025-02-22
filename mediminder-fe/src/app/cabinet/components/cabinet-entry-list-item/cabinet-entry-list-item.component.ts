@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+import {Component, computed, input, output} from '@angular/core';
 import {ColorIndicatorComponent} from '../../../shared/components/color-indicator/color-indicator.component';
 import {FormatDistanceToNowPurePipeModule, FormatPipeModule, ParseIsoPipeModule} from 'ngx-date-fns';
 import {MatAnchor, MatButton} from '@angular/material/button';
@@ -43,16 +43,9 @@ import {MatIcon} from '@angular/material/icon';
   templateUrl: './cabinet-entry-list-item.component.html',
   styleUrl: './cabinet-entry-list-item.component.scss'
 })
-export class CabinetEntryListItemComponent implements OnChanges {
-  @Input({required: true})
-  entry!: CabinetEntry;
-  @Output()
-  delete: EventEmitter<CabinetEntry> = new EventEmitter<CabinetEntry>();
-  expiresSoon = false;
-  runsOutSoon = false;
-
-  ngOnChanges() {
-    this.expiresSoon = differenceInDays(this.entry.expiryDate, new Date()) <= 7;
-    this.runsOutSoon = (this.entry.remainingDoses / this.entry.medication.dosesPerPackage) <= 0.1;
-  }
+export class CabinetEntryListItemComponent {
+  entry = input.required<CabinetEntry>();
+  delete = output<CabinetEntry>();
+  expiresSoon = computed(() => differenceInDays(this.entry().expiryDate, new Date()) <= 7);
+  runsOutSoon = computed(() => (this.entry().remainingDoses / this.entry().medication.dosesPerPackage) <= 0.1);
 }

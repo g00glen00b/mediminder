@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, signal} from '@angular/core';
+import {Component, DestroyRef, inject, model, signal} from '@angular/core';
 import {IntakeEventService} from '../../services/intake-event.service';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {combineLatest, mergeMap} from 'rxjs';
@@ -26,7 +26,7 @@ export class IntakeEventOverviewComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly toastr = inject(ToastrService);
   private readonly service = inject(IntakeEventService);
-  targetDate = signal(new Date());
+  targetDate = model(new Date());
   refreshDate = signal(new Date());
   events = toSignal(combineLatest([
     toObservable(this.targetDate),

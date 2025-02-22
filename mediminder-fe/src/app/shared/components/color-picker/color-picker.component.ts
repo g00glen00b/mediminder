@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, input, model} from '@angular/core';
 import {Color, colorOptions} from '../../models/color';
 import {MatRippleModule} from '@angular/material/core';
 
@@ -13,10 +13,6 @@ import {MatRippleModule} from '@angular/material/core';
 })
 export class ColorPickerComponent {
   colors= colorOptions();
-  @Input({required: true})
-  value!: Color;
-  @Input()
-  disabled = false;
-  @Output()
-  colorChange = new EventEmitter<Color>();
+  value = model.required<Color>();
+  disabled = input<boolean>(false);
 }

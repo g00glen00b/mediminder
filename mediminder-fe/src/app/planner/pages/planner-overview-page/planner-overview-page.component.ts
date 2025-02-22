@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, signal} from '@angular/core';
+import {Component, DestroyRef, inject, model, signal} from '@angular/core';
 import {ContainerComponent} from '../../../shared/components/container/container.component';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
 import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
@@ -32,7 +32,7 @@ import {PlannerListComponent} from '../../components/planner-list/planner-list.c
 export class PlannerOverviewPageComponent {
   private readonly service = inject(PlannerService);
   private readonly destroyRef = inject(DestroyRef);
-  date = signal(addMonths(new Date(), 1));
+  date = model(addMonths(new Date(), 1));
   minDate = new Date();
   pageRequest = signal(defaultPageRequest(['name,asc']));
   plans = toSignal(combineLatest([

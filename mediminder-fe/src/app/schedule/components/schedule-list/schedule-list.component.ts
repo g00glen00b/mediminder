@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {
   FormatDistanceToNowPurePipeModule,
@@ -35,8 +35,6 @@ import {IntervalPipe} from '../../pipes/interval.pipe';
   styleUrl: './schedule-list.component.scss'
 })
 export class ScheduleListComponent {
-  @Input({required: true})
-  schedules!: Schedule[];
-  @Output()
-  delete: EventEmitter<Schedule> = new EventEmitter<Schedule>();
+  schedules = input.required<Schedule[]>();
+  delete = output<Schedule>();
 }

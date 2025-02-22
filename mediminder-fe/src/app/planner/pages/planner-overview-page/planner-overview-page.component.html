@@ -4,9 +4,8 @@
 </mediminder-hero>
 <mediminder-container>
   <mediminder-date-paginator
-    [date]="date()"
-    [minDate]="minDate"
-    (select)="date.set($event)">
+    [(date)]="date"
+    [minDate]="minDate">
   </mediminder-date-paginator>
   <mediminder-planner-list
     [plans]="plans().content">

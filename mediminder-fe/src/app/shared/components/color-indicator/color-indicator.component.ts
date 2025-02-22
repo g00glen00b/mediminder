@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {Color} from '../../models/color';
 
 @Component({
@@ -9,6 +9,5 @@ import {Color} from '../../models/color';
   styleUrl: './color-indicator.component.scss'
 })
 export class ColorIndicatorComponent {
-  @Input({required: true})
-  color!: Color;
+  color = input.required<Color>();
 }

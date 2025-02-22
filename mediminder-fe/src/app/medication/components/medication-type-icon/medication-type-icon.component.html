@@ -1,4 +1,4 @@
-<ng-container [ngSwitch]="medicationType.id">
+<ng-container [ngSwitch]="medicationType().id">
   <mat-icon svgIcon="contraceptives-implant" *ngSwitchCase="'IMPLANT'" />
   <mat-icon svgIcon="medications-pills-2" *ngSwitchCase="'TABLET'" />
   <mat-icon svgIcon="contraceptives-contraceptive-patch" *ngSwitchCase="'PATCH'" />

@@ -1,5 +1,5 @@
 <mat-accordion>
-  @for (entry of entries; track entry.id) {
+  @for (entry of entries(); track entry.id) {
     <mediminder-cabinet-entry-list-item
       [entry]="entry"
       (delete)="delete.emit(entry)">

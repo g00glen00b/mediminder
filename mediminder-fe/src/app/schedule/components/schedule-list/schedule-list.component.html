@@ -1,5 +1,5 @@
 <mat-accordion>
-  @for (schedule of schedules; track schedule.id) {
+  @for (schedule of schedules(); track schedule.id) {
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 import {NgSwitch, NgSwitchCase} from '@angular/common';
 import {MatIconButton} from '@angular/material/button';
@@ -16,12 +16,8 @@ import {MatIconButton} from '@angular/material/button';
   ]
 })
 export class AlertComponent {
-  @Input({required: true})
-  type!: 'success' | 'warning' | 'error' | 'info';
-  @Input()
-  closeable: boolean = false;
-  @Input()
-  title?: string;
-  @Output()
-  onClose = new EventEmitter<void>();
+  type = input.required<'success' | 'warning' | 'error' | 'info'>();
+  closeable = input(false);
+  title = input<string>();
+  close = output<void>();
 }

@@ -1,34 +1,53 @@
-import {Directive, ElementRef, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
-import {fromEvent, map, Observable, zip} from "rxjs";
+import {computed, Directive, ElementRef, inject, input, output} from '@angular/core';
+import {combineLatestWith, filter, fromEvent, map, switchMap, zip} from "rxjs";
 import {SwipeGesture} from "../models/swipe-gesture";
+import {toObservable} from '@angular/core/rxjs-interop';
 
 @Directive({
     selector: '[swipeGesture]',
     standalone: true
 })
-export class SwipeGestureDirective implements OnInit {
-  @Input()
-  swipeTarget: 'element' | 'document' = 'element';
-  @Input()
-  minimumSwipeDistance: number = 100;
-  @Output()
-  swipeLeft: EventEmitter<SwipeGesture> = new EventEmitter<SwipeGesture>();
-  @Output()
-  swipeRight: EventEmitter<SwipeGesture> = new EventEmitter<SwipeGesture>();
-  @Output()
-  swipeUp: EventEmitter<SwipeGesture> = new EventEmitter<SwipeGesture>();
-  @Output()
-  swipeDown: EventEmitter<SwipeGesture> = new EventEmitter<SwipeGesture>();
+export class SwipeGestureDirective {
   private readonly el = inject(ElementRef);
+  swipeTarget = input<'element' | 'document'>('element');
+  minimumSwipeDistance = input(100);
+  swipeLeft = output<SwipeGesture>();
+  swipeRight = output<SwipeGesture>();
+  swipeUp = output<SwipeGesture>();
+  swipeDown = output<SwipeGesture>();
+  element = computed<Element>(() => this.swipeTarget() === 'document' ? document : this.el.nativeElement);
 
-  ngOnInit(): void {
+
+  constructor() {
     if (this.isTouchSupported()) {
-      const element = this.swipeTarget === 'document' ? document : this.el.nativeElement;
-      const touchStart: Observable<TouchEvent> = fromEvent(element, 'touchstart');
-      const touchEnd: Observable<TouchEvent> = fromEvent(element, 'touchend');
-      zip(touchStart, touchEnd)
-        .pipe(map(([start, end]) => ({start, end})))
+      toObservable(this.element)
+        .pipe(
+          switchMap(element => zip(
+            fromEvent<TouchEvent>(element, 'touchstart'),
+            fromEvent<TouchEvent>(element, 'touchend'))),
+          combineLatestWith(toObservable(this.minimumSwipeDistance)),
+          map(input => this.mapToGesture(input)),
+          filter(gesture => gesture != null))
         .subscribe(gesture => this.emit(gesture));
+    }
+  }
+
+  private mapToGesture(input: [[TouchEvent, TouchEvent], number]): SwipeGesture | null {
+    const [[start, end], minimumDistance] = input;
+    const {screenX: startX, screenY: startY} = start.changedTouches[0];
+    const {screenX: endX, screenY: endY} = end.changedTouches[0];
+    const diffX = endX - startX;
+    const diffY = endY - startY;
+    const absoluteDiffX = Math.abs(diffX);
+    const absoluteDiffY = Math.abs(diffY);
+    if (absoluteDiffX > minimumDistance && absoluteDiffX > absoluteDiffY) {
+      const direction = diffX > 0 ? 'right' : 'left';
+      return {start, end, direction};
+    } else if (absoluteDiffY > minimumDistance && absoluteDiffY > absoluteDiffX) {
+      const direction = diffY > 0 ? 'down' : 'up';
+      return {start, end, direction};
+    } else {
+      return null;
     }
   }
 
@@ -36,20 +55,20 @@ export class SwipeGestureDirective implements OnInit {
     return matchMedia('(pointer: coarse)').matches;
   }
 
-  private emit(gesture: SwipeGesture): void {
-    const {screenX: startX, screenY: startY} = gesture.start.changedTouches[0];
-    const {screenX: endX, screenY: endY} = gesture.end.changedTouches[0];
-    const diffX = endX - startX;
-    const diffY = endY - startY;
-    const absoluteDiffX = Math.abs(diffX);
-    const absoluteDiffY = Math.abs(diffY);
-    if (absoluteDiffX > this.minimumSwipeDistance && absoluteDiffX > absoluteDiffY) {
-      if (diffX > 0) this.swipeRight.emit(gesture);
-      else this.swipeLeft.emit(gesture);
-    } else if (absoluteDiffY > this.minimumSwipeDistance && absoluteDiffY > absoluteDiffX) {
-      if (diffY > 0) this.swipeDown.emit(gesture);
-      else this.swipeUp.emit(gesture);
+  private emit(gesture: SwipeGesture) {
+    switch (gesture.direction) {
+      case 'left':
+        this.swipeLeft.emit(gesture);
+        break;
+      case 'right':
+        this.swipeRight.emit(gesture);
+        break;
+      case 'up':
+        this.swipeUp.emit(gesture);
+        break;
+      case 'down':
+        this.swipeDown.emit(gesture);
+        break;
     }
   }
-
 }

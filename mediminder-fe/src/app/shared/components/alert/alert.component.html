@@ -1,12 +1,12 @@
 <div
   class="alert"
-  [class]="type"
-  [class.no-title]="title == null"
-  [class.closeable]="closeable">
+  [class]="type()"
+  [class.no-title]="title() == null"
+  [class.closeable]="closeable()">
     <span
       class="icon-circle"
-      [class]="type"
-      [ngSwitch]="type">
+      [class]="type()"
+      [ngSwitch]="type()">
       <mat-icon
         fontSet="material-symbols-outlined"
         *ngSwitchCase="'error'">
@@ -29,15 +29,15 @@
       </mat-icon>
     </span>
 
-  @if (title != null) {
-    <h6>{{title}}</h6>
+  @if (title() != null) {
+    <h6>{{title()}}</h6>
   }
   <div class="description">
     <ng-content></ng-content>
   </div>
-  @if (closeable) {
+  @if (closeable()) {
     <button
-      (click)="onClose.emit()"
+      (click)="close.emit()"
       mat-icon-button>
       <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
     </button>

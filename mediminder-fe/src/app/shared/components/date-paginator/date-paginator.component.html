@@ -2,17 +2,17 @@
   <button
     class="previous"
     mat-icon-button
-    [disabled]="previousDisabled"
+    [disabled]="previousDisabled()"
     (click)="onPreviousClick()">
     <mat-icon fontSet="material-symbols-outlined">
       chevron_left
     </mat-icon>
   </button>
   <h3>
-    @if (isToday) {
+    @if (isToday()) {
       <span>Today</span>
     }
-    {{date | date: 'longDate'}}
+    {{date() | date: 'longDate'}}
   </h3>
   <button
     class="next"
@@ -36,9 +36,9 @@
     class="calendar-wrapper"
     (click)="$event.stopPropagation()">
     <mat-calendar
-      [selected]="date"
-      [minDate]="minDate"
-      (selectedChange)="select.emit($event || undefined)">
+      [selected]="date()"
+      [minDate]="minDate()"
+      (selectedChange)="date.set($event!)">
     </mat-calendar>
   </div>
 </mat-menu>

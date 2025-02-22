@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+import {Component, computed, input, output} from '@angular/core';
 import {IntakeEvent} from '../../models/intake-event';
-import {groupPerTime, IntakeEventsPerTime} from '../../models/intake-events-per-time';
+import {groupPerTime} from '../../models/intake-events-per-time';
 import {MatCard, MatCardActions} from '@angular/material/card';
 import {
   MatExpansionPanel,
@@ -41,16 +41,9 @@ import {MatIcon} from '@angular/material/icon';
   templateUrl: './intake-event-list.component.html',
   styleUrl: './intake-event-list.component.scss'
 })
-export class IntakeEventListComponent implements OnChanges {
-  @Input({required: true})
-  events!: IntakeEvent[];
-  @Output()
-  complete: EventEmitter<IntakeEvent> = new EventEmitter<IntakeEvent>();
-  @Output()
-  delete: EventEmitter<IntakeEvent> = new EventEmitter<IntakeEvent>();
-  eventsPerTime: IntakeEventsPerTime[] = [];
-
-  ngOnChanges() {
-    this.eventsPerTime = groupPerTime(this.events);
-  }
+export class IntakeEventListComponent {
+  events = input.required<IntakeEvent[]>();
+  complete = output<IntakeEvent>();
+  delete = output<IntakeEvent>();
+  eventsPerTime = computed(() => groupPerTime(this.events()));
 }

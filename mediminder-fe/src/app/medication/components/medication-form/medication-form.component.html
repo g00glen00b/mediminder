@@ -65,7 +65,7 @@
   <mediminder-color-picker
     [value]="form.get('color')!.value!"
     [disabled]="form.get('color')!.disabled"
-    (colorChange)="form.get('color')!.setValue($event)">
+    (valueChange)="form.get('color')!.setValue($event)">
   </mediminder-color-picker>
   <button mat-flat-button color="accent">
     {{okLabel}}

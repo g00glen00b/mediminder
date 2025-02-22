@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, input, model} from '@angular/core';
 import {SortOption} from "../../models/sort-option";
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
@@ -16,10 +16,6 @@ import {MatButtonModule} from '@angular/material/button';
   ]
 })
 export class SortButtonComponent {
-  @Input()
-  options: SortOption[] = [];
-  @Input()
-  value: SortOption | undefined;
-  @Output()
-  change: EventEmitter<SortOption> = new EventEmitter<SortOption>();
+  options = input<SortOption[]>([]);
+  value = model<SortOption>();
 }

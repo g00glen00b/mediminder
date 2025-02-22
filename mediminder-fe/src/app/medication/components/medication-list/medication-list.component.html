@@ -1,5 +1,5 @@
 <mat-accordion>
-  @for (medication of medications; track medication.id) {
+  @for (medication of medications(); track medication.id) {
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>

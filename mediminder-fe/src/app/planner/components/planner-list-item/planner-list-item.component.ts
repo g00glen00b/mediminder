@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges} from '@angular/core';
+import {Component, computed, input} from '@angular/core';
 import {MedicationPlan} from '../../models/medication-plan';
 import {ColorIndicatorComponent} from '../../../shared/components/color-indicator/color-indicator.component';
 import {
@@ -32,15 +32,14 @@ import {MatIcon} from '@angular/material/icon';
   templateUrl: './planner-list-item.component.html',
   styleUrl: './planner-list-item.component.scss'
 })
-export class PlannerListItemComponent implements OnChanges {
-  @Input({required: true})
-  plan!: MedicationPlan;
-  percentageAvailable = 0;
-  prescriptionsRequired = 0;
-
-  ngOnChanges() {
-    const {requiredDoses, availableDoses, medication: {dosesPerPackage}} = this.plan;
-    this.percentageAvailable = requiredDoses == 0 ? 100 : (availableDoses / requiredDoses) * 100;
-    this.prescriptionsRequired = Math.ceil(Math.max(requiredDoses - availableDoses, 0) / dosesPerPackage);
-  }
+export class PlannerListItemComponent {
+  plan = input.required<MedicationPlan>();
+  percentageAvailable = computed(() => {
+    const {requiredDoses, availableDoses} = this.plan();
+    return requiredDoses == 0 ? 100 : (availableDoses / requiredDoses) * 100;
+  });
+  prescriptionsRequired = computed(() => {
+    const {requiredDoses, availableDoses, medication: {dosesPerPackage}} = this.plan();
+    return Math.ceil(Math.max(requiredDoses - availableDoses, 0) / dosesPerPackage);
+  });
 }

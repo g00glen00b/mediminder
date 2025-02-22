@@ -1,15 +1,15 @@
 <mat-expansion-panel>
-  <mat-expansion-panel-header [style]="{'--percentage': percentageAvailable + '%'}">
+  <mat-expansion-panel-header [style]="{'--percentage': percentageAvailable() + '%'}">
     <mat-panel-title>
-      <mediminder-color-indicator [color]="plan.medication.color"></mediminder-color-indicator>
-      <mediminder-medication-type-icon [medicationType]="plan.medication.medicationType"></mediminder-medication-type-icon>
-      {{plan.medication.name}}
+      <mediminder-color-indicator [color]="plan().medication.color"></mediminder-color-indicator>
+      <mediminder-medication-type-icon [medicationType]="plan().medication.medicationType"></mediminder-medication-type-icon>
+      {{plan().medication.name}}
     </mat-panel-title>
     <mat-panel-description>
       <div class="text">
-        {{plan.availableDoses}} of {{plan.requiredDoses}} {{plan.medication.doseType.name}} available
+        {{plan().availableDoses}} of {{plan().requiredDoses}} {{plan().medication.doseType.name}} available
       </div>
-      @if (percentageAvailable >= 100) {
+      @if (percentageAvailable() >= 100) {
         <mat-icon
           class="success"
           fontSet="material-symbols-outlined">
@@ -27,27 +27,27 @@
   </mat-expansion-panel-header>
   <mat-list>
     <mat-list-item>
-      <span matListItemTitle>{{plan.requiredDoses}} {{plan.medication.doseType.name}}</span>
+      <span matListItemTitle>{{plan().requiredDoses}} {{plan().medication.doseType.name}}</span>
       <span matListItemLine>Required doses</span>
     </mat-list-item>
     <mat-list-item>
-      <span matListItemTitle>{{plan.availableDoses}} {{plan.medication.doseType.name}}</span>
+      <span matListItemTitle>{{plan().availableDoses}} {{plan().medication.doseType.name}}</span>
       <span matListItemLine>Available doses</span>
     </mat-list-item>
     <mat-list-item>
-      <span matListItemTitle>{{plan.medication.dosesPerPackage}} {{plan.medication.doseType.name}}</span>
+      <span matListItemTitle>{{plan().medication.dosesPerPackage}} {{plan().medication.doseType.name}}</span>
       <span matListItemLine>Doses per package</span>
     </mat-list-item>
     <mat-list-item>
-      <span matListItemTitle>{{prescriptionsRequired}}</span>
+      <span matListItemTitle>{{prescriptionsRequired()}}</span>
       <span matListItemLine>Required prescriptions</span>
     </mat-list-item>
     <mat-list-item>
-      <span matListItemTitle>{{plan.medication.administrationType.name}}</span>
+      <span matListItemTitle>{{plan().medication.administrationType.name}}</span>
       <span matListItemLine>Administration type</span>
     </mat-list-item>
     <mat-list-item>
-      <span matListItemTitle>{{plan.medication.medicationType.name}}</span>
+      <span matListItemTitle>{{plan().medication.medicationType.name}}</span>
       <span matListItemLine>Medication type</span>
     </mat-list-item>
   </mat-list>

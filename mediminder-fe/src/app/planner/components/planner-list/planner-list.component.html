@@ -1,5 +1,5 @@
 <mat-accordion>
-  @for (plan of plans; track plan.medication.id) {
+  @for (plan of plans(); track plan.medication.id) {
     <mediminder-planner-list-item [plan]="plan"></mediminder-planner-list-item>
   }
 </mat-accordion>

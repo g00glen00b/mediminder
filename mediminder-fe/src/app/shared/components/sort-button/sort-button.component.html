@@ -3,19 +3,19 @@
   color="primary"
   [matMenuTriggerFor]="sortMenu">
   <mat-icon fontSet="material-symbols-outlined">sort</mat-icon>
-  @if (value != undefined) {
-    Sort by: {{value!.label}}
+  @if (value() != undefined) {
+    Sort by: {{value()!.label}}
   }
   @else {
     Sort by
   }
 </button>
 <mat-menu #sortMenu="matMenu">
-  @for (option of options; track option.sort) {
+  @for (option of options(); track option.sort) {
     <button
       mat-menu-item
-      (click)="change.emit(option)">
-      <mat-icon fontSet="material-symbols-outlined">{{option == value ? 'checkmark' : ''}}</mat-icon>
+      (click)="value.set(option)">
+      <mat-icon fontSet="material-symbols-outlined">{{option == value() ? 'checkmark' : ''}}</mat-icon>
       {{option.label}}
     </button>
   }

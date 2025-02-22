@@ -8,9 +8,9 @@
       title="{{color.name}}"
       #trigger
       [value]="color.color"
-      [disabled]="disabled"
-      [checked]="color.color == value"
-      (change)="colorChange.emit(color.color)"/>
+      [disabled]="disabled()"
+      [checked]="color.color == value()"
+      (change)="value.set(color.color)"/>
     <label for="color-{{color.color}}">{{color.name}}</label>
   }
 </div>

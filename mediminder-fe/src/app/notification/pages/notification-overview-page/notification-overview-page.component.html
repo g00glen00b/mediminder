@@ -5,7 +5,7 @@
         type="info"
         [title]="notification.title"
         [closeable]="true"
-        (onClose)="delete(notification)">
+        (close)="delete(notification)">
         {{notification.message}}
       </mediminder-alert>
     }
@@ -14,7 +14,7 @@
         type="warning"
         [title]="notification.title"
         [closeable]="true"
-        (onClose)="delete(notification)">
+        (close)="delete(notification)">
         {{notification.message}}
       </mediminder-alert>
     }

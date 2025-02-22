@@ -1,4 +1,4 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import {MedicationType} from '../../models/medication-type';
 import {NgSwitch, NgSwitchCase, NgSwitchDefault} from '@angular/common';
 import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
@@ -16,13 +16,12 @@ import {DomSanitizer} from '@angular/platform-browser';
   standalone: true,
   styleUrl: './medication-type-icon.component.scss'
 })
-export class MedicationTypeIconComponent implements OnInit {
+export class MedicationTypeIconComponent {
   private readonly iconRegistry = inject(MatIconRegistry);
   private readonly domSanitizer = inject(DomSanitizer);
-  @Input({required: true})
-  medicationType!: MedicationType;
+  medicationType = input.required<MedicationType>()
 
-  ngOnInit() {
+  constructor() {
     const pillsIcon = this.domSanitizer.bypassSecurityTrustResourceUrl('healthicons/medications/pills_2.svg');
     const patchIcon = this.domSanitizer.bypassSecurityTrustResourceUrl('healthicons/contraceptives/contraceptive_patch.svg');
     const implantIcon = this.domSanitizer.bypassSecurityTrustResourceUrl('healthicons/contraceptives/implant.svg');
