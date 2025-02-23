@@ -4,7 +4,6 @@ import {HeroComponent} from '../../../shared/components/hero/hero.component';
 import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
 import {HeroTitleDirective} from '../../../shared/components/hero/hero-title.directive';
 import {Router} from '@angular/router';
-import {ReactiveFormsModule} from '@angular/forms';
 import {ConfirmationService} from '../../../shared/services/confirmation.service';
 import {CreateCabinetEntryRequest} from '../../models/create-cabinet-entry-request';
 import {CabinetService} from '../../services/cabinet.service';
@@ -22,7 +21,6 @@ import {filter, switchMap} from 'rxjs';
     HeroComponent,
     HeroDescriptionDirective,
     HeroTitleDirective,
-    ReactiveFormsModule,
     AlertComponent,
     CabinetEntryFormComponent,
   ],

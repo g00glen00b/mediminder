@@ -1,6 +1,6 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, model} from '@angular/core';
 import {CentralCardComponent} from '../../../shared/components/central-card/central-card.component';
-import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 import {UserService} from '../../services/user.service';
 import {RouterLink} from '@angular/router';
 import {ErrorResponse} from '../../../shared/models/error-response';
@@ -13,7 +13,7 @@ import {MatInput} from '@angular/material/input';
   selector: 'mediminder-request-password-reset-page',
   imports: [
     CentralCardComponent,
-    ReactiveFormsModule,
+    FormsModule,
     AlertComponent,
     MatButton,
     MatError,
@@ -28,18 +28,14 @@ import {MatInput} from '@angular/material/input';
   styleUrl: './request-password-reset-page.component.scss'
 })
 export class RequestPasswordResetPageComponent {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly userService = inject(UserService);
-  form = this.formBuilder.group({
-    email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(128)]),
-  });
+  email = model('');
   error?: ErrorResponse;
   successRequestPasswordReset = false;
 
   submit() {
     this.successRequestPasswordReset = false;
-    const email = this.form.get('email')!.value!;
-    this.userService.requestResetCredentials(email).subscribe({
+    this.userService.requestResetCredentials(this.email()).subscribe({
       next: () => this.successRequestPasswordReset = true,
       error: response => this.error = response.error,
     });

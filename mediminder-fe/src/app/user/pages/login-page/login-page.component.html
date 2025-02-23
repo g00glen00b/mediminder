@@ -1,5 +1,5 @@
 <mediminder-central-card>
-  <form [formGroup]="form" (submit)="submit()">
+  <form #form="ngForm" (submit)="submit()">
     <h1>Sign in to your account</h1>
     @if (error != undefined) {
       <mediminder-alert type="error">
@@ -24,23 +24,21 @@
       <input
         matInput
         required
+        maxlength="128"
         type="email"
         placeholder="me@example.org"
-        formControlName="email" />
+        name="email"
+        [(ngModel)]="email"
+        #emailInput="ngModel" />
       <mat-hint>Enter the same e-mail you used during registration</mat-hint>
-      @if (form.get('email')!.errors?.['required']) {
+      @if (emailInput.errors?.['required'] || emailInput.errors?.['email']) {
         <mat-error>
           Please enter a valid e-mail address
         </mat-error>
       }
-      @if (form.get('email')!.errors?.['maxlength']) {
+      @else if (emailInput.errors?.['maxlength']) {
         <mat-error>
           We don't allow e-mail addresses longer than 128 characters
-        </mat-error>
-      }
-      @if (form.get('email')!.errors?.['email']) {
-        <mat-error>
-          Please enter a valid e-mail address
         </mat-error>
       }
     </mat-form-field>
@@ -51,9 +49,11 @@
         required
         type="password"
         placeholder="********"
-        formControlName="password" />
+        name="password"
+        [(ngModel)]="password"
+        #passwordInput="ngModel" />
       <mat-hint>Enter your password</mat-hint>
-      @if (form.get('password')!.errors?.['required']) {
+      @if (passwordInput.errors?.['required']) {
         <mat-error>
           Please enter your password
         </mat-error>

@@ -1,5 +1,5 @@
 <mediminder-central-card>
-  <form [formGroup]="form" (submit)="submit()">
+  <form #form="ngForm" (submit)="submit()">
     <h1>Create an account</h1>
     @if (error != undefined) {
       <mediminder-alert type="error">
@@ -24,25 +24,26 @@
         required
         type="email"
         placeholder="me@example.org"
-        formControlName="email" />
+        name="email"
+        maxlength="128"
+        [(ngModel)]="email"
+        #emailInput="ngModel" />
       <mat-hint>Enter your e-mail address</mat-hint>
-      @if (form.get('email')!.errors?.['required']) {
+      @if (emailInput.errors?.['required'] || emailInput.errors?.['email']) {
         <mat-error>
           Please enter a valid e-mail address
         </mat-error>
       }
-      @if (form.get('email')!.errors?.['maxlength']) {
+      @else if (emailInput.errors?.['maxlength']) {
         <mat-error>
           We don't allow e-mail addresses longer than 128 characters
         </mat-error>
       }
-      @if (form.get('email')!.errors?.['email']) {
-        <mat-error>
-          Please enter a valid e-mail address
-        </mat-error>
-      }
     </mat-form-field>
-    <ng-container formGroupName="passwords">
+    <ng-container
+      ngModelGroup="passwords"
+      #passwordsGroup="ngModelGroup"
+      samePassword>
       <mat-form-field appearance="fill">
         <mat-label>Password</mat-label>
         <input
@@ -50,9 +51,11 @@
           required
           type="password"
           placeholder="********"
-          formControlName="password" />
+          name="password"
+          [(ngModel)]="password"
+          #passwordInput="ngModel" />
         <mat-hint>Enter your chosen password</mat-hint>
-        @if (form.get('passwords')!.get('password')!.errors?.['required']) {
+        @if (passwordInput.errors?.['required']) {
           <mat-error>
             Please enter your password
           </mat-error>
@@ -65,15 +68,17 @@
           required
           type="password"
           placeholder="********"
-          formControlName="repeatPassword" />
+          name="repeatPassword"
+          [(ngModel)]="repeatPassword"
+          #repeatPasswordInput="ngModel" />
         <mat-hint>Enter the same password again</mat-hint>
-        @if (form.get('passwords')!.get('repeatPassword')!.errors?.['required']) {
+        @if (repeatPasswordInput.errors?.['required']) {
           <mat-error>
             Please enter your password again
           </mat-error>
         }
       </mat-form-field>
-      @if (form.get('passwords')!.errors?.['samePassword']) {
+      @if (passwordsGroup.errors?.['samePassword']) {
         <mat-error>
           The passwords do not match
         </mat-error>
@@ -85,9 +90,12 @@
         matInput
         type="text"
         placeholder="Albert Einstein"
-        formControlName="name" />
+        name="name"
+        maxlength="128"
+        [(ngModel)]="name"
+        #nameInput="ngModel" />
       <mat-hint>Enter your name or nickname</mat-hint>
-      @if (form.get('name')!.errors?.['required']) {
+      @if (nameInput.errors?.['required']) {
         <mat-error>
           Please enter your name
         </mat-error>
@@ -99,7 +107,11 @@
         type="text"
         placeholder="UTC"
         matInput
-        formControlName="timezone"
+        name="timezone"
+        maxlength="64"
+        [(ngModel)]="timezone"
+        #timezoneElement
+        (input)="timezoneInputValue.set(timezoneElement.value)"
         [matAutocomplete]="timezoneAutocomplete">
       <mat-autocomplete
         autoActiveFirstOption

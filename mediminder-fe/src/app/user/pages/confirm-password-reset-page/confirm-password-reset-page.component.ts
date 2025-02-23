@@ -1,15 +1,17 @@
-import {Component, inject} from '@angular/core';
-import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Component, computed, inject, model} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {UserService} from '../../services/user.service';
 import {ErrorResponse} from '../../../shared/models/error-response';
-import {samePassword} from '../../validators';
 import {ActivatedRoute, RouterLink} from '@angular/router';
-import {filter, map, mergeMap} from 'rxjs';
+import {filter, map} from 'rxjs';
 import {AlertComponent} from '../../../shared/components/alert/alert.component';
 import {CentralCardComponent} from '../../../shared/components/central-card/central-card.component';
 import {MatAnchor, MatButton} from '@angular/material/button';
 import {MatError, MatFormField, MatHint, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
+import {SamePasswordDirective} from '../../directives/same-password.directive';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {ResetCredentialsRequest} from '../../models/reset-credentials-request';
 
 @Component({
   selector: 'mediminder-confirm-password-reset-page',
@@ -23,35 +25,39 @@ import {MatInput} from '@angular/material/input';
     MatHint,
     MatInput,
     MatLabel,
-    ReactiveFormsModule,
+    FormsModule,
     RouterLink,
+    SamePasswordDirective,
   ],
   templateUrl: './confirm-password-reset-page.component.html',
   styleUrl: './confirm-password-reset-page.component.scss'
 })
 export class ConfirmPasswordResetPageComponent {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly userService = inject(UserService);
   private readonly route = inject(ActivatedRoute);
-  form = this.formBuilder.group({
-    password: new FormControl('', [Validators.required]),
-    repeatPassword: new FormControl('', [Validators.required]),
-  }, {validators: [samePassword('password', 'repeatPassword')]});
+  password = model('');
+  repeatPassword = model('');
+  passwordResetCode = toSignal(this.route.queryParamMap.pipe(
+    map(params => params.get('code')),
+    filter(passwordResetCode => passwordResetCode != null)));
+  request = computed<ResetCredentialsRequest | undefined>(() => {
+    if (!this.passwordResetCode()) return undefined;
+    return {
+      newPassword: this.password(),
+      passwordResetCode: this.passwordResetCode()!,
+    };
+  });
+
   error?: ErrorResponse;
   successPasswordReset = false;
 
   submit() {
     this.successPasswordReset = false;
-    const newPassword = this.form.get('password')!.value!;
-    this.route.queryParamMap.pipe(
-      map(params => params.get('code')),
-      filter(passwordResetCode => passwordResetCode != null),
-      map(passwordResetCode => passwordResetCode as string),
-      map(passwordResetCode => ({newPassword, passwordResetCode})),
-      mergeMap(request => this.userService.confirmResetCredentials(request)),
-    ).subscribe({
-      next: () => this.successPasswordReset = true,
-      error: response => this.error = response.error,
-    });
+    this.userService
+      .confirmResetCredentials(this.request()!)
+      .subscribe({
+        next: () => this.successPasswordReset = true,
+        error: response => this.error = response.error,
+      });
   }
 }
