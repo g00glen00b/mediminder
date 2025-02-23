@@ -1,0 +1,1 @@
+alter table notification add column active boolean;

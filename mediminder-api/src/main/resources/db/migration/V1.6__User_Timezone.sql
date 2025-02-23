@@ -1,0 +1,1 @@
+alter table "user" alter column timezone set default 'UTC';
