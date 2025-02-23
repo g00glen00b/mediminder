@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {BehaviorSubject, catchError, filter, map, Observable, tap, throwError} from 'rxjs';
 import {User} from '../models/user';
 import {environment} from '../../../environment/environment';
@@ -94,5 +94,11 @@ export class UserService {
 
   confirmResetCredentials(request: ResetCredentialsRequest): Observable<void> {
     return this.httpClient.post<void>(`${environment.apiUrl}/user/credentials/reset/confirm`, request);
+  }
+
+  logout(): Observable<void> {
+    return this.httpClient
+      .post<void>(`${environment.apiUrl}/user/logout`, null, {withCredentials: true})
+      .pipe(tap(() => this.authenticationState$$.next({initialized: true})));
   }
 }

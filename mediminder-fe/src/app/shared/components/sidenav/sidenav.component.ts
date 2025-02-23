@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, output} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
@@ -14,5 +14,5 @@ import { MatListModule } from '@angular/material/list';
     ]
 })
 export class SidenavComponent {
-
+  logout = output<void>();
 }

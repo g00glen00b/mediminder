@@ -59,4 +59,14 @@
       Profile
     </div>
   </a>
+  <mat-list-item (click)="logout.emit()">
+    <mat-icon
+      matListItemIcon
+      fontSet="material-symbols-outlined">
+      logout
+    </mat-icon>
+    <div matListItemTitle>
+      Log out
+    </div>
+  </mat-list-item>
 </mat-nav-list>
