@@ -1,4 +1,4 @@
-<form [formGroup]="form" (submit)="submit()">
+<form #form="ngForm" (submit)="confirm.emit(request()!)">
   <div class="grid">
     <mat-form-field appearance="fill" id="medication">
       <mat-label>Medication</mat-label>
@@ -6,9 +6,13 @@
         matInput
         required
         type="text"
-        formControlName="medication"
+        name="medication"
+        #medicationElement
+        #medicationInput="ngModel"
+        [(ngModel)]="medication"
+        (input)="medicationInputValue.set(medicationElement.value)"
         [matAutocomplete]="medicationAutocomplete" />
-      @if (!disableBasicFields) {
+      @if (!disableBasicFields()) {
         <a
           mat-button
           matSuffix
@@ -20,12 +24,12 @@
         requireSelection
         #medicationAutocomplete="matAutocomplete"
         [displayWith]="getMedicationLabel">
-        @for (medication of medications.content; track medication.id) {
+        @for (medication of medications().content; track medication.id) {
           <mat-option [value]="medication">{{medication.name}}</mat-option>
         }
       </mat-autocomplete>
       <mat-hint>Enter the name of the medication</mat-hint>
-      @if (form.get('medication')!.errors?.['required']) {
+      @if (medicationInput.errors?.['required']) {
         <mat-error>
           Please enter a valid medication name
         </mat-error>
@@ -38,26 +42,48 @@
         matInput
         required
         min="0"
-        formControlName="remainingDoses" />
-      <span matTextSuffix>{{form.get('medication')!.value?.doseType?.name || 'doses'}}</span>
+        #remainingDosesInput="ngModel"
+        [(ngModel)]="remainingDoses"
+        name="remainingDoses" />
+      <span matTextSuffix>{{medication()?.doseType?.name || 'doses'}}</span>
+      @if (remainingDosesInput.errors?.['required']) {
+        <mat-error>
+          Please enter an amount of remaining doses
+        </mat-error>
+      }
+      @else if (remainingDosesInput.errors?.['min']) {
+        <mat-error>
+          Please enter at least zero or more remaining doses
+        </mat-error>
+      }
     </mat-form-field>
     <mat-form-field appearance="fill" id="expiryDate">
       <mat-label>Expiry date</mat-label>
       <input
         matInput
         required
-        formControlName="expiryDate"
+        name="expiryDate"
+        [(ngModel)]="expiryDate"
+        #expiryDateInput="ngModel"
         [matDatepicker]="expiryDatePicker" />
       <mat-hint>MM/DD/YYYY</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="expiryDatePicker"></mat-datepicker-toggle>
       <mat-datepicker #expiryDatePicker></mat-datepicker>
+      @if (expiryDateInput.errors?.['required']) {
+        <mat-error>
+          Please enter an amount of remaining doses
+        </mat-error>
+      }
     </mat-form-field>
   </div>
   <div class="actions">
-    <button mat-flat-button color="accent">
-      {{okLabel}}
+    <button
+      mat-flat-button
+      color="accent"
+      [disabled]="form.invalid">
+      {{okLabel()}}
     </button>
-    <button mat-button type="button" (click)="onCancel.emit()">
+    <button mat-button type="button" (click)="cancel.emit()">
       Cancel
     </button>
   </div>

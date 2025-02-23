@@ -9,10 +9,10 @@
     </mediminder-alert>
   }
   <mediminder-cabinet-entry-form
-    [cabinetEntry]="originalCabinetEntry"
+    [cabinetEntry]="originalCabinetEntry()"
     [disableBasicFields]="false"
     okLabel="Add"
-    (onCancel)="cancel()"
-    (onSubmit)="submit($event)">
+    (cancel)="cancel()"
+    (confirm)="submit($event)">
   </mediminder-cabinet-entry-form>
 </mediminder-container>

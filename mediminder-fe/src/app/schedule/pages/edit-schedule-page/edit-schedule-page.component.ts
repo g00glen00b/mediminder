@@ -1,9 +1,8 @@
-import {Component, inject, Input, OnChanges} from '@angular/core';
+import {Component, DestroyRef, inject, input} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {ConfirmationService} from '../../../shared/services/confirmation.service';
 import {ErrorResponse} from '../../../shared/models/error-response';
-import {Schedule} from '../../models/schedule';
 import {ScheduleService} from '../../services/schedule.service';
 import {UpdateScheduleRequest} from '../../models/update-schedule-request';
 import {CreateScheduleRequest} from '../../models/create-schedule-request';
@@ -14,6 +13,8 @@ import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-des
 import {HeroTitleDirective} from '../../../shared/components/hero/hero-title.directive';
 import {MatAnchor} from '@angular/material/button';
 import {ScheduleFormComponent} from '../../components/schedule-form/schedule-form.component';
+import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
+import {switchMap} from 'rxjs';
 
 @Component({
   selector: 'mediminder-edit-schedule-page',
@@ -30,26 +31,25 @@ import {ScheduleFormComponent} from '../../components/schedule-form/schedule-for
   templateUrl: './edit-schedule-page.component.html',
   styleUrl: './edit-schedule-page.component.scss'
 })
-export class EditSchedulePageComponent implements OnChanges {
+export class EditSchedulePageComponent {
+  private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
   private readonly toastr = inject(ToastrService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly scheduleService = inject(ScheduleService);
-  @Input()
-  id!: string;
-  schedule?: Schedule;
-  error?: ErrorResponse;
 
-  ngOnChanges() {
-    this.scheduleService
-      .findById(this.id)
-      .subscribe(schedule => this.schedule = schedule);
-  }
+  id = input.required<string>();
+
+  schedule = toSignal(toObservable(this.id).pipe(
+    takeUntilDestroyed(this.destroyRef),
+    switchMap(id => this.scheduleService.findById(id))
+  ));
+  error?: ErrorResponse;
 
   submit(originalRequest: CreateScheduleRequest) {
     const {interval, period, time, description, dose} = originalRequest;
     const request: UpdateScheduleRequest = {interval, period, time, description, dose};
-    this.scheduleService.update(this.id, request).subscribe({
+    this.scheduleService.update(this.id(), request).subscribe({
       next: entry => {
         this.toastr.success(`Successfully updated schedule for '${entry.medication.name}'`);
         this.router.navigate([`/schedule`]);

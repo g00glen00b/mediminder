@@ -1,4 +1,4 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, input} from '@angular/core';
 import {ContainerComponent} from '../../../shared/components/container/container.component';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
 import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
@@ -12,7 +12,8 @@ import {ToastrService} from 'ngx-toastr';
 import {ErrorResponse} from '../../../shared/models/error-response';
 import {AlertComponent} from '../../../shared/components/alert/alert.component';
 import {CabinetEntryFormComponent} from '../../components/cabinet-entry-form/cabinet-entry-form.component';
-import {CabinetEntry} from '../../models/cabinet-entry';
+import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
+import {filter, switchMap} from 'rxjs';
 
 @Component({
   selector: 'mediminder-create-cabinet-entry-page',
@@ -28,28 +29,21 @@ import {CabinetEntry} from '../../models/cabinet-entry';
   templateUrl: './create-cabinet-entry-page.component.html',
   styleUrl: './create-cabinet-entry-page.component.scss'
 })
-export class CreateCabinetEntryPageComponent implements OnInit {
+export class CreateCabinetEntryPageComponent {
+  private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
   private readonly toastr = inject(ToastrService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly cabinetService = inject(CabinetService);
+  id = input<string>();
+
   error?: ErrorResponse;
-  @Input()
-  id?: string;
-  originalCabinetEntry?: CabinetEntry;
+  originalCabinetEntry = toSignal(toObservable(this.id).pipe(
+    takeUntilDestroyed(this.destroyRef),
+    filter(id => id != null),
+    switchMap(id => this.cabinetService.findById(id))
+  ));
 
-  ngOnInit() {
-    this.initializeDuplicateValues();
-  }
-
-  private initializeDuplicateValues() {
-    if (this.id == undefined) this.originalCabinetEntry = undefined;
-    else {
-      this.cabinetService
-        .findById(this.id)
-        .subscribe(entry => this.originalCabinetEntry = entry);
-    }
-  }
 
   cancel(): void {
     this.confirmationService.show({

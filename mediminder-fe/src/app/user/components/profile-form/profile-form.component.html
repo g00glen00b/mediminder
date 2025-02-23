@@ -8,9 +8,10 @@
       required
       maxlength="128"
       [(ngModel)]="name"
+      #nameInput="ngModel"
       placeholder="Albert Einstein" />
     <mat-hint>Enter your name or nickname</mat-hint>
-    @if (isNameEmpty()) {
+    @if (nameInput.errors?.['required']) {
       <mat-error>
         Please enter your name
       </mat-error>
@@ -25,24 +26,22 @@
       name="timezone"
       maxlength="64"
       [(ngModel)]="timezone"
+      #timezoneElement
+      (input)="timezoneInputValue.set(timezoneElement.value)"
       [matAutocomplete]="timezoneAutocomplete">
     <mat-autocomplete
       autoActiveFirstOption
+      requireSelection
       #timezoneAutocomplete="matAutocomplete">
       @for (timezone of timezones(); track timezone) {
         <mat-option [value]="timezone">{{timezone}}</mat-option>
       }
     </mat-autocomplete>
     <mat-hint>Enter the timezone you live in</mat-hint>
-    @if (isTimezoneNotFromList()) {
-      <mat-error>
-        Please select a valid timezone from the list
-      </mat-error>
-    }
   </mat-form-field>
   <div class="actions">
     <button
-      [disabled]="form.invalid || isTimezoneNotFromList()"
+      [disabled]="form.invalid"
       mat-flat-button
       color="primary">
       {{okLabel()}}

@@ -1,11 +1,11 @@
-import {Component, DestroyRef, EventEmitter, inject, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Component, computed, DestroyRef, inject, input, model, OnChanges, output, signal} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {MedicationService} from '../../../medication/services/medication.service';
 import {getMedicationLabel, Medication} from '../../../medication/models/medication';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {emptyPage} from '../../../shared/models/page';
 import {format, formatISODuration, parseISO} from 'date-fns';
-import {filter, map, mergeMap, startWith, throttleTime} from 'rxjs';
+import {mergeMap, throttleTime} from 'rxjs';
 import {defaultPageRequest} from '../../../shared/models/page-request';
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {
@@ -18,7 +18,6 @@ import {
 } from '../../models/interval';
 import {Schedule} from '../../models/schedule';
 import {removeTimeFromISODuration} from '../../../shared/utils/date-fns-utils';
-import {Period} from '../../models/period';
 import {MatAnchor, MatButton} from '@angular/material/button';
 import {
   MatDatepickerToggle,
@@ -50,7 +49,7 @@ import {RouterLink} from '@angular/router';
     MatOption,
     MatSelect,
     MatSuffix,
-    ReactiveFormsModule,
+    FormsModule,
     MatAnchor,
     RouterLink,
     MatStartDate,
@@ -64,112 +63,75 @@ import {RouterLink} from '@angular/router';
   templateUrl: './schedule-form.component.html',
   styleUrl: './schedule-form.component.scss'
 })
-export class ScheduleFormComponent implements OnInit, OnChanges {
+export class ScheduleFormComponent implements OnChanges {
   private readonly destroyRef = inject(DestroyRef);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly medicationService = inject(MedicationService);
-  form = this.formBuilder.group({
-    medication: this.formBuilder.control<Medication | null>(null, [Validators.required]),
-    period: this.formBuilder.group({
-      startingAt: this.formBuilder.control(new Date(), [Validators.required]),
-      endingAtInclusive: this.formBuilder.control<Date | null>(new Date()),
-    }),
-    interval: this.formBuilder.group({
-      units: this.formBuilder.control(1, [Validators.required, Validators.min(1)]),
-      type: this.formBuilder.control<IntervalType>('Day(s)', [Validators.required]),
-    }),
-    time: this.formBuilder.control(format(new Date(), 'HH:mm'), [Validators.required]),
-    description: this.formBuilder.control('', [Validators.maxLength(256)]),
-    dose: this.formBuilder.control(0, [Validators.required, Validators.min(0)]),
-  });
-  medications = emptyPage<Medication>();
-  intervalTypes = intervalTypes;
-  @Input()
-  okLabel = 'Add';
-  @Input()
-  schedule?: Schedule;
-  @Input()
-  disableBasicFields: boolean = true;
-  @Output()
-  onCancel: EventEmitter<void> = new EventEmitter<void>();
-  @Output()
-  onSubmit: EventEmitter<CreateScheduleRequest> = new EventEmitter<CreateScheduleRequest>();
 
-  ngOnInit() {
-    this.initializeMedications();
-  }
+  okLabel = input('Add');
+  schedule = input<Schedule>()
+  disableBasicFields = input(true);
+  cancel = output<void>();
+  confirm = output<CreateScheduleRequest>();
+
+  medication = model<Medication>();
+  medicationInputValue = signal('');
+  startingAt = model(new Date());
+  endingAtInclusive = model<Date | undefined>(new Date());
+  intervalUnits = model(1);
+  intervalType = model<IntervalType>('Day(s)');
+  time = model(format(new Date(), 'HH:mm'));
+  description = model('');
+  dose = model(0);
+
+  medications = toSignal(toObservable(this.medicationInputValue).pipe(
+    takeUntilDestroyed(this.destroyRef),
+    throttleTime(300),
+    mergeMap(search => this.medicationService.findAll(search || '', defaultPageRequest()))
+  ), {initialValue: emptyPage<Medication>()});
+  intervalTypes = intervalTypes;
+  isoStartingAt = computed(() => format(this.startingAt(), 'yyyy-MM-dd'));
+  isoEndingAtInclusive = computed(() => {
+    if (this.endingAtInclusive()) return format(this.endingAtInclusive()!, 'yyyy-MM-dd');
+    else return undefined
+  });
+  isoInterval = computed(() => {
+    const interval: Interval = {units: this.intervalUnits(), type: this.intervalType()};
+    const duration = intervalToIsoDuration(interval);
+    return removeTimeFromISODuration(formatISODuration(duration));
+  });
+  request = computed<CreateScheduleRequest>(() => ({
+    description: this.description(),
+    dose: this.dose(),
+    interval: this.isoInterval(),
+    medicationId: this.medication()!.id,
+    period: {startingAt: this.isoStartingAt(), endingAtInclusive: this.isoEndingAtInclusive()},
+    time: this.time(),
+  }));
 
   ngOnChanges() {
-    this.form.enable();
-    const interval = this.schedule?.interval ? isoDurationToInterval(this.schedule?.interval) : defaultInterval;
-    const startingAt = this.calculateStartingAt();
-    const endingAtInclusive= this.calculateEndingAtInclusive();
-    this.form.patchValue({
-      medication: this.schedule?.medication || null,
-      period: {startingAt, endingAtInclusive},
-      interval,
-      description: this.schedule?.description,
-      dose: this.schedule?.dose || 0,
-      time: this.schedule?.time || format(new Date(), 'HH:mm')
-    });
-    if (this.disableBasicFields) {
-      this.form.get('medication')!.disable();
-    }
+    const interval = this.schedule()?.interval ? isoDurationToInterval(this.schedule()?.interval!) : defaultInterval;
+    this.medication.set(this.schedule()?.medication);
+    this.startingAt.set(this.calculateStartingAt());
+    this.endingAtInclusive.set(this.calculateEndingAtInclusive());
+    this.intervalUnits.set(interval.units);
+    this.intervalType.set(interval.type);
+    this.time.set(this.schedule()?.time || format(new Date(), 'HH:mm'));
+    this.description.set(this.schedule()?.description || '');
+    this.dose.set(this.schedule()?.dose || 0);
   }
 
-  initializeMedications() {
-    this.form.get('medication')!.valueChanges.pipe(
-      takeUntilDestroyed(this.destroyRef),
-      startWith(''),
-      throttleTime(300),
-      filter(medication => medication == null || typeof medication === 'string'),
-      map(search => search as string | null),
-      mergeMap(search => this.medicationService.findAll(search || '', defaultPageRequest())))
-      .subscribe(medications => this.medications = medications);
-  }
-
-  submit(): void {
-    const description = this.form.get('description')!.value || undefined;
-    const medication = this.form.get('medication')!.value!;
-    const dose = this.form.get('dose')!.value!;
-    const interval = this.calculateISOInterval();
-    const startingAt = this.calculateISOStartingAt();
-    const endingAtInclusive = this.calculateISOEndingAt();
-    const period: Period = {startingAt, endingAtInclusive};
-    const time = this.form.get('time')!.value!;
-    this.onSubmit.emit({medicationId: medication.id, description, dose, interval, period, time});
-  }
-
-  getMedicationLabel(medication: string | Medication | null): string {
+  getMedicationLabel(medication?: string | Medication): string {
     return getMedicationLabel(medication);
   }
 
-  private calculateISOStartingAt() {
-    const startingAtDate = this.form.get('period')!.get('startingAt')!.value!;
-    return format(startingAtDate, 'yyyy-MM-dd');
-  }
-
-  private calculateISOEndingAt(): string | undefined {
-    const endingAtDate = this.form.get('period')!.get('endingAtInclusive')!.value;
-    return endingAtDate == null ? undefined : format(endingAtDate, 'yyyy-MM-dd');
-  }
-
-  private calculateISOInterval(): string {
-    const units = this.form.get('interval')!.get('units')!.value!;
-    const type = this.form.get('interval')!.get('type')!.value!;
-    const interval: Interval = {units, type};
-    const duration = intervalToIsoDuration(interval);
-    return removeTimeFromISODuration(formatISODuration(duration));
-  }
-
   private calculateStartingAt(): Date {
-    if (this.schedule == undefined) return new Date();
-    return parseISO(this.schedule.period.startingAt);
+    if (this.schedule() == undefined) return new Date();
+    return parseISO(this.schedule()!.period.startingAt);
   }
 
   private calculateEndingAtInclusive(): Date | undefined {
-    if (this.schedule == undefined) return new Date();
-    if (this.schedule.period.endingAtInclusive == undefined) return undefined;
-    return parseISO(this.schedule.period.endingAtInclusive);
+    if (this.schedule() == undefined) return new Date();
+    if (this.schedule()!.period.endingAtInclusive == undefined) return undefined;
+    return parseISO(this.schedule()!.period.endingAtInclusive!);
   }
 }

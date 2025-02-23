@@ -1,4 +1,4 @@
-<form [formGroup]="form" (submit)="submit()">
+<form #form="ngForm" (submit)="confirm.emit(request()!)">
   <h2>General</h2>
   <div class="grid">
     <mat-form-field appearance="fill" id="name">
@@ -7,17 +7,29 @@
         matInput
         required
         type="text"
-        formControlName="name" />
+        #nameInput="ngModel"
+        [(ngModel)]="name"
+        name="name" />
+      @if (nameInput.errors?.['required']) {
+        <mat-error>
+          Please select a valid medication type
+        </mat-error>
+      }
     </mat-form-field>
     <mat-form-field appearance="fill" id="medicationType">
       <mat-label>Medication type</mat-label>
-      <mat-select formControlName="medicationType" required>
+      <mat-select
+        name="medicationType"
+        [(ngModel)]="medicationType"
+        [disabled]="disableBasicFields()"
+        #medicationTypeInput="ngModel"
+        required>
         @for (type of medicationTypes().content; track type.id) {
           <mat-option [value]="type.id">{{type.name}}</mat-option>
         }
       </mat-select>
       <mat-hint>Select the type of medication from the list</mat-hint>
-      @if (form.get('medicationType')!.errors?.['required']) {
+      @if (medicationTypeInput.errors?.['required']) {
         <mat-error>
           Please select a valid medication type
         </mat-error>
@@ -25,13 +37,18 @@
     </mat-form-field>
     <mat-form-field appearance="fill" id="administrationType">
       <mat-label>Administration type</mat-label>
-      <mat-select formControlName="administrationType" required>
-        @for (type of administrationTypes.content; track type.id) {
+      <mat-select
+        name="administrationType"
+        [(ngModel)]="administrationType"
+        [disabled]="administrationTypes().totalElements < 2"
+        #administrationTypeInput="ngModel"
+        required>
+        @for (type of administrationTypes().content; track type.id) {
           <mat-option [value]="type.id">{{type.name}}</mat-option>
         }
       </mat-select>
       <mat-hint>Select the type of administration from the list</mat-hint>
-      @if (form.get('administrationType')!.errors?.['required']) {
+      @if (administrationTypeInput.errors?.['required']) {
         <mat-error>
           Please select a valid administration type
         </mat-error>
@@ -44,17 +61,34 @@
         matInput
         required
         min="0"
-        formControlName="dosesPerPackage" />
+        [(ngModel)]="dosesPerPackage"
+        #dosesPerPackageInput="ngModel"
+        name="dosesPerPackage" />
+      @if (dosesPerPackageInput.errors?.['required']) {
+        <mat-error>
+          Please select a valid number of doses per package
+        </mat-error>
+      }
+      @else if (dosesPerPackageInput.errors?.['min']) {
+        <mat-error>
+          Please select a positive number of doses per package
+        </mat-error>
+      }
     </mat-form-field>
     <mat-form-field appearance="fill" id="doseType">
       <mat-label>Dose type</mat-label>
-      <mat-select formControlName="doseType" required>
-        @for (type of doseTypes.content; track type.id) {
+      <mat-select
+        name="doseType"
+        [(ngModel)]="doseType"
+        [disabled]="disableBasicFields() || doseTypes().totalElements < 2"
+        #doseTypeInput="ngModel"
+        required>
+        @for (type of doseTypes().content; track type.id) {
         <mat-option [value]="type.id">{{type.name}}</mat-option>
         }
       </mat-select>
       <mat-hint>Select the type of dose from the list</mat-hint>
-      @if (form.get('doseType')!.errors?.['required']) {
+      @if (doseTypeInput.errors?.['required']) {
         <mat-error>
           Please select a valid dose type
         </mat-error>
@@ -63,14 +97,15 @@
   </div>
   <h2>Color</h2>
   <mediminder-color-picker
-    [value]="form.get('color')!.value!"
-    [disabled]="form.get('color')!.disabled"
-    (valueChange)="form.get('color')!.setValue($event)">
+    [(value)]="color">
   </mediminder-color-picker>
-  <button mat-flat-button color="accent">
-    {{okLabel}}
+  <button
+    mat-flat-button
+    color="accent"
+    [disabled]="form.invalid">
+    {{okLabel()}}
   </button>
-  <button mat-button type="button" (click)="onCancel.emit()">
+  <button mat-button type="button" (click)="cancel.emit()">
     Cancel
   </button>
 </form>

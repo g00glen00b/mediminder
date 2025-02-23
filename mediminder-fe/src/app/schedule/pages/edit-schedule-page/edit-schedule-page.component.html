@@ -5,7 +5,7 @@
 <mediminder-container>
   <mediminder-alert type="info">
     <p>Certain fields cannot be edited because they are generic for all schedules of the same medication.</p>
-    <a mat-button [routerLink]="['/medication', schedule?.medication?.id, 'edit']">Edit the medication</a>
+    <a mat-button [routerLink]="['/medication', schedule()?.medication?.id, 'edit']">Edit the medication</a>
   </mediminder-alert>
   @if (error != undefined) {
     <mediminder-alert type="error">
@@ -13,10 +13,10 @@
     </mediminder-alert>
   }
   <mediminder-schedule-form
-    [schedule]="schedule"
+    [schedule]="schedule()"
     [disableBasicFields]="true"
     okLabel="Edit"
-    (onSubmit)="submit($event)"
-    (onCancel)="cancel()">
+    (confirm)="submit($event)"
+    (cancel)="cancel()">
   </mediminder-schedule-form>
 </mediminder-container>

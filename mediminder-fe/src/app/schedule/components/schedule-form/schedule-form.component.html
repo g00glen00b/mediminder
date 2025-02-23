@@ -1,4 +1,4 @@
-<form [formGroup]="form" (submit)="submit()">
+<form #form="ngForm" (submit)="confirm.emit(request())">
   <div class="grid">
     <mat-form-field appearance="fill" id="medication">
       <mat-label>Medication</mat-label>
@@ -6,9 +6,14 @@
         matInput
         required
         type="text"
-        formControlName="medication"
+        name="medication"
+        [(ngModel)]="medication"
+        #medicationInput="ngModel"
+        #medicationElement
+        (input)="medicationInputValue.set(medicationElement.value)"
+        [disabled]="disableBasicFields()"
         [matAutocomplete]="medicationAutocomplete" />
-      @if (!disableBasicFields) {
+      @if (!disableBasicFields()) {
         <a
           mat-button
           matSuffix
@@ -20,43 +25,68 @@
         #medicationAutocomplete="matAutocomplete"
         requireSelection
         [displayWith]="getMedicationLabel">
-        @for (medication of medications.content; track medication.id) {
+        @for (medication of medications().content; track medication.id) {
           <mat-option [value]="medication">{{medication.name}}</mat-option>
         }
       </mat-autocomplete>
       <mat-hint>Enter the name of the medication</mat-hint>
-      @if (form.get('medication')!.errors?.['required']) {
+      @if (medicationInput.errors?.['required']) {
         <mat-error>
           Please enter a valid medication name
         </mat-error>
       }
     </mat-form-field>
-    <mat-form-field appearance="fill" id="period" formGroupName="period">
+    <mat-form-field appearance="fill" id="period">
       <mat-label>Period</mat-label>
       <mat-date-range-input [rangePicker]="periodPicker">
-        <input matStartDate formControlName="startingAt" />
-        <input matEndDate formControlName="endingAtInclusive" />
+        <input
+          matStartDate
+          [(ngModel)]="startingAt"
+          #startingAtInput="ngModel"
+          required
+          name="startingAt" />
+        <input
+          matEndDate
+          [(ngModel)]="endingAtInclusive"
+          name="endingAtInclusive" />
       </mat-date-range-input>
       <mat-datepicker-toggle matIconSuffix [for]="periodPicker"></mat-datepicker-toggle>
       <mat-date-range-picker #periodPicker></mat-date-range-picker>
       <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
-      @if (form.get('period')?.get('startingAt')!.errors?.['required']) {
+      @if (startingAtInput.errors?.['required']) {
         <mat-error>
           Please enter a starting date
         </mat-error>
       }
     </mat-form-field>
-    <ng-container formGroupName="interval">
+    <ng-container>
       <mat-form-field appearance="fill" id="intervalUnits">
         <mat-label>Every</mat-label>
         <input
           type="number"
           matInput
-          formControlName="units" />
+          min="1"
+          required
+          #intervalUnitsInput="ngModel"
+          [(ngModel)]="intervalUnits"
+          name="units" />
+        @if (intervalUnitsInput.errors?.['min']) {
+          <mat-error>
+            Please enter a positive interval unit
+          </mat-error>
+        }
+        @else if (intervalUnitsInput.errors?.['required']) {
+          <mat-error>
+            Please enter a valid interval unit
+          </mat-error>
+        }
       </mat-form-field>
       <mat-form-field appearance="fill" id="intervalType">
         <mat-label>Every</mat-label>
-        <mat-select formControlName="type">
+        <mat-select
+          name="type"
+          required
+          [(ngModel)]="intervalType">
           @for (type of intervalTypes; track type) {
             <mat-option [value]="type">{{type}}</mat-option>
           }
@@ -67,28 +97,59 @@
       <mat-label>Time</mat-label>
       <input
         matInput
-        formControlName="time"
+        name="time"
+        [(ngModel)]="time"
+        #timeInput="ngModel"
+        required
         type="time" />
+      @if (timeInput.errors?.['required']) {
+        <mat-error>
+          Please enter a valid time
+        </mat-error>
+      }
     </mat-form-field>
     <mat-form-field appearance="fill" id="dose">
       <mat-label>Dose</mat-label>
       <input
         type="number"
         matInput
-        formControlName="dose" />
-      <span matTextSuffix>{{form.get('medication')!.value?.doseType?.name || 'doses'}}</span>
+        [(ngModel)]="dose"
+        #doseInput="ngModel"
+        required
+        min="0"
+        name="dose" />
+      <span matTextSuffix>{{medication()?.doseType?.name || 'doses'}}</span>
+      @if (doseInput.errors?.['required']) {
+        <mat-error>
+          Please enter a valid dose
+        </mat-error>
+      }
+      @else if (doseInput.errors?.['min']) {
+        <mat-error>
+          Please enter a positive dose
+        </mat-error>
+      }
     </mat-form-field>
     <mat-form-field appearance="fill" id="description">
       <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description" rows="3"></textarea>
+      <textarea
+        matInput
+        name="description"
+        rows="3"
+        [(ngModel)]="description"
+        maxlength="256">
+      </textarea>
     </mat-form-field>
   </div>
 
   <div class="actions">
-    <button mat-flat-button color="accent">
-      {{okLabel}}
+    <button
+      mat-flat-button
+      color="accent"
+      [disabled]="form.invalid">
+      {{okLabel()}}
     </button>
-    <button mat-button type="button" (click)="onCancel.emit()">
+    <button mat-button type="button" (click)="cancel.emit()">
       Cancel
     </button>
   </div>

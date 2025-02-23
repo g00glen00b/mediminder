@@ -1,4 +1,4 @@
-import {Component, computed, inject, input, model, OnChanges, output} from '@angular/core';
+import {Component, computed, DestroyRef, inject, input, model, OnChanges, output, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButton} from '@angular/material/button';
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
@@ -7,7 +7,7 @@ import {MatInput} from '@angular/material/input';
 import {UserService} from '../../services/user.service';
 import {UpdateUserRequest} from '../../models/update-user-request';
 import {User} from '../../models/user';
-import {toObservable, toSignal} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {mergeMap, throttleTime} from 'rxjs';
 
 @Component({
@@ -29,19 +29,21 @@ import {mergeMap, throttleTime} from 'rxjs';
   standalone: true,
 })
 export class ProfileFormComponent implements OnChanges {
+  private readonly destroyRef = inject(DestroyRef);
   private readonly userService = inject(UserService);
+
   okLabel = input('Add');
   user = input<User>();
   confirm = output<UpdateUserRequest>();
 
   name = model('');
   timezone = model('');
-  timezones = toSignal(toObservable(this.timezone).pipe(
+  timezoneInputValue = signal('');
+  timezones = toSignal(toObservable(this.timezoneInputValue).pipe(
+    takeUntilDestroyed(this.destroyRef),
     throttleTime(300),
     mergeMap(search => this.userService.findAvailableTimezones(search || ''))
   ), {initialValue: []});
-  isNameEmpty = computed(() => !this.name());
-  isTimezoneNotFromList = computed(() => !this.timezones().includes(this.timezone()));
   request = computed<UpdateUserRequest>(() => ({
     name: this.name(),
     timezone: this.timezone(),

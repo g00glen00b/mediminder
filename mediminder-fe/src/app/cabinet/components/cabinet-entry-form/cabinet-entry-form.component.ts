@@ -1,26 +1,25 @@
-import {Component, DestroyRef, EventEmitter, inject, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Component, computed, DestroyRef, inject, input, model, OnChanges, output, signal} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {MedicationService} from '../../../medication/services/medication.service';
 import {getMedicationLabel, Medication} from '../../../medication/models/medication';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {emptyPage} from '../../../shared/models/page';
-import {filter, map, mergeMap, startWith, throttleTime} from 'rxjs';
+import {mergeMap, throttleTime} from 'rxjs';
 import {defaultPageRequest} from '../../../shared/models/page-request';
 import {format, parseISO} from 'date-fns';
 import {CabinetEntry} from '../../models/cabinet-entry';
-import {CreateCabinetEntryRequest} from '../../models/create-cabinet-entry-request';
 import {MatError, MatFormField, MatHint, MatLabel, MatSuffix} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {MatAnchor, MatButton} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
+import {CreateCabinetEntryRequest} from '../../models/create-cabinet-entry-request';
 
 @Component({
   selector: 'mediminder-cabinet-entry-form',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
     MatFormField,
     MatInput,
     MatAutocompleteTrigger,
@@ -36,66 +35,46 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/m
     MatLabel,
     MatHint,
     MatError,
+    FormsModule,
+
   ],
   templateUrl: './cabinet-entry-form.component.html',
   styleUrl: './cabinet-entry-form.component.scss'
 })
-export class CabinetEntryFormComponent implements OnInit, OnChanges {
+export class CabinetEntryFormComponent implements OnChanges {
   private readonly destroyRef = inject(DestroyRef);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly medicationService = inject(MedicationService);
-  form = this.formBuilder.group({
-    medication: this.formBuilder.control<Medication | null>(null, [Validators.required]),
-    remainingDoses: this.formBuilder.control(0, [Validators.required, Validators.min(0)]),
-    expiryDate: this.formBuilder.control(new Date(), [Validators.required]),
-  });
-  medications = emptyPage<Medication>();
-  @Input()
-  okLabel = 'Add';
-  @Input()
-  cabinetEntry?: CabinetEntry;
-  @Input()
-  disableBasicFields: boolean = true;
-  @Output()
-  onCancel: EventEmitter<void> = new EventEmitter<void>();
-  @Output()
-  onSubmit: EventEmitter<CreateCabinetEntryRequest> = new EventEmitter<CreateCabinetEntryRequest>();
 
-  ngOnInit() {
-    this.initializeMedications();
-  }
+  okLabel = input('Add');
+  cabinetEntry = input<CabinetEntry>();
+  disableBasicFields = input(true);
+  cancel = output<void>();
+  confirm = output<CreateCabinetEntryRequest>();
+
+  medication = model<Medication>();
+  medicationInputValue = signal('');
+  remainingDoses = model(0);
+  expiryDate = model(new Date());
+  medications = toSignal(toObservable(this.medicationInputValue).pipe(
+    takeUntilDestroyed(this.destroyRef),
+    throttleTime(300),
+    mergeMap(search => this.medicationService.findAll(search || '', defaultPageRequest()))
+  ), {initialValue: emptyPage<Medication>()});
+  request = computed<CreateCabinetEntryRequest | undefined>(() => {
+    const medicationId = this.medication()?.id;
+    const remainingDoses = this.remainingDoses();
+    const expiryDate = format(this.expiryDate(), 'yyyy-MM-dd');
+    return medicationId == null ? undefined : {medicationId, remainingDoses, expiryDate};
+  });
+
 
   ngOnChanges() {
-    this.form.enable();
-    this.form.patchValue({
-      medication: this.cabinetEntry?.medication,
-      remainingDoses: this.cabinetEntry?.remainingDoses || 0,
-      expiryDate: this.cabinetEntry?.expiryDate == undefined ? undefined : parseISO(this.cabinetEntry.expiryDate)
-    });
-    if (this.disableBasicFields) {
-      this.form.get('medication')!.disable();
-    }
+    this.medication.set(this.cabinetEntry()?.medication);
+    this.remainingDoses.set(this.cabinetEntry()?.remainingDoses || 0);
+    this.expiryDate.set(this.cabinetEntry()?.expiryDate == undefined ? new Date() : parseISO(this.cabinetEntry()!.expiryDate));
   }
 
-  initializeMedications() {
-    this.form.get('medication')!.valueChanges.pipe(
-      takeUntilDestroyed(this.destroyRef),
-      startWith(''),
-      throttleTime(300),
-      filter(medication => medication == null || typeof medication === 'string'),
-      map(search => search as string | null),
-      mergeMap(search => this.medicationService.findAll(search || '', defaultPageRequest())))
-      .subscribe(medications => this.medications = medications);
-  }
-
-  submit(): void {
-    const expiryDate = format(this.form.get('expiryDate')!.value!, 'yyyy-MM-dd');
-    const remainingDoses = this.form.get('remainingDoses')!.value!;
-    const medication = this.form.get('medication')!.value!;
-    this.onSubmit.emit({medicationId: medication.id, expiryDate, remainingDoses});
-  }
-
-  getMedicationLabel(medication: string | Medication | null): string {
+  getMedicationLabel(medication?: string | Medication): string {
     return getMedicationLabel(medication);
   }
 }

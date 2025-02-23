@@ -1,20 +1,23 @@
-import {computed, Directive, ElementRef, inject, input, output} from '@angular/core';
+import {computed, DestroyRef, Directive, ElementRef, inject, input, output} from '@angular/core';
 import {combineLatestWith, filter, fromEvent, map, switchMap, zip} from "rxjs";
 import {SwipeGesture} from "../models/swipe-gesture";
-import {toObservable} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 
 @Directive({
     selector: '[swipeGesture]',
     standalone: true
 })
 export class SwipeGestureDirective {
+  private readonly destroyRef = inject(DestroyRef);
   private readonly el = inject(ElementRef);
+
   swipeTarget = input<'element' | 'document'>('element');
   minimumSwipeDistance = input(100);
   swipeLeft = output<SwipeGesture>();
   swipeRight = output<SwipeGesture>();
   swipeUp = output<SwipeGesture>();
   swipeDown = output<SwipeGesture>();
+
   element = computed<Element>(() => this.swipeTarget() === 'document' ? document : this.el.nativeElement);
 
 
@@ -22,6 +25,7 @@ export class SwipeGestureDirective {
     if (this.isTouchSupported()) {
       toObservable(this.element)
         .pipe(
+          takeUntilDestroyed(this.destroyRef),
           switchMap(element => zip(
             fromEvent<TouchEvent>(element, 'touchstart'),
             fromEvent<TouchEvent>(element, 'touchend'))),

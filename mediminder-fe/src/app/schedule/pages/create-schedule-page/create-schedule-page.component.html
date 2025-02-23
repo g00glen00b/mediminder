@@ -9,10 +9,10 @@
     </mediminder-alert>
   }
   <mediminder-schedule-form
-    [schedule]="originalSchedule"
+    [schedule]="originalSchedule()"
     [disableBasicFields]="false"
     okLabel="Add"
-    (onCancel)="cancel()"
-    (onSubmit)="submit($event)">
+    (cancel)="cancel()"
+    (confirm)="submit($event)">
   </mediminder-schedule-form>
 </mediminder-container>

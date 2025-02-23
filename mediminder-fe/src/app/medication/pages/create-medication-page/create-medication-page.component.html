@@ -9,9 +9,9 @@
     </mediminder-alert>
   }
   <mediminder-medication-form
-    [medication]="originalMedication"
+    [medication]="originalMedication()"
     [disableBasicFields]="false"
-    (onSubmit)="submit($event)"
-    (onCancel)="cancel()">
+    (confirm)="submit($event)"
+    (cancel)="cancel()">
   </mediminder-medication-form>
 </mediminder-container>
