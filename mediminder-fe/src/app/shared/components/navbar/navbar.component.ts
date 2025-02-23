@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, output} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
@@ -16,6 +16,5 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     ]
 })
 export class NavbarComponent {
-  @Output()
-  menuToggle: EventEmitter<void> = new EventEmitter<void>();
+  menuToggle = output<void>();
 }
