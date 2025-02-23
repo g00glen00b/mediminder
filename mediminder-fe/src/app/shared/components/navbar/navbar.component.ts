@@ -5,15 +5,15 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 
 @Component({
-    selector: 'mediminder-navbar',
-    templateUrl: './navbar.component.html',
-    styleUrls: ['./navbar.component.scss'],
-    imports: [
-        MatToolbarModule,
-        MatButtonModule,
-        MatIconModule,
-        RouterLink,
-    ]
+  selector: 'mediminder-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss'],
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    RouterLink,
+  ]
 })
 export class NavbarComponent {
   menuToggle = output<void>();
