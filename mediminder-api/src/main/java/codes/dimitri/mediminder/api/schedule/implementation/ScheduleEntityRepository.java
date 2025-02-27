@@ -1,5 +1,6 @@
 package codes.dimitri.mediminder.api.schedule.implementation;
 
+import codes.dimitri.mediminder.api.schedule.UserScheduledMedicationDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,12 +24,12 @@ interface ScheduleEntityRepository extends JpaRepository<ScheduleEntity, UUID> {
     List<ScheduleEntity> findAllByUserIdWithDateInPeriod(UUID userId, LocalDate date);
 
     @Query("""
-        select distinct s.userId, s.medicationId
+        select distinct new codes.dimitri.mediminder.api.schedule.UserScheduledMedicationDTO(s.userId, s.medicationId)
         from ScheduleEntity s
         where s.period.startingAt <= ?1
         and (s.period.endingAtInclusive is null or s.period.endingAtInclusive >= ?1)
     """)
-    Page<UserScheduledMedication> findAllWithUserScheduledMedicationOnDate(LocalDate date, Pageable pageable);
+    Page<UserScheduledMedicationDTO> findAllWithUserScheduledMedicationOnDate(LocalDate date, Pageable pageable);
 
     @Query("""
     select s from ScheduleEntity s

@@ -14,6 +14,6 @@ class ZoneIdConverter implements AttributeConverter<ZoneId, String> {
 
     @Override
     public ZoneId convertToEntityAttribute(String dbData) {
-        return ZoneId.of(dbData);
+        return dbData == null ? null : ZoneId.of(dbData);
     }
 }

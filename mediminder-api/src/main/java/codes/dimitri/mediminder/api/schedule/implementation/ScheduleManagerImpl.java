@@ -123,9 +123,7 @@ class ScheduleManagerImpl implements ScheduleManager {
 
     @Override
     public Page<UserScheduledMedicationDTO> findAllUserScheduledMedicationOnDate(@NotNull LocalDate targetDate, @NotNull Pageable pageable) {
-        return repository
-            .findAllWithUserScheduledMedicationOnDate(targetDate, pageable)
-            .map(mapper::toUserScheduledMedicationDTO);
+        return repository.findAllWithUserScheduledMedicationOnDate(targetDate, pageable);
     }
 
     @Override

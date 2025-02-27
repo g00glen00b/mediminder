@@ -40,7 +40,10 @@ public interface UserManager {
     UserDTO updateCredentials(@Valid UpdateCredentialsRequestDTO request);
 
     @Transactional
-    void requestResetCredentials(@Email @NotBlank String email);
+    void requestResetCredentials(
+        @NotBlank(message = "E-mail is required")
+        @Email(message = "E-mail must be a valid e-mail address")
+        String email);
 
     @Transactional
     void resetCredentials(@Valid ResetCredentialsRequestDTO request);

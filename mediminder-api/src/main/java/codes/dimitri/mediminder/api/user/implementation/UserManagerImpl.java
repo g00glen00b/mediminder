@@ -30,6 +30,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 class UserManagerImpl implements UserManager {
     private static final ZoneId DEFAULT_TIMEZONE = ZoneId.of("UTC");
+    public static final RandomStringUtils RANDOM_STRING_UTILS = RandomStringUtils.secureStrong();
     private final UserEntityRepository repository;
     private final UserEntityMapper mapper;
     private final PasswordEncoder passwordEncoder;
@@ -171,7 +172,9 @@ class UserManagerImpl implements UserManager {
 
     @Override
     @Transactional
-    public void requestResetCredentials(@Email @NotBlank String email) {
+    public void requestResetCredentials(
+        @NotBlank(message = "E-mail is required")
+        @Email(message = "E-mail must be a valid e-mail address") String email) {
         UserEntity entity = findEntityByEmail(email);
         String passwordResetCode = createRandomCode();
         validateUniquePasswordResetCode(passwordResetCode);
@@ -202,6 +205,6 @@ class UserManagerImpl implements UserManager {
     }
 
     private static String createRandomCode() {
-        return RandomStringUtils.randomAlphanumeric(32);
+        return RANDOM_STRING_UTILS.nextAlphanumeric(32);
     }
 }
