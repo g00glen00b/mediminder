@@ -18,7 +18,7 @@ public interface UserManager {
     Optional<UserDTO> findCurrentUser();
 
     @Transactional
-    UserDTO register(@Valid RegisterUserRequestDTO request);
+    UserDTO register(@Valid @NotNull RegisterUserRequestDTO request);
 
     @Transactional
     UserDTO verify(@NotNull String verificationCode);
@@ -31,13 +31,13 @@ public interface UserManager {
         @Email(message = "E-mail must be a valid e-mail address")
         String email);
 
-    LocalDateTime calculateTodayForUser(UUID id);
+    LocalDateTime calculateTodayForUser(@NotNull UUID id);
 
     @Transactional
-    UserDTO update(@Valid UpdateUserRequestDTO request);
+    UserDTO update(@Valid @NotNull UpdateUserRequestDTO request);
 
     @Transactional
-    UserDTO updateCredentials(@Valid UpdateCredentialsRequestDTO request);
+    UserDTO updateCredentials(@Valid @NotNull UpdateCredentialsRequestDTO request);
 
     @Transactional
     void requestResetCredentials(
@@ -46,5 +46,5 @@ public interface UserManager {
         String email);
 
     @Transactional
-    void resetCredentials(@Valid ResetCredentialsRequestDTO request);
+    void resetCredentials(@Valid @NotNull ResetCredentialsRequestDTO request);
 }

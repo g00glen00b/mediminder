@@ -70,6 +70,12 @@ class UserManagerImplTest {
                true
             ));
         }
+
+        @Test
+        void failsIfIdNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findById(null));
+        }
     }
 
     @Nested
@@ -207,6 +213,12 @@ class UserManagerImplTest {
         }
 
         @Test
+        void failsIfRequestNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.register(null));
+        }
+
+        @Test
         void failsIfEmailNotGiven() {
             var request = new RegisterUserRequestDTO(
                 null,
@@ -304,6 +316,12 @@ class UserManagerImplTest {
                 .isThrownBy(() -> manager.verify("unknown"))
                 .withMessage("There is no user with this verification code");
         }
+
+        @Test
+        void failsIfNoVerificationCodeGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.verify(null));
+        }
     }
 
     @Nested
@@ -400,6 +418,12 @@ class UserManagerImplTest {
             LocalDateTime result = manager.calculateTodayForUser(id);
             assertThat(result).isEqualTo(expectedResult);
         }
+
+        @Test
+        void failsIfIdNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.calculateTodayForUser(null));
+        }
     }
 
     @Nested
@@ -468,6 +492,12 @@ class UserManagerImplTest {
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.update(request))
                 .withMessageContaining("Name should not contain more than 128 characters");
+        }
+
+        @Test
+        void failsIfRequestNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.update(null));
         }
     }
 
@@ -547,6 +577,12 @@ class UserManagerImplTest {
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.updateCredentials(request))
                 .withMessageContaining("New password is required");
+        }
+
+        @Test
+        void failsIfRequestNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.updateCredentials(null));
         }
     }
 
@@ -660,6 +696,12 @@ class UserManagerImplTest {
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.resetCredentials(request))
                 .withMessageContaining("New password is required");
+        }
+
+        @Test
+        void failsIfRequestNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.resetCredentials(null));
         }
     }
 }

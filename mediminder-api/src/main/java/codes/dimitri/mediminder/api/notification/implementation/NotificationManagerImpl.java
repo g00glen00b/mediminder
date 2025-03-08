@@ -27,7 +27,7 @@ class NotificationManagerImpl implements NotificationManager {
 
     @Override
     @Transactional
-    public void subscribe(@Valid CreateSubscriptionRequestDTO request) {
+    public void subscribe(@Valid @NotNull CreateSubscriptionRequestDTO request) {
         UserDTO user = findCurrentUser();
         subscriptionRepository.findById(user.id())
             .ifPresentOrElse(
@@ -59,7 +59,7 @@ class NotificationManagerImpl implements NotificationManager {
     }
 
     @Override
-    public Page<NotificationDTO> findAll(Pageable pageable) {
+    public Page<NotificationDTO> findAll(@NotNull Pageable pageable) {
         UserDTO user = findCurrentUser();
         return repository
             .findAllActiveByUserId(user.id(), pageable)

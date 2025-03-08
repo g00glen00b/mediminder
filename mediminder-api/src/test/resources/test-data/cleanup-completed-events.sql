@@ -1,0 +1,1 @@
+delete from completed_event;

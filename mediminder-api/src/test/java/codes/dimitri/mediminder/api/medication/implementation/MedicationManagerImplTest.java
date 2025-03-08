@@ -200,6 +200,12 @@ class MedicationManagerImplTest {
         }
 
         @Test
+        void failsIfNoRequest() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.createForCurrentUser(null));
+        }
+
+        @Test
         void failsIfNameNotGiven() {
             var request = new CreateMedicationRequestDTO(
                 "",
@@ -209,14 +215,6 @@ class MedicationManagerImplTest {
                 new BigDecimal("60"),
                 Color.YELLOW
             );
-            var user = new UserDTO(
-                UUID.randomUUID(),
-                "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
-            );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessageContaining("Name is required");
@@ -232,14 +230,6 @@ class MedicationManagerImplTest {
                 new BigDecimal("60"),
                 Color.YELLOW
             );
-            var user = new UserDTO(
-                UUID.randomUUID(),
-                "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
-            );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessageContaining("Name cannot contain more than 128 characters");
@@ -255,14 +245,6 @@ class MedicationManagerImplTest {
                 new BigDecimal("60"),
                 Color.YELLOW
             );
-            var user = new UserDTO(
-                UUID.randomUUID(),
-                "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
-            );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessageContaining("Medication type is required");
@@ -278,14 +260,6 @@ class MedicationManagerImplTest {
                 new BigDecimal("60"),
                 Color.YELLOW
             );
-            var user = new UserDTO(
-                UUID.randomUUID(),
-                "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
-            );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessageContaining("Administration type is required");
@@ -301,14 +275,6 @@ class MedicationManagerImplTest {
                 new BigDecimal("60"),
                 Color.YELLOW
             );
-            var user = new UserDTO(
-                UUID.randomUUID(),
-                "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
-            );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessageContaining("Dose type is required");
@@ -324,14 +290,6 @@ class MedicationManagerImplTest {
                 null,
                 Color.YELLOW
             );
-            var user = new UserDTO(
-                UUID.randomUUID(),
-                "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
-            );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessageContaining("The amount of doses per package is required");
@@ -347,14 +305,6 @@ class MedicationManagerImplTest {
                 new BigDecimal("-10"),
                 Color.YELLOW
             );
-            var user = new UserDTO(
-                UUID.randomUUID(),
-                "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
-            );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessageContaining("The amount of doses per package must be zero or positive");
@@ -370,14 +320,6 @@ class MedicationManagerImplTest {
                 new BigDecimal("60"),
                 null
             );
-            var user = new UserDTO(
-                UUID.randomUUID(),
-                "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
-            );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessageContaining("The color is required");
@@ -416,6 +358,12 @@ class MedicationManagerImplTest {
             assertThat(manager.findAllForCurrentUser("ibu", pageRequest))
                 .extracting(MedicationDTO::name)
                 .containsExactly("Ibuprofen 400mg");
+        }
+
+        @Test
+        void failsIfNoPageRequest() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findAllForCurrentUser("ibu", null));
         }
 
         @Test
@@ -459,6 +407,12 @@ class MedicationManagerImplTest {
         }
 
         @Test
+        void failsIfNoIDGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findByIdForCurrentUser(null));
+        }
+
+        @Test
         void failsIfNoCurrentUser() {
             var id = UUID.fromString("4579fa76-1edc-4113-b521-2167713a3636");
             assertThatExceptionOfType(InvalidMedicationException.class)
@@ -482,6 +436,20 @@ class MedicationManagerImplTest {
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             var userId = UUID.fromString("00000000-0000-0000-0000-000000000000");
             assertThat(manager.findByIdAndUserId(id, userId)).isEmpty();
+        }
+
+        @Test
+        void failsIfNoIdGiven() {
+            var userId = UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124");
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findByIdAndUserId(null, userId));
+        }
+
+        @Test
+        void failsIfNoUserIdGiven() {
+            var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findByIdAndUserId(id, null));
         }
     }
 
@@ -540,6 +508,12 @@ class MedicationManagerImplTest {
             manager.deleteByIdForCurrentUser(id);
             var event = events.stream(MedicationDeletedEvent.class).findAny();
             assertThat(event).contains(new MedicationDeletedEvent(id));
+        }
+
+        @Test
+        void failsIfNoIdGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.deleteByIdForCurrentUser(null));
         }
     }
 
@@ -693,6 +667,26 @@ class MedicationManagerImplTest {
         }
 
         @Test
+        void failsIfIdNotGiven() {
+            var request = new UpdateMedicationRequestDTO(
+                "Dafalgan 1g (50)",
+                "ORAL",
+                "CAPSULE",
+                new BigDecimal("60"),
+                Color.YELLOW
+            );
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.updateForCurrentUser(null, request));
+        }
+
+        @Test
+        void failsIfRequestNotGiven() {
+            var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.updateForCurrentUser(id, null));
+        }
+
+        @Test
         void failsIfNameNotGiven() {
             var request = new UpdateMedicationRequestDTO(
                 null,
@@ -762,7 +756,7 @@ class MedicationManagerImplTest {
         }
 
         @Test
-        void failsIfDoseTYpeNotGiven() {
+        void failsIfDoseTypeNotGiven() {
             var request = new UpdateMedicationRequestDTO(
                 "Dafalgan 1g (50)",
                 "ORAL",

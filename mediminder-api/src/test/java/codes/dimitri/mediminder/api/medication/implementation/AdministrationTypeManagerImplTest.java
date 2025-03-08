@@ -3,6 +3,7 @@ package codes.dimitri.mediminder.api.medication.implementation;
 import codes.dimitri.mediminder.api.medication.AdministrationTypeDTO;
 import codes.dimitri.mediminder.api.medication.AdministrationTypeManager;
 import codes.dimitri.mediminder.api.user.UserManager;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @ApplicationModuleTest
 @TestPropertySource(properties = {
@@ -39,6 +41,19 @@ class AdministrationTypeManagerImplTest {
                 new AdministrationTypeDTO("ORAL", "Oral"),
                 new AdministrationTypeDTO("SUBLINGUAL", "Sublingual (Under the tongue)")
             );
+        }
+
+        @Test
+        void failsIfMedicationTypeNotGiven() {
+            var pageRequest = PageRequest.of(0, 10);
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findAllByMedicationTypeId(null, pageRequest));
+        }
+
+        @Test
+        void failsIfPageRequestNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findAllByMedicationTypeId("CAPSULE", null));
         }
     }
 }

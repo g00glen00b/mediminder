@@ -9,16 +9,19 @@ import codes.dimitri.mediminder.api.schedule.ScheduleManager;
 import codes.dimitri.mediminder.api.schedule.SchedulePeriodDTO;
 import codes.dimitri.mediminder.api.user.UserDTO;
 import codes.dimitri.mediminder.api.user.UserManager;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 class PlannerManagerImpl implements PlannerManager {
@@ -28,7 +31,7 @@ class PlannerManagerImpl implements PlannerManager {
     private final UserManager userManager;
 
     @Override
-    public Page<MedicationPlannerDTO> findAll(LocalDate targetDate, Pageable pageable) {
+    public Page<MedicationPlannerDTO> findAll(@NotNull LocalDate targetDate, @NotNull Pageable pageable) {
         UserDTO user = findCurrentUser();
         LocalDate today = userManager.calculateTodayForUser(user.id()).toLocalDate();
         SchedulePeriodDTO period = new SchedulePeriodDTO(today, targetDate);

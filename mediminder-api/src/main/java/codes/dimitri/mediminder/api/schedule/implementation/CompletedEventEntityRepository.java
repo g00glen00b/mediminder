@@ -12,4 +12,5 @@ interface CompletedEventEntityRepository extends JpaRepository<CompletedEventEnt
     @Query("select e from CompletedEventEntity e where e.userId = ?1 and e.targetDate >= ?2 and e.targetDate < ?3")
     List<CompletedEventEntity> findByUserIdAndTargetDate(UUID userId, LocalDateTime targetDateStart, LocalDateTime targetDateEnd);
     Optional<CompletedEventEntity> findByIdAndUserId(UUID id, UUID userId);
+    boolean existsByScheduleIdAndTargetDate(UUID scheduleId, LocalDateTime targetDate);
 }

@@ -36,5 +36,5 @@ public interface CabinetEntryManager {
     @Transactional
     void addDosesByMedicationId(@NotNull UUID medicationId, @NotNull @PositiveOrZero BigDecimal doses);
 
-    Page<CabinetEntryDTO> findAllNonEmptyWithExpiryDateBefore(@NotNull LocalDate targetDate, Pageable pageable);
+    Page<CabinetEntryDTO> findAllNonEmptyWithExpiryDateBefore(@NotNull LocalDate targetDate, @NotNull Pageable pageable);
 }

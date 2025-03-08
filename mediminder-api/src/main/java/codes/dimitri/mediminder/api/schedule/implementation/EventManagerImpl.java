@@ -49,11 +49,13 @@ class EventManagerImpl implements EventManager {
         LocalDateTime today = userManager.calculateTodayForUser(user.id());
         ScheduleEntity schedule = findScheduleEntity(scheduleId, user);
         MedicationDTO medication = findMedicationOrThrowException(schedule.getMedicationId());
+        LocalDateTime targetDateTime = LocalDateTime.of(targetDate, schedule.getTime());
         if (!schedule.isHappeningAt(targetDate)) throw new EventNotFoundException(scheduleId, targetDate);
+        validateNotYetCompleted(scheduleId, targetDateTime);
         CompletedEventEntity entity = new CompletedEventEntity(
             user.id(),
             schedule,
-            LocalDateTime.of(targetDate, schedule.getTime()),
+            targetDateTime,
             today,
             schedule.getDose()
         );
@@ -147,4 +149,9 @@ class EventManagerImpl implements EventManager {
             .orElseThrow(() -> new InvalidEventException("Medication is not found"));
     }
 
+    private void validateNotYetCompleted(UUID scheduleId, LocalDateTime targetDate) {
+        if (repository.existsByScheduleIdAndTargetDate(scheduleId, targetDate)) {
+            throw new InvalidEventException("Event is already completed");
+        }
+    }
 }

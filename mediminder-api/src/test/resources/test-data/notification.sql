@@ -1,5 +1,5 @@
 insert into notification (id, user_id, type, initiator_id, title, message, delete_at, active) values
-    ('db1a169c-376d-4d77-8d3d-17962911d468', '329b4906-af8e-4dfc-8516-781b3d5bef72', 'CABINET_ENTRY_EXPIRED', '6ea65093-ce6f-4869-857a-184e7281e0b0', 'Title 1', 'Message 1', '2024-06-01 10:00:00', true),
-    ('3dd0fd05-baee-4445-b9ec-432cf4b8f13d', '329b4906-af8e-4dfc-8516-781b3d5bef72', 'CABINET_ENTRY_EXPIRED', '33d86efb-1a3a-452c-8711-39b02ad77941', 'Title 2', 'Message 2', '2024-06-02 10:00:00', true),
-    ('c92bab88-37ce-494b-a5ff-46ce0c2cff31', '329b4906-af8e-4dfc-8516-781b3d5bef72', 'CABINET_ENTRY_ALMOST_EXPIRED', '6ea65093-ce6f-4869-857a-184e7281e0b0', 'Title 3', 'Message 3', '2024-06-03 10:00:00', false),
-    ('bf844a6a-7d75-44a6-ab06-67757304f124', '7024a2ff-a3e7-4374-91de-975993089acb', 'CABINET_ENTRY_EXPIRED', '04e33817-6fb7-44bc-b250-04ffc015125e', 'Title 4', 'Message 4', '2024-06-04 10:00:00', true);
+    ('db1a169c-376d-4d77-8d3d-17962911d468', '3743a8f7-3e0d-4c06-baa4-cc86096dce40', 'CABINET_ENTRY_EXPIRED', '6ea65093-ce6f-4869-857a-184e7281e0b0', 'Title 1', 'Message 1', '2024-06-01 10:00:00', true),
+    ('3dd0fd05-baee-4445-b9ec-432cf4b8f13d', '3743a8f7-3e0d-4c06-baa4-cc86096dce40', 'CABINET_ENTRY_EXPIRED', '33d86efb-1a3a-452c-8711-39b02ad77941', 'Title 2', 'Message 2', '2024-06-02 10:00:00', true),
+    ('c92bab88-37ce-494b-a5ff-46ce0c2cff31', '3743a8f7-3e0d-4c06-baa4-cc86096dce40', 'CABINET_ENTRY_ALMOST_EXPIRED', '6ea65093-ce6f-4869-857a-184e7281e0b0', 'Title 3', 'Message 3', '2024-06-03 10:00:00', false),
+    ('bf844a6a-7d75-44a6-ab06-67757304f124', 'c1c819e4-0970-444f-95ed-c56f770d84e3', 'CABINET_ENTRY_EXPIRED', '04e33817-6fb7-44bc-b250-04ffc015125e', 'Title 4', 'Message 4', '2024-06-04 10:00:00', true);

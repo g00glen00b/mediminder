@@ -174,7 +174,7 @@ class CabinetEntryManagerImpl implements CabinetEntryManager {
     }
 
     @Override
-    public Page<CabinetEntryDTO> findAllNonEmptyWithExpiryDateBefore(LocalDate targetDate, Pageable pageable) {
+    public Page<CabinetEntryDTO> findAllNonEmptyWithExpiryDateBefore(@NotNull LocalDate targetDate, @NotNull Pageable pageable) {
         return repository
             .findAllWithRemainingDosesWithExpiryDateBefore(targetDate, pageable)
             .map(this::mapEntityToDTO);

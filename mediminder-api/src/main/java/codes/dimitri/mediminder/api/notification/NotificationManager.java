@@ -10,12 +10,12 @@ import java.util.UUID;
 
 public interface NotificationManager {
     @Transactional
-    void subscribe(@Valid CreateSubscriptionRequestDTO request);
+    void subscribe(@Valid @NotNull CreateSubscriptionRequestDTO request);
 
     @Transactional
     void unsubscribe();
 
-    Page<NotificationDTO> findAll(Pageable pageable);
+    Page<NotificationDTO> findAll(@NotNull Pageable pageable);
 
     @Transactional
     void delete(@NotNull UUID id);

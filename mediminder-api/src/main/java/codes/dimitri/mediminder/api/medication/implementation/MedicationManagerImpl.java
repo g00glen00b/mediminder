@@ -87,7 +87,7 @@ class MedicationManagerImpl implements MedicationManager {
 
     @Override
     @Transactional
-    public MedicationDTO updateForCurrentUser(@NotNull UUID id, @Valid UpdateMedicationRequestDTO request) {
+    public MedicationDTO updateForCurrentUser(@NotNull UUID id, @NotNull @Valid UpdateMedicationRequestDTO request) {
         UserDTO currentUser = findCurrentUser();
         MedicationEntity entity = findEntity(id, currentUser);
         DoseTypeEntity doseType = findDoseType(entity.getMedicationType().getId(), request.doseTypeId());

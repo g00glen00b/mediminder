@@ -196,6 +196,12 @@ class CabinetEntryManagerImplTest {
         }
 
         @Test
+        void failsIfRequestNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.createForCurrentUser(null));
+        }
+
+        @Test
         void failsIfMedicationIsNotGiven() {
             var request = new CreateCabinetEntryRequestDTO(
                 null,
@@ -320,6 +326,12 @@ class CabinetEntryManagerImplTest {
                 )
             );
         }
+
+        @Test
+        void failsIfPageableNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findAllForCurrentUser(null));
+        }
     }
 
     @Nested
@@ -408,6 +420,12 @@ class CabinetEntryManagerImplTest {
             assertThatExceptionOfType(CabinetEntryNotFoundException.class)
                 .isThrownBy(() -> manager.findByIdForCurrentUser(id))
                 .withMessage("Cabinet entry with ID '1571fd59-d40d-4db1-8739-8830bc67516f' does not exist");
+        }
+
+        @Test
+        void failsIfIdNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findByIdForCurrentUser(null));
         }
     }
 
@@ -590,6 +608,23 @@ class CabinetEntryManagerImplTest {
         }
 
         @Test
+        void failsIfIdNotGiven() {
+            var request = new UpdateCabinetEntryRequestDTO(
+                new BigDecimal("10"),
+                LocalDate.of(2025, 6, 30)
+            );
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.updateForCurrentUser(null, request));
+        }
+
+        @Test
+        void failsIfRequestNotGiven() {
+            var id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.updateForCurrentUser(id, null));
+        }
+
+        @Test
         void failsIfRemainingDosesNotGiven() {
             var request = new UpdateCabinetEntryRequestDTO(
                 null,
@@ -720,6 +755,12 @@ class CabinetEntryManagerImplTest {
                 .isThrownBy(() -> manager.deleteForCurrentUser(id))
                 .withMessage("Cabinet entry with ID '1571fd59-d40d-4db1-8739-8830bc67516f' does not exist");
         }
+
+        @Test
+        void failsIfIdNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.deleteForCurrentUser(null));
+        }
     }
 
     @Nested
@@ -735,6 +776,12 @@ class CabinetEntryManagerImplTest {
             BigDecimal result = manager.calculateTotalRemainingDosesByMedicationId(medicationId);
             assertThat(result).isEqualTo(expected);
         }
+
+        @Test
+        void failsIfIdNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.calculateTotalRemainingDosesByMedicationId(null));
+        }
     }
 
     @Nested
@@ -749,6 +796,12 @@ class CabinetEntryManagerImplTest {
             var pageRequest = PageRequest.of(0, 10);
             manager.deleteAllByMedicationId(medicationId);
             assertThat(repository.findAllByUserId(userId, pageRequest)).hasSize(expectedSize);
+        }
+
+        @Test
+        void failsIfIdNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.deleteAllByMedicationId(null));
         }
     }
 
@@ -786,6 +839,24 @@ class CabinetEntryManagerImplTest {
                 .isThrownBy(() -> manager.subtractDosesByMedicationId(medicationId, new BigDecimal("100")))
                 .withMessage("There are not enough available doses in your cabinet");
         }
+
+        @Test
+        void failsIfIdNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.subtractDosesByMedicationId(null, new BigDecimal("5")));
+        }
+
+        @Test
+        void failsIfDosesNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.subtractDosesByMedicationId(UUID.randomUUID(), null));
+        }
+
+        @Test
+        void failsIfDosesNegative() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.subtractDosesByMedicationId(UUID.randomUUID(), new BigDecimal("-5")));
+        }
     }
 
     @Nested
@@ -811,6 +882,24 @@ class CabinetEntryManagerImplTest {
             Page<CabinetEntryEntity> results = repository.findAllByMedicationId(medicationId, pageRequest);
             assertThat(results).isEmpty();
         }
+
+        @Test
+        void failsIfMedicationIdNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.addDosesByMedicationId(null, new BigDecimal("5")));
+        }
+
+        @Test
+        void failsIfDosesNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.addDosesByMedicationId(UUID.randomUUID(), null));
+        }
+
+        @Test
+        void failsIfDosesNegative() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.addDosesByMedicationId(UUID.randomUUID(), new BigDecimal("-5")));
+        }
     }
 
     @Nested
@@ -826,6 +915,18 @@ class CabinetEntryManagerImplTest {
             var pageRequest = PageRequest.of(0, 10);
             Page<CabinetEntryDTO> results = manager.findAllNonEmptyWithExpiryDateBefore(targetDate, pageRequest);
             assertThat(results).hasSize(expectedSize);
+        }
+
+        @Test
+        void failsIfTargetDateNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findAllNonEmptyWithExpiryDateBefore(null, PageRequest.of(0, 10)));
+        }
+
+        @Test
+        void failsIfPageableNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findAllNonEmptyWithExpiryDateBefore(LocalDate.now(), null));
         }
     }
 }

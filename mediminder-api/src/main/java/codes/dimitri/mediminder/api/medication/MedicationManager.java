@@ -23,5 +23,5 @@ public interface MedicationManager {
     void deleteByIdForCurrentUser(@NotNull UUID id);
 
     @Transactional
-    MedicationDTO updateForCurrentUser(@NotNull UUID id, @Valid UpdateMedicationRequestDTO request);
+    MedicationDTO updateForCurrentUser(@NotNull UUID id, @Valid @NotNull UpdateMedicationRequestDTO request);
 }

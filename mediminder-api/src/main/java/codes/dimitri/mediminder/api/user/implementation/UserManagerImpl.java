@@ -68,7 +68,7 @@ class UserManagerImpl implements UserManager {
 
     @Override
     @Transactional
-    public UserDTO register(@Valid RegisterUserRequestDTO request) {
+    public UserDTO register(@Valid @NotNull RegisterUserRequestDTO request) {
         validateUniqueEmail(request.email());
         String hashedPassword = passwordEncoder.encode(request.password());
         String verificationCode = createRandomCode();
@@ -127,7 +127,7 @@ class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public LocalDateTime calculateTodayForUser(UUID id) {
+    public LocalDateTime calculateTodayForUser(@NotNull UUID id) {
         ZoneId timezone = findUserTimezoneOrDummy(id);
         return Instant.now(clock).atZone(timezone).toLocalDateTime();
     }
@@ -141,7 +141,7 @@ class UserManagerImpl implements UserManager {
 
     @Override
     @Transactional
-    public UserDTO update(@Valid UpdateUserRequestDTO request) {
+    public UserDTO update(@Valid @NotNull UpdateUserRequestDTO request) {
         UserEntity entity = findCurrentEntity();
         entity.setName(request.name());
         entity.setTimezone(request.timezone());
@@ -150,7 +150,7 @@ class UserManagerImpl implements UserManager {
 
     @Override
     @Transactional
-    public UserDTO updateCredentials(@Valid UpdateCredentialsRequestDTO request) {
+    public UserDTO updateCredentials(@Valid @NotNull UpdateCredentialsRequestDTO request) {
         UserEntity entity = findCurrentEntity();
         validateCredentials(request, entity);
         String hashedPassword = passwordEncoder.encode(request.newPassword());
@@ -184,7 +184,7 @@ class UserManagerImpl implements UserManager {
 
     @Override
     @Transactional
-    public void resetCredentials(@Valid ResetCredentialsRequestDTO request) {
+    public void resetCredentials(@Valid @NotNull ResetCredentialsRequestDTO request) {
         UserEntity entity = repository
             .findByPasswordResetCode(request.passwordResetCode())
             .orElseThrow(() -> new InvalidUserException("There is no user with this password reset code"));

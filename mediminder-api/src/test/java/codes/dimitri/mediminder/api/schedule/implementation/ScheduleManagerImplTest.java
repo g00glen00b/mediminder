@@ -123,6 +123,12 @@ class ScheduleManagerImplTest {
                 LocalTime.of(10, 0)
             ));
         }
+
+        @Test
+        void failsIfPageableNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findAllForCurrentUser(null));
+        }
     }
 
     @Nested
@@ -263,6 +269,12 @@ class ScheduleManagerImplTest {
             assertThatExceptionOfType(InvalidScheduleException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessage("User is not authenticated");
+        }
+
+        @Test
+        void failsIfRequestNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.createForCurrentUser(null));
         }
 
         @Test
@@ -610,6 +622,29 @@ class ScheduleManagerImplTest {
         }
 
         @Test
+        void failsIfIdNotGiven() {
+            var request = new UpdateScheduleRequestDTO(
+                Period.ofDays(2),
+                new SchedulePeriodDTO(
+                    LocalDate.of(2024, 6, 1),
+                    null
+                ),
+                LocalTime.of(9, 0),
+                "After breakfast",
+                new BigDecimal("2")
+            );
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.updateForCurrentUser(null, request));
+        }
+
+        @Test
+        void failsIfRequestNotGiven() {
+            UUID id = UUID.fromString("945b1bea-b447-4701-a137-3e447c35ffa3");
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.updateForCurrentUser(id, null));
+        }
+
+        @Test
         void failsIfIntervalNotGiven() {
             UUID id = UUID.fromString("945b1bea-b447-4701-a137-3e447c35ffa3");
             var request = new UpdateScheduleRequestDTO(
@@ -809,6 +844,12 @@ class ScheduleManagerImplTest {
                 .isThrownBy(() -> manager.deleteForCurrentUser(id))
                 .withMessage("Schedule with ID '08a6aa16-8449-418e-93ff-c7975731066d' does not exist");
         }
+
+        @Test
+        void failsIfIdNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.deleteForCurrentUser(null));
+        }
     }
 
     @Nested
@@ -828,6 +869,22 @@ class ScheduleManagerImplTest {
             BigDecimal result = manager.calculateRequiredDoses(id, period);
             assertThat(result).isEqualByComparingTo(expected);
         }
+
+        @Test
+        void failsIfMedicationIdNotGiven() {
+            var period = new SchedulePeriodDTO(
+                LocalDate.of(2024, 6, 1),
+                LocalDate.of(2024, 6, 30)
+            );
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.calculateRequiredDoses(null, period));
+        }
+
+        @Test
+        void failsIfPeriodNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.calculateRequiredDoses(UUID.randomUUID(), null));
+        }
     }
 
     @Nested
@@ -839,6 +896,12 @@ class ScheduleManagerImplTest {
             var pageRequest = PageRequest.of(0, 10);
             manager.deleteAllByMedicationId(medicationId);
             assertThat(repository.findAllByUserId(userId, pageRequest)).hasSize(1);
+        }
+
+        @Test
+        void failsIfMedicationIdNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.deleteAllByMedicationId(null));
         }
     }
 
@@ -931,6 +994,12 @@ class ScheduleManagerImplTest {
                 .isThrownBy(() -> manager.findByIdForCurrentUser(id))
                 .withMessage("Schedule with ID '08a6aa16-8449-418e-93ff-c7975731066d' does not exist");
         }
+
+        @Test
+        void failsIfIdNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findByIdForCurrentUser(null));
+        }
     }
 
     @Nested
@@ -963,6 +1032,20 @@ class ScheduleManagerImplTest {
                     UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
                     UUID.fromString("fb384363-0446-4fdc-a62d-098c20ddf286"))
             );
+        }
+
+        @Test
+        void failsIfTargetDateNotGiven() {
+            var pageRequest = PageRequest.of(0, 10);
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findAllUserScheduledMedicationOnDate(null, pageRequest));
+        }
+
+        @Test
+        void failsIfPageableNotGiven() {
+            var targetDate = LocalDate.of(2024, 6, 30);
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findAllUserScheduledMedicationOnDate(targetDate, null));
         }
     }
 
@@ -1014,6 +1097,23 @@ class ScheduleManagerImplTest {
             var pageRequest = PageRequest.of(0, 10);
             Page<ScheduleDTO> results = manager.findAllWithinPeriod(period, pageRequest);
             assertThat(results).hasSize(expectedResults);
+        }
+
+        @Test
+        void failsIfPeriodNotGiven() {
+            var pageRequest = PageRequest.of(0, 10);
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findAllWithinPeriod(null, pageRequest));
+        }
+
+        @Test
+        void failsIfPageableNotGiven() {
+            var period = new SchedulePeriodDTO(
+                LocalDate.of(2024, 5, 1),
+                LocalDate.of(2024, 5, 31)
+            );
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findAllWithinPeriod(period, null));
         }
     }
 }
