@@ -4,16 +4,17 @@
 </mediminder-hero>
 <mediminder-container>
   <mediminder-date-paginator
-    [(date)]="date"
+    [date]="date()"
+    (dateChange)="date.set($event)"
     [minDate]="minDate">
   </mediminder-date-paginator>
   <mediminder-planner-list
     [plans]="plans().content">
   </mediminder-planner-list>
-  @if (!plans().empty) {
+  @if (plans().page.totalElements > 0) {
     <mat-paginator
-      [length]="plans().totalElements"
-      [pageSize]="plans().pageable.pageSize"
+      [length]="plans().page.totalElements"
+      [pageSize]="plans().page.size"
       [showFirstLastButtons]="true"
       [pageSizeOptions]="[5, 10, 20, 50]"
       (page)="onPageChange($event)">

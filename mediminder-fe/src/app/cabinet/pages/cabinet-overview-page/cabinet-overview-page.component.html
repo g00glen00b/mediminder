@@ -12,14 +12,14 @@
   </hero-actions>
 </mediminder-hero>
 <mediminder-container>
-  @if (!entries().empty) {
+  @if (entries().page.totalElements > 0) {
     <mediminder-cabinet-entry-list
       [entries]="entries().content"
       (delete)="delete($event)">
     </mediminder-cabinet-entry-list>
     <mat-paginator
-      [length]="entries().totalElements"
-      [pageSize]="entries().pageable.pageSize"
+      [length]="entries().page.totalElements"
+      [pageSize]="entries().page.size"
       [showFirstLastButtons]="true"
       [pageSizeOptions]="[5, 10, 20, 50]"
       (page)="onPageChange($event)"></mat-paginator>

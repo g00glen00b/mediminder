@@ -1,4 +1,4 @@
-import {Component, computed, input, model} from '@angular/core';
+import {Component, computed, input, model, OnChanges, SimpleChanges} from '@angular/core';
 import {addDays, isSameDay, isToday, subDays} from 'date-fns';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMenuModule} from '@angular/material/menu';
@@ -19,11 +19,15 @@ import {MatButtonModule} from '@angular/material/button';
     DatePipe
   ]
 })
-export class DatePaginatorComponent {
+export class DatePaginatorComponent implements OnChanges {
   date = model(new Date());
   minDate = input<Date>();
   isToday = computed(() => isToday(this.date()));
   previousDisabled = computed(() => this.minDate() != null && isSameDay(this.date(), this.minDate()!));
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('Change', this.date());
+  }
 
   onPreviousClick(): void {
     this.date.set(subDays(this.date(), 1));

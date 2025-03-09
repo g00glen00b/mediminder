@@ -12,14 +12,14 @@
   </hero-actions>
 </mediminder-hero>
 <mediminder-container>
-  @if (!medications().empty) {
+  @if (medications().page.totalElements > 0) {
     <mediminder-medication-list
       [medications]="medications().content"
       (delete)="delete($event)">
     </mediminder-medication-list>
     <mat-paginator
-      [length]="medications().totalElements"
-      [pageSize]="medications().pageable.pageSize"
+      [length]="medications().page.totalElements"
+      [pageSize]="medications().page.size"
       [showFirstLastButtons]="true"
       [pageSizeOptions]="[5, 10, 20, 50]"
       (page)="onPageChange($event)">

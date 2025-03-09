@@ -40,7 +40,7 @@
       <mat-select
         name="administrationType"
         [(ngModel)]="administrationType"
-        [disabled]="administrationTypes().totalElements < 2"
+        [disabled]="administrationTypes().page.totalElements < 2"
         #administrationTypeInput="ngModel"
         required>
         @for (type of administrationTypes().content; track type.id) {
@@ -80,7 +80,7 @@
       <mat-select
         name="doseType"
         [(ngModel)]="doseType"
-        [disabled]="disableBasicFields() || doseTypes().totalElements < 2"
+        [disabled]="disableBasicFields() || doseTypes().page.totalElements < 2"
         #doseTypeInput="ngModel"
         required>
         @for (type of doseTypes().content; track type.id) {

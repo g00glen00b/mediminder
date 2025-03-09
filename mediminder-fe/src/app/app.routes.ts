@@ -26,6 +26,10 @@ export const routes: Routes = [
     loadChildren: () => import('./planner/routes'),
   },
   {
+    path: 'assistant',
+    loadChildren: () => import('./assistant/routes'),
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

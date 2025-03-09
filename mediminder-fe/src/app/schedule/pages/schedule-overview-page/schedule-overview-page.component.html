@@ -16,10 +16,10 @@
     [schedules]="schedules().content"
     (delete)="delete($event)">
   </mediminder-schedule-list>
-  @if (!schedules().empty) {
+  @if (schedules().page.totalElements > 0) {
     <mat-paginator
-      [length]="schedules().totalElements"
-      [pageSize]="schedules().pageable.pageSize"
+      [length]="schedules().page.totalElements"
+      [pageSize]="schedules().page.size"
       [showFirstLastButtons]="true"
       [pageSizeOptions]="[5, 10, 20, 50]"
       (page)="onPageChange($event)">
