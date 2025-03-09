@@ -9,7 +9,7 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
 @TestConfiguration
-public class TestMailSenderConfiguration {
+class TestMailSenderConfiguration {
     @Bean
     GenericContainer<?> mailpitContainer() {
         return new GenericContainer<>("axllent/mailpit:latest")

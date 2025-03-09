@@ -7,7 +7,7 @@ import org.springframework.web.client.RestClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RequiredArgsConstructor
-public class MailpitClient {
+class MailpitClient {
     private final RestClient restClient;
 
     public ObjectNode findFirstMessage() {

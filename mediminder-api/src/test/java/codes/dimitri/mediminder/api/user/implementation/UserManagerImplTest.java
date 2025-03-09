@@ -1,5 +1,6 @@
 package codes.dimitri.mediminder.api.user.implementation;
 
+import codes.dimitri.mediminder.api.shared.TestClockConfiguration;
 import codes.dimitri.mediminder.api.user.*;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.validation.ConstraintViolationException;

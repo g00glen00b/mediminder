@@ -1,4 +1,4 @@
-package codes.dimitri.mediminder.api.user.implementation;
+package codes.dimitri.mediminder.api.shared;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
