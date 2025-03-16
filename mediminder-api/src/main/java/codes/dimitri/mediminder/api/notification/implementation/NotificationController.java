@@ -2,6 +2,8 @@ package codes.dimitri.mediminder.api.notification.implementation;
 
 import codes.dimitri.mediminder.api.notification.*;
 import codes.dimitri.mediminder.api.notification.implementation.batch.NotificationBatchTask;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -15,6 +17,8 @@ import java.net.URI;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import static codes.dimitri.mediminder.api.common.ValidationUtilities.getAnyConstraintViolation;
+
 @RestController
 @RequestMapping("/api/notification")
 @RequiredArgsConstructor
@@ -27,16 +31,19 @@ public class NotificationController {
         return manager.findAll(pageable);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
         manager.delete(id);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/subscription")
     public void subscribe(@RequestBody CreateSubscriptionRequestDTO request) {
         manager.subscribe(request);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/subscription")
     public void unsubscribe() {
         manager.unsubscribe();
@@ -47,6 +54,7 @@ public class NotificationController {
         return manager.findConfiguration();
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("/batch/start")
     @PreAuthorize("hasAuthority('ADMIN')")
     public CompletableFuture<Void> launchJob() {
@@ -68,6 +76,18 @@ public class NotificationController {
             .builder(ex, HttpStatus.NOT_FOUND, ex.getMessage())
             .title("Notification not found")
             .type(URI.create("https://mediminder/notification/notfound"))
+            .build();
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ErrorResponse handleConstraintViolation(ConstraintViolationException ex) {
+        String detail = getAnyConstraintViolation(ex)
+            .map(ConstraintViolation::getMessage)
+            .orElse("Validation failed");
+        return ErrorResponse
+            .builder(ex, HttpStatus.BAD_REQUEST, detail)
+            .title("Invalid notification")
+            .type(URI.create("https://mediminder/notification/invalid"))
             .build();
     }
 }

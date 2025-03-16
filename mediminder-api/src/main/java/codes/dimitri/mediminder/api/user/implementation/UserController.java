@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+
+import static codes.dimitri.mediminder.api.common.ValidationUtilities.getAnyConstraintViolation;
 
 @RestController
 @RequestMapping("/api/user")
@@ -27,6 +28,7 @@ class UserController {
     private final UserCodeCleanupBatchTask task;
 
     @SecurityRequirements
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public UserDTO register(@RequestBody RegisterUserRequestDTO request) {
         return manager.register(request);
@@ -39,6 +41,7 @@ class UserController {
     }
 
     @SecurityRequirements
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PostMapping("/verify/reset")
     public void resetVerification(
         @RequestParam
@@ -47,8 +50,8 @@ class UserController {
     }
 
     @GetMapping("/current")
-    public ResponseEntity<UserDTO> findCurrentUser() {
-        return ResponseEntity.of(manager.findCurrentUser());
+    public UserDTO findCurrentUser() {
+        return manager.findCurrentUser();
     }
 
     @SecurityRequirements
@@ -67,6 +70,7 @@ class UserController {
         return manager.updateCredentials(request);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @SecurityRequirements
     @PostMapping("/credentials/reset/request")
     public void requestResetCredentials(
@@ -77,12 +81,14 @@ class UserController {
         manager.requestResetCredentials(email);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @SecurityRequirements
     @PostMapping("/credentials/reset/confirm")
     public void confirmResetCredentials(@RequestBody ResetCredentialsRequestDTO request) {
         manager.resetCredentials(request);
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("/batch/unused-code/start")
     @PreAuthorize("hasAuthority('ADMIN')")
     public CompletableFuture<Void> launchCodeCleanupJob() {
@@ -126,10 +132,5 @@ class UserController {
             .title("Generating unique code for user failed")
             .type(URI.create("https://mediminder/user/internal/code"))
             .build();
-    }
-
-
-    private static Optional<ConstraintViolation<?>> getAnyConstraintViolation(ConstraintViolationException ex) {
-        return ex.getConstraintViolations().stream().findAny();
     }
 }

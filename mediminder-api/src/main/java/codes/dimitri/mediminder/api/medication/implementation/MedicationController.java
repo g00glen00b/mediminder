@@ -31,10 +31,11 @@ class MedicationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MedicationDTO> findById(@PathVariable UUID id) {
-        return ResponseEntity.of(manager.findByIdForCurrentUser(id));
+    public MedicationDTO findById(@PathVariable UUID id) {
+        return manager.findByIdForCurrentUser(id);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public MedicationDTO create(@RequestBody CreateMedicationRequestDTO request) {
         return manager.createForCurrentUser(request);
@@ -45,6 +46,7 @@ class MedicationController {
         return manager.updateForCurrentUser(id, request);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
         manager.deleteByIdForCurrentUser(id);

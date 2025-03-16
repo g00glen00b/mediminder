@@ -32,7 +32,9 @@ import static org.mockito.Mockito.when;
 @ApplicationModuleTest
 @TestPropertySource(properties = {
     "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder",
-    "spring.ai.openai.api-key=dummy"
+    "spring.ai.openai.api-key=dummy",
+    "spring.datasource.hikari.maximum-pool-size=2",
+    "spring.datasource.hikari.minimum-idle=2"
 })
 @Import({
     TestOpenAIConfiguration.class
@@ -90,12 +92,60 @@ class AssistantManagerImplTest {
                 BigDecimal.ONE,
                 LocalTime.of(8, 0)
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             when(userManager.calculateTodayForUser(user.id())).thenReturn(today);
             when(medicationManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(medication1, medication2)));
             when(scheduleManager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
             AssistantResponseDTO answer = assistantManager.answer(request);
             assertThat(answer).isEqualTo(new AssistantResponseDTO("Hello, how can I assist you today?"));
+        }
+
+        @Test
+        void returnsAnswerForReasoningModel() {
+            var request = new AssistantRequestDTO("When do I have to take Dafalgan if you had to reason?");
+            var today = LocalDateTime.of(2025, 3, 4, 10, 0);
+            var pageRequest = PageRequest.of(0, 20);
+            var user = new UserDTO(
+                UUID.randomUUID(),
+                "Harry Potter",
+                ZoneId.of("Europe/Brussels"),
+                true,
+                false
+            );
+            var medication1 = new MedicationDTO(
+                UUID.randomUUID(),
+                "Dafalgan 1g",
+                new MedicationTypeDTO("TABLET", "Tablet"),
+                new AdministrationTypeDTO("ORAL", "Oral"),
+                new DoseTypeDTO("TABLET", "tablet(s)"),
+                new BigDecimal("1"),
+                Color.RED
+            );
+            var medication2 = new MedicationDTO(
+                UUID.randomUUID(),
+                "Hydrocortisone 8mg",
+                new MedicationTypeDTO("CAPSULE", "Capsule"),
+                new AdministrationTypeDTO("ORAL", "Oral"),
+                new DoseTypeDTO("CAPSULE", "capsule(s)"),
+                new BigDecimal("1"),
+                Color.YELLOW
+            );
+            var schedule = new ScheduleDTO(
+                UUID.randomUUID(),
+                user.id(),
+                medication2,
+                Period.ofDays(1),
+                new SchedulePeriodDTO(LocalDate.of(2025, 1, 1), null),
+                "Before lunch",
+                BigDecimal.ONE,
+                LocalTime.of(8, 0)
+            );
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.calculateTodayForUser(user.id())).thenReturn(today);
+            when(medicationManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(medication1, medication2)));
+            when(scheduleManager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
+            AssistantResponseDTO answer = assistantManager.answer(request);
+            assertThat(answer).isEqualTo(new AssistantResponseDTO("Hello, how can I assist you today if I reasoned?"));
         }
     }
 }

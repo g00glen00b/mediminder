@@ -19,7 +19,9 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @ApplicationModuleTest
 @TestPropertySource(properties = {
-    "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder"
+    "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder",
+    "spring.datasource.hikari.maximum-pool-size=2",
+    "spring.datasource.hikari.minimum-idle=2"
 })
 @Transactional
 @Sql("classpath:test-data/medication.sql")

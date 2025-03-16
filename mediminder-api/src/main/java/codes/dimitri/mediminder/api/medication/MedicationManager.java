@@ -15,7 +15,9 @@ public interface MedicationManager {
 
     Page<MedicationDTO> findAllForCurrentUser(String search, @NotNull Pageable pageable);
 
-    Optional<MedicationDTO> findByIdForCurrentUser(@NotNull UUID id);
+    Optional<MedicationDTO> findByIdForCurrentUserOptional(@NotNull UUID id);
+
+    MedicationDTO findByIdForCurrentUser(@NotNull UUID id);
 
     Optional<MedicationDTO> findByIdAndUserId(@NotNull UUID id, @NotNull UUID userId);
 

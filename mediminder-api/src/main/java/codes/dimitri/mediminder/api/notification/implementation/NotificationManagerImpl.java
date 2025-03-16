@@ -76,7 +76,7 @@ class NotificationManagerImpl implements NotificationManager {
 
     private UserDTO findCurrentUser() {
         return userManager
-            .findCurrentUser()
+            .findCurrentUserOptional()
             .orElseThrow(() -> new InvalidNotificationException("User is not authenticated"));
     }
 

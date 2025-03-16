@@ -45,6 +45,6 @@ class PlannerManagerImpl implements PlannerManager {
     }
 
     private UserDTO findCurrentUser() {
-        return userManager.findCurrentUser().orElseThrow(() -> new InvalidPlannerException("User is not authenticated"));
+        return userManager.findCurrentUserOptional().orElseThrow(() -> new InvalidPlannerException("User is not authenticated"));
     }
 }

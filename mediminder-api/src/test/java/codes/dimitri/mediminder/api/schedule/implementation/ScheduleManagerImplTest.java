@@ -34,7 +34,9 @@ import static org.mockito.Mockito.when;
 
 @ApplicationModuleTest
 @TestPropertySource(properties = {
-    "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder"
+    "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder",
+    "spring.datasource.hikari.maximum-pool-size=2",
+    "spring.datasource.hikari.minimum-idle=2"
 })
 @Transactional
 @Sql("classpath:test-data/schedules.sql")
@@ -70,7 +72,7 @@ class ScheduleManagerImplTest {
                 Color.RED
             );
             var pageRequest = PageRequest.of(0, 10);
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             when(medicationManager.findByIdAndUserId(any(), any())).thenReturn(Optional.of(medication));
             var schedules = manager.findAllForCurrentUser(pageRequest);
             assertThat(schedules).containsExactly(new ScheduleDTO(
@@ -107,7 +109,7 @@ class ScheduleManagerImplTest {
                 false
             );
             var pageRequest = PageRequest.of(0, 10);
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             var schedules = manager.findAllForCurrentUser(pageRequest);
             assertThat(schedules).containsExactly(new ScheduleDTO(
                 UUID.fromString("945b1bea-b447-4701-a137-3e447c35ffa3"),
@@ -162,7 +164,7 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(Optional.of(medication));
             var schedule = manager.createForCurrentUser(request);
             assertThat(schedule).isEqualTo(new ScheduleDTO(
@@ -209,7 +211,7 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(Optional.of(medication));
             var schedule = manager.createForCurrentUser(request);
             ScheduleEntity entity = repository.findById(schedule.id()).orElseThrow();
@@ -247,7 +249,7 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(InvalidScheduleException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessage("Medication is not found");
@@ -486,7 +488,7 @@ class ScheduleManagerImplTest {
                 "After breakfast",
                 new BigDecimal("2")
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(Optional.of(medication));
             ScheduleDTO result = manager.updateForCurrentUser(id, request);
             assertThat(result).isEqualTo(new ScheduleDTO(
@@ -533,7 +535,7 @@ class ScheduleManagerImplTest {
                 "After breakfast",
                 new BigDecimal("2")
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(Optional.of(medication));
             manager.updateForCurrentUser(id, request);
             ScheduleEntity entity = repository.findById(id).orElseThrow();
@@ -589,7 +591,7 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(InvalidScheduleException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessage("Medication is not found");
@@ -615,7 +617,7 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ScheduleNotFoundException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessage("Schedule with ID '08a6aa16-8449-418e-93ff-c7975731066d' does not exist");
@@ -816,7 +818,7 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             manager.deleteForCurrentUser(id);
             assertThat(repository.findById(id)).isEmpty();
         }
@@ -839,7 +841,7 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ScheduleNotFoundException.class)
                 .isThrownBy(() -> manager.deleteForCurrentUser(id))
                 .withMessage("Schedule with ID '08a6aa16-8449-418e-93ff-c7975731066d' does not exist");
@@ -926,7 +928,7 @@ class ScheduleManagerImplTest {
                 new BigDecimal("50"),
                 Color.RED
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(Optional.of(medication));
             var schedule = manager.findByIdForCurrentUser(id);
             assertThat(schedule).isEqualTo(new ScheduleDTO(
@@ -954,7 +956,7 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             var schedule = manager.findByIdForCurrentUser(id);
             assertThat(schedule).isEqualTo(new ScheduleDTO(
                 id,
@@ -989,7 +991,7 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ScheduleNotFoundException.class)
                 .isThrownBy(() -> manager.findByIdForCurrentUser(id))
                 .withMessage("Schedule with ID '08a6aa16-8449-418e-93ff-c7975731066d' does not exist");

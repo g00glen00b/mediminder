@@ -59,7 +59,7 @@ class CabinetEntryManagerImpl implements CabinetEntryManager {
     }
 
     private CabinetEntryDTO mapEntityToDTO(CabinetEntryEntity entity) {
-        MedicationDTO medication = medicationManager.findByIdForCurrentUser(entity.getMedicationId()).orElse(null);
+        MedicationDTO medication = medicationManager.findByIdForCurrentUserOptional(entity.getMedicationId()).orElse(null);
         return mapper.toDTO(entity, medication);
     }
 
@@ -98,13 +98,13 @@ class CabinetEntryManagerImpl implements CabinetEntryManager {
 
     private MedicationDTO findMedication(UUID medicationid) {
         return medicationManager
-            .findByIdForCurrentUser(medicationid)
+            .findByIdForCurrentUserOptional(medicationid)
             .orElseThrow(() -> new InvalidCabinetEntryException("Medication is not found"));
     }
 
     private UserDTO findCurrentUser() {
         return userManager
-            .findCurrentUser()
+            .findCurrentUserOptional()
             .orElseThrow(() -> new InvalidCabinetEntryException("User is not authenticated"));
     }
 

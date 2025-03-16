@@ -45,9 +45,15 @@ class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public Optional<UserDTO> findCurrentUser() {
+    public Optional<UserDTO> findCurrentUserOptional() {
         return findCurrentUserId()
             .flatMap(this::findById);
+    }
+
+    @Override
+    public UserDTO findCurrentUser() {
+        return findCurrentUserOptional()
+            .orElseThrow(() -> new InvalidUserException("Could not find user"));
     }
 
     private Optional<UUID> findCurrentUserId() {

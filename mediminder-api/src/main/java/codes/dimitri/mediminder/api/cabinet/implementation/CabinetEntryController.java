@@ -32,6 +32,7 @@ class CabinetEntryController {
         return manager.findByIdForCurrentUser(id);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public CabinetEntryDTO create(@RequestBody CreateCabinetEntryRequestDTO request) {
         return manager.createForCurrentUser(request);
@@ -42,6 +43,7 @@ class CabinetEntryController {
         return manager.updateForCurrentUser(id, request);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
         manager.deleteForCurrentUser(id);

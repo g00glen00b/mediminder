@@ -33,7 +33,9 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
     "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder",
     "spring.mail.host=dummy",
     "user.verification-url=http://example.org/user/verify?code=%s",
-    "user.password-reset-url=http://example.org/user/confirm-password-reset?code=%s"
+    "user.password-reset-url=http://example.org/user/confirm-password-reset?code=%s",
+    "spring.datasource.hikari.maximum-pool-size=2",
+    "spring.datasource.hikari.minimum-idle=2"
 })
 @Import({
     TestMailSenderConfiguration.class,
@@ -84,7 +86,7 @@ class UserManagerImplTest {
         @Test
         @WithUserDetails("me1@example.org")
         void returnsResult() {
-            UserDTO result = manager.findCurrentUser().orElseThrow();
+            UserDTO result = manager.findCurrentUserOptional().orElseThrow();
             assertThat(result).isEqualTo(new UserDTO(
                 UUID.fromString("03479cd3-7e9a-4b79-8958-522cb1a16b1d"),
                 "User 1",
@@ -97,7 +99,7 @@ class UserManagerImplTest {
         @Test
         @WithAnonymousUser
         void returnsNothingIfAnonymous() {
-            assertThat(manager.findCurrentUser()).isEmpty();
+            assertThat(manager.findCurrentUserOptional()).isEmpty();
         }
     }
 

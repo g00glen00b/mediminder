@@ -15,6 +15,8 @@ import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
 
+import static codes.dimitri.mediminder.api.common.ValidationUtilities.getAnyConstraintViolation;
+
 @RestController
 @RequestMapping("/api/schedule")
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ class ScheduleController {
         return manager.findAllForCurrentUser(pageable);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ScheduleDTO create(@RequestBody CreateScheduleRequestDTO request) {
         return manager.createForCurrentUser(request);
@@ -36,6 +39,7 @@ class ScheduleController {
         return manager.updateForCurrentUser(id, request);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
         manager.deleteForCurrentUser(id);
@@ -74,9 +78,5 @@ class ScheduleController {
             .title("Invalid schedule")
             .type(URI.create("https://mediminder/schedule/invalid"))
             .build();
-    }
-
-    private static Optional<ConstraintViolation<?>> getAnyConstraintViolation(ConstraintViolationException ex) {
-        return ex.getConstraintViolations().stream().findAny();
     }
 }

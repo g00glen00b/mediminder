@@ -1,0 +1,19 @@
+<form
+  (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <input
+      placeholder="Message"
+      matInput
+      type="text"
+      name="message"
+      [(ngModel)]="message" />
+    <button
+      [disabled]="message().length === 0"
+      mat-icon-button
+      matSuffix>
+      <mat-icon fontSet="material-symbols-outlined">
+        send
+      </mat-icon>
+    </button>
+  </mat-form-field>
+</form>

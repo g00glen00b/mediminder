@@ -84,7 +84,7 @@ class EventManagerImpl implements EventManager {
 
     private UserDTO findCurrentUser() {
         return userManager
-            .findCurrentUser()
+            .findCurrentUserOptional()
             .orElseThrow(() -> new InvalidEventException("User is not authenticated"));
     }
 
@@ -139,13 +139,13 @@ class EventManagerImpl implements EventManager {
 
     private MedicationDTO findMedication(UUID medicationid) {
         return medicationManager
-            .findByIdForCurrentUser(medicationid)
+            .findByIdForCurrentUserOptional(medicationid)
             .orElse(null);
     }
 
     private MedicationDTO findMedicationOrThrowException(UUID medicationid) {
         return medicationManager
-            .findByIdForCurrentUser(medicationid)
+            .findByIdForCurrentUserOptional(medicationid)
             .orElseThrow(() -> new InvalidEventException("Medication is not found"));
     }
 

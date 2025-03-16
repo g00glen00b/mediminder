@@ -33,7 +33,9 @@ import static org.mockito.Mockito.when;
 
 @ApplicationModuleTest
 @TestPropertySource(properties = {
-    "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder"
+    "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder",
+    "spring.datasource.hikari.maximum-pool-size=2",
+    "spring.datasource.hikari.minimum-idle=2"
 })
 @Transactional
 @Sql("classpath:test-data/cabinet-entries.sql")
@@ -73,8 +75,8 @@ class CabinetEntryManagerImplTest {
                 new BigDecimal("30"),
                 LocalDate.of(2025, 10, 1)
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
-            when(medicationManager.findByIdForCurrentUser(medication.id())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(medicationManager.findByIdForCurrentUserOptional(medication.id())).thenReturn(Optional.of(medication));
             CabinetEntryDTO result = manager.createForCurrentUser(request);
             assertThat(result).isEqualTo(new CabinetEntryDTO(
                 result.id(),
@@ -108,8 +110,8 @@ class CabinetEntryManagerImplTest {
                 new BigDecimal("30"),
                 LocalDate.of(2025, 10, 1)
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
-            when(medicationManager.findByIdForCurrentUser(medication.id())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(medicationManager.findByIdForCurrentUserOptional(medication.id())).thenReturn(Optional.of(medication));
             CabinetEntryDTO result = manager.createForCurrentUser(request);
             CabinetEntryEntity entity = repository.findById(result.id()).orElseThrow();
             assertThat(entity)
@@ -146,8 +148,8 @@ class CabinetEntryManagerImplTest {
                 new BigDecimal("60"),
                 LocalDate.of(2025, 10, 1)
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
-            when(medicationManager.findByIdForCurrentUser(medication.id())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(medicationManager.findByIdForCurrentUserOptional(medication.id())).thenReturn(Optional.of(medication));
             assertThatExceptionOfType(InvalidCabinetEntryException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessage("Remaining doses cannot be more than the initial doses per package");
@@ -169,7 +171,7 @@ class CabinetEntryManagerImplTest {
                 new BigDecimal("30"),
                 LocalDate.of(2025, 10, 1)
             );
-            when(medicationManager.findByIdForCurrentUser(medication.id())).thenReturn(Optional.of(medication));
+            when(medicationManager.findByIdForCurrentUserOptional(medication.id())).thenReturn(Optional.of(medication));
             assertThatExceptionOfType(InvalidCabinetEntryException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessage("User is not authenticated");
@@ -189,7 +191,7 @@ class CabinetEntryManagerImplTest {
                 new BigDecimal("30"),
                 LocalDate.of(2025, 10, 1)
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(InvalidCabinetEntryException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessage("Medication is not found");
@@ -271,8 +273,8 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             var pageRequest = PageRequest.of(0, 10);
-            when(medicationManager.findByIdForCurrentUser(any())).thenReturn(Optional.of(medication));
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             Page<CabinetEntryDTO> results = manager.findAllForCurrentUser(pageRequest);
             assertThat(results).containsExactly(
                 new CabinetEntryDTO(
@@ -283,7 +285,7 @@ class CabinetEntryManagerImplTest {
                     LocalDate.of(2024, 6, 30)
                 )
             );
-            verify(medicationManager).findByIdForCurrentUser(medication.id());
+            verify(medicationManager).findByIdForCurrentUserOptional(medication.id());
         }
 
         @Test
@@ -298,7 +300,7 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             var pageRequest = PageRequest.of(0, 10);
-            when(medicationManager.findByIdForCurrentUser(any())).thenReturn(Optional.of(medication));
+            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
             assertThatExceptionOfType(InvalidCabinetEntryException.class)
                 .isThrownBy(() -> manager.findAllForCurrentUser(pageRequest))
                 .withMessage("User is not authenticated");
@@ -314,7 +316,7 @@ class CabinetEntryManagerImplTest {
                 false
             );
             var pageRequest = PageRequest.of(0, 10);
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             Page<CabinetEntryDTO> results = manager.findAllForCurrentUser(pageRequest);
             assertThat(results).containsExactly(
                 new CabinetEntryDTO(
@@ -355,8 +357,8 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             UUID id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
-            when(medicationManager.findByIdForCurrentUser(any())).thenReturn(Optional.of(medication));
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             CabinetEntryDTO result = manager.findByIdForCurrentUser(id);
             assertThat(result).isEqualTo(new CabinetEntryDTO(
                 id,
@@ -379,7 +381,7 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             UUID id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
-            when(medicationManager.findByIdForCurrentUser(any())).thenReturn(Optional.of(medication));
+            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
             assertThatExceptionOfType(InvalidCabinetEntryException.class)
                 .isThrownBy(() -> manager.findByIdForCurrentUser(id))
                 .withMessage("User is not authenticated");
@@ -395,7 +397,7 @@ class CabinetEntryManagerImplTest {
                 false
             );
             UUID id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             CabinetEntryDTO result = manager.findByIdForCurrentUser(id);
             assertThat(result).isEqualTo(new CabinetEntryDTO(
                 id,
@@ -416,7 +418,7 @@ class CabinetEntryManagerImplTest {
                 false
             );
             UUID id = UUID.fromString("1571fd59-d40d-4db1-8739-8830bc67516f");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(CabinetEntryNotFoundException.class)
                 .isThrownBy(() -> manager.findByIdForCurrentUser(id))
                 .withMessage("Cabinet entry with ID '1571fd59-d40d-4db1-8739-8830bc67516f' does not exist");
@@ -454,8 +456,8 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             var id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
-            when(medicationManager.findByIdForCurrentUser(any())).thenReturn(Optional.of(medication));
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             CabinetEntryDTO result = manager.updateForCurrentUser(id, request);
             assertThat(result).isEqualTo(new CabinetEntryDTO(
                id,
@@ -464,7 +466,7 @@ class CabinetEntryManagerImplTest {
                new BigDecimal("10"),
                LocalDate.of(2025, 6, 30)
             ));
-            verify(medicationManager).findByIdForCurrentUser(medication.id());
+            verify(medicationManager).findByIdForCurrentUserOptional(medication.id());
         }
 
         @Test
@@ -490,8 +492,8 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             var id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
-            when(medicationManager.findByIdForCurrentUser(any())).thenReturn(Optional.of(medication));
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(InvalidCabinetEntryException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessage("Remaining doses cannot be more than the initial doses per package");
@@ -511,7 +513,7 @@ class CabinetEntryManagerImplTest {
                 false
             );
             var id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(InvalidCabinetEntryException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessage("Medication is not found");
@@ -540,8 +542,8 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             var id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
-            when(medicationManager.findByIdForCurrentUser(any())).thenReturn(Optional.of(medication));
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             manager.updateForCurrentUser(id, request);
             CabinetEntryEntity entity = repository.findById(id).orElseThrow();
             assertThat(entity)
@@ -571,7 +573,7 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             var id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
-            when(medicationManager.findByIdForCurrentUser(any())).thenReturn(Optional.of(medication));
+            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
             assertThatExceptionOfType(InvalidCabinetEntryException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessage("User is not authenticated");
@@ -600,8 +602,8 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             var id = UUID.fromString("1571fd59-d40d-4db1-8739-8830bc67516f");
-            when(medicationManager.findByIdForCurrentUser(any())).thenReturn(Optional.of(medication));
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(CabinetEntryNotFoundException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessage("Cabinet entry with ID '1571fd59-d40d-4db1-8739-8830bc67516f' does not exist");
@@ -647,8 +649,8 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             var id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
-            when(medicationManager.findByIdForCurrentUser(any())).thenReturn(Optional.of(medication));
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessageContaining("The amount of remaining doses is required");
@@ -677,8 +679,8 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             var id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
-            when(medicationManager.findByIdForCurrentUser(any())).thenReturn(Optional.of(medication));
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessageContaining("The amount of remaining doses must be zero or positive");
@@ -707,8 +709,8 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             var id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
-            when(medicationManager.findByIdForCurrentUser(any())).thenReturn(Optional.of(medication));
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessageContaining("Expiry date is required");
@@ -727,7 +729,7 @@ class CabinetEntryManagerImplTest {
                 false
             );
             var id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             manager.deleteForCurrentUser(id);
             assertThat(repository.existsById(id)).isFalse();
         }
@@ -750,7 +752,7 @@ class CabinetEntryManagerImplTest {
                 false
             );
             var id = UUID.fromString("1571fd59-d40d-4db1-8739-8830bc67516f");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(CabinetEntryNotFoundException.class)
                 .isThrownBy(() -> manager.deleteForCurrentUser(id))
                 .withMessage("Cabinet entry with ID '1571fd59-d40d-4db1-8739-8830bc67516f' does not exist");

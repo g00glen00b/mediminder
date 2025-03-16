@@ -64,9 +64,15 @@ class MedicationManagerImpl implements MedicationManager {
     }
 
     @Override
-    public Optional<MedicationDTO> findByIdForCurrentUser(@NotNull UUID id) {
+    public Optional<MedicationDTO> findByIdForCurrentUserOptional(@NotNull UUID id) {
         UserDTO currentUser = findCurrentUser();
         return findByIdAndUserId(id, currentUser.id());
+    }
+
+    @Override
+    public MedicationDTO findByIdForCurrentUser(UUID id) {
+        return findByIdForCurrentUserOptional(id)
+            .orElseThrow(() -> new MedicationNotFoundException(id));
     }
 
     @Override
@@ -107,7 +113,7 @@ class MedicationManagerImpl implements MedicationManager {
     }
 
     private UserDTO findCurrentUser() {
-        return userManager.findCurrentUser().orElseThrow(() -> new InvalidMedicationException("User is not authenticated"));
+        return userManager.findCurrentUserOptional().orElseThrow(() -> new InvalidMedicationException("User is not authenticated"));
     }
 
     private MedicationTypeEntity findMedicationType(String medicationTypeId) {

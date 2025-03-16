@@ -92,7 +92,7 @@ class ScheduleManagerImpl implements ScheduleManager {
 
     private UserDTO findCurrentUser() {
         return userManager
-            .findCurrentUser()
+            .findCurrentUserOptional()
             .orElseThrow(() -> new InvalidScheduleException("User is not authenticated"));
     }
 

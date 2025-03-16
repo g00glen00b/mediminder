@@ -1,0 +1,13 @@
+<mediminder-hero>
+  <hero-title>AI Assistant</hero-title>
+  <hero-description>Chat with your personal AI assistant.</hero-description>
+</mediminder-hero>
+<mediminder-container>
+  <mediminder-chat-history
+    [history]="chatHistory()"
+    [loading]="loading()">
+  </mediminder-chat-history>
+  <mediminder-chat-form
+    (send)="send($event)">
+  </mediminder-chat-form>
+</mediminder-container>

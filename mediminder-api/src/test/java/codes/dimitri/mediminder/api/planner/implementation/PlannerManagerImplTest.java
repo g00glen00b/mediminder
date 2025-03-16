@@ -34,7 +34,9 @@ import static org.mockito.Mockito.when;
 
 @ApplicationModuleTest
 @TestPropertySource(properties = {
-    "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder"
+    "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder",
+    "spring.datasource.hikari.maximum-pool-size=2",
+    "spring.datasource.hikari.minimum-idle=2"
 })
 @Transactional
 class PlannerManagerImplTest {
@@ -83,7 +85,7 @@ class PlannerManagerImplTest {
                 Color.YELLOW
             );
             var medicationPage = new PageImpl<>(List.of(medication1, medication2));
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             when(userManager.calculateTodayForUser(user.id())).thenReturn(today);
             when(medicationManager.findAllForCurrentUser(null, pageRequest)).thenReturn(medicationPage);
             when(cabinetEntryManager.calculateTotalRemainingDosesByMedicationId(medication1.id())).thenReturn(new BigDecimal("30"));

@@ -1,0 +1,21 @@
+<div class="history" #historyContainer>
+  <mediminder-alert
+    type="warning"
+    title="Use with caution">
+    Assistant may provide incorrect or misleading information and should not be relied upon as a sole source of information.
+    Always consult a qualified healthcare professional for medical advice.
+  </mediminder-alert>
+  @for (message of history(); track message.message) {
+    <p
+      class="message"
+      [class]="message.role">
+      {{message.message}}
+    </p>
+  }
+  @if (loading()) {
+    <p
+      class="message ASSISTANT">
+      <mediminder-typing-progress></mediminder-typing-progress>
+    </p>
+  }
+</div>

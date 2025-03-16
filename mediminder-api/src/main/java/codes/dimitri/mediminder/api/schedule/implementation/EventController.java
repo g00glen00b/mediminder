@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static codes.dimitri.mediminder.api.common.ValidationUtilities.getAnyConstraintViolation;
+
 @RestController
 @RequiredArgsConstructor
 class EventController {
@@ -24,11 +26,13 @@ class EventController {
         return manager.findAll(targetDate);
     };
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/api/schedule/{scheduleId}/event/{targetDate}")
     public EventDTO complete(@PathVariable UUID scheduleId, @PathVariable LocalDate targetDate) {
         return manager.complete(scheduleId, targetDate);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/api/event/{eventId}")
     public void delete(@PathVariable UUID eventId) {
         manager.delete(eventId);
@@ -62,9 +66,5 @@ class EventController {
             .title("Invalid event")
             .type(URI.create("https://mediminder/event/invalid"))
             .build();
-    }
-
-    private static Optional<ConstraintViolation<?>> getAnyConstraintViolation(ConstraintViolationException ex) {
-        return ex.getConstraintViolations().stream().findAny();
     }
 }

@@ -64,7 +64,7 @@ class AssistantManagerImpl implements AssistantManager {
     }
 
     private UserDTO findCurrentUser() {
-        return userManager.findCurrentUser()
+        return userManager.findCurrentUserOptional()
             .orElseThrow(() -> new InvalidAssistantException("User is not authenticated"));
     }
 

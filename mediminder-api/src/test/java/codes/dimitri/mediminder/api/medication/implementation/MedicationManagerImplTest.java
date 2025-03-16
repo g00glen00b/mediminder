@@ -27,7 +27,9 @@ import static org.mockito.Mockito.when;
 
 @ApplicationModuleTest
 @TestPropertySource(properties = {
-    "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder"
+    "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder",
+    "spring.datasource.hikari.maximum-pool-size=2",
+    "spring.datasource.hikari.minimum-idle=2"
 })
 @Transactional
 @Sql("classpath:test-data/medication.sql")
@@ -68,7 +70,7 @@ class MedicationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             MedicationDTO result = manager.createForCurrentUser(request);
             assertThat(result).isEqualTo(new MedicationDTO(
                 result.id(),
@@ -98,7 +100,7 @@ class MedicationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             MedicationDTO result = manager.createForCurrentUser(request);
             MedicationEntity entity = repository.findByIdAndUserId(result.id(), user.id()).orElseThrow();
             assertThat(entity)
@@ -147,7 +149,7 @@ class MedicationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(MedicationTypeNotFoundException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessage("Medication type with ID 'DOESNOTEXIST' does not exist");
@@ -170,7 +172,7 @@ class MedicationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(AdministrationTypeNotFoundException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessage("Administration type with ID 'DOESNOTEXIST' does not exist");
@@ -193,7 +195,7 @@ class MedicationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(DoseTypeNotFoundException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessage("Dose type with ID 'DOESNOTEXIST' does not exist");
@@ -338,7 +340,7 @@ class MedicationManagerImplTest {
                 false
             );
             var pageRequest = PageRequest.of(0, 10);
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThat(manager.findAllForCurrentUser(null, pageRequest))
                 .extracting(MedicationDTO::name)
                 .containsExactly("Dafalgan 1g (100)", "Dafalgan 1g (50)", "Ibuprofen 400mg");
@@ -354,7 +356,7 @@ class MedicationManagerImplTest {
                 false
             );
             var pageRequest = PageRequest.of(0, 10);
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThat(manager.findAllForCurrentUser("ibu", pageRequest))
                 .extracting(MedicationDTO::name)
                 .containsExactly("Ibuprofen 400mg");
@@ -387,8 +389,8 @@ class MedicationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
-            MedicationDTO result = manager.findByIdForCurrentUser(id).orElseThrow();
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            MedicationDTO result = manager.findByIdForCurrentUserOptional(id).orElseThrow();
             assertThat(result.name()).isEqualTo("Dafalgan 1g (100)");
         }
 
@@ -402,21 +404,21 @@ class MedicationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
-            assertThat(manager.findByIdForCurrentUser(id)).isEmpty();
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            assertThat(manager.findByIdForCurrentUserOptional(id)).isEmpty();
         }
 
         @Test
         void failsIfNoIDGiven() {
             assertThatExceptionOfType(ConstraintViolationException.class)
-                .isThrownBy(() -> manager.findByIdForCurrentUser(null));
+                .isThrownBy(() -> manager.findByIdForCurrentUserOptional(null));
         }
 
         @Test
         void failsIfNoCurrentUser() {
             var id = UUID.fromString("4579fa76-1edc-4113-b521-2167713a3636");
             assertThatExceptionOfType(InvalidMedicationException.class)
-                .isThrownBy(() -> manager.findByIdForCurrentUser(id))
+                .isThrownBy(() -> manager.findByIdForCurrentUserOptional(id))
                 .withMessage("User is not authenticated");
         }
     }
@@ -465,7 +467,7 @@ class MedicationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             manager.deleteByIdForCurrentUser(id);
             assertThat(repository.existsById(id)).isFalse();
         }
@@ -488,7 +490,7 @@ class MedicationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(MedicationNotFoundException.class)
                 .isThrownBy(() -> manager.deleteByIdForCurrentUser(id))
                 .withMessage("Medication with ID '3257ee2d-b6c6-4a12-990e-826a80c43f17' does not exist");
@@ -504,7 +506,7 @@ class MedicationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             manager.deleteByIdForCurrentUser(id);
             var event = events.stream(MedicationDeletedEvent.class).findAny();
             assertThat(event).contains(new MedicationDeletedEvent(id));
@@ -536,7 +538,7 @@ class MedicationManagerImplTest {
                 false
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             MedicationDTO result = manager.updateForCurrentUser(id, request);
             assertThat(result).isEqualTo(new MedicationDTO(
                 id,
@@ -566,7 +568,7 @@ class MedicationManagerImplTest {
                 false
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             manager.updateForCurrentUser(id, request);
             assertThat(repository.findById(id).orElseThrow())
                 .usingRecursiveComparison()
@@ -599,7 +601,7 @@ class MedicationManagerImplTest {
                 false
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(AdministrationTypeNotFoundException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessage("Administration type with ID 'SUBCUTANEOUS' does not exist");
@@ -622,7 +624,7 @@ class MedicationManagerImplTest {
                 false
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(DoseTypeNotFoundException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessage("Dose type with ID 'CAPSULE' does not exist");
@@ -660,7 +662,7 @@ class MedicationManagerImplTest {
                 false
             );
             var id = UUID.fromString("4579fa76-1edc-4113-b521-2167713a3636");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(MedicationNotFoundException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessage("Medication with ID '4579fa76-1edc-4113-b521-2167713a3636' does not exist");
@@ -703,7 +705,7 @@ class MedicationManagerImplTest {
                 false
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessageContaining("Name is required");
@@ -726,7 +728,7 @@ class MedicationManagerImplTest {
                 false
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessageContaining("Name cannot contain more than 128 characters");
@@ -749,7 +751,7 @@ class MedicationManagerImplTest {
                 false
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessageContaining("Administration type is required");
@@ -772,7 +774,7 @@ class MedicationManagerImplTest {
                 false
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessageContaining("Dose type is required");
@@ -795,7 +797,7 @@ class MedicationManagerImplTest {
                 false
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessageContaining("The amount of doses per package is required");
@@ -818,7 +820,7 @@ class MedicationManagerImplTest {
                 false
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessageContaining("The amount of doses per package must be zero or positive");
@@ -841,7 +843,7 @@ class MedicationManagerImplTest {
                 false
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessageContaining("The color is required");

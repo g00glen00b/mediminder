@@ -33,7 +33,9 @@ import static org.mockito.Mockito.when;
 @TestPropertySource(properties = {
     "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder",
     "notification.public-key=BIyq6YYFYOCttqL-N22xS84_EfO2CFYhn86ZW4gkzIK_uTht7rofUlIrXpu_r4-BT-qmf2TZFAq92jKhcBFIF-w",
-    "notification.private-key=CX5aOzJFXYQszpj__Trqa9GOIupZMLRrubTxsc3zNg0"
+    "notification.private-key=CX5aOzJFXYQszpj__Trqa9GOIupZMLRrubTxsc3zNg0",
+    "spring.datasource.hikari.maximum-pool-size=2",
+    "spring.datasource.hikari.minimum-idle=2"
 })
 @Import({
     TestClockConfiguration.class
@@ -78,7 +80,7 @@ class NotificationManagerImplTest {
                     "auth3"
                 )
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             notificationManager.subscribe(request);
             List<SubscriptionEntity> results = subscriptionRepository.findAll();
             assertThat(results)
@@ -108,7 +110,7 @@ class NotificationManagerImplTest {
                     "auth3"
                 )
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             notificationManager.subscribe(request);
             List<SubscriptionEntity> results = subscriptionRepository.findAll();
             assertThat(results)
@@ -249,7 +251,7 @@ class NotificationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             notificationManager.unsubscribe();
             assertThat(subscriptionRepository.existsById(user.id())).isFalse();
         }
@@ -263,7 +265,7 @@ class NotificationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             notificationManager.unsubscribe();
             assertThat(subscriptionRepository.count()).isEqualTo(2);
         }
@@ -288,7 +290,7 @@ class NotificationManagerImplTest {
                 false
             );
             var pageRequest = PageRequest.of(0, 10);
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             Page<NotificationDTO> results = notificationManager.findAll(pageRequest);
             assertThat(results).containsExactly(
                 new NotificationDTO(
@@ -333,7 +335,7 @@ class NotificationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             notificationManager.delete(id);
             NotificationEntity result = notificationRepository.findById(id).orElseThrow();
             assertThat(result.isActive()).isFalse();
@@ -349,7 +351,7 @@ class NotificationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUser()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(NotificationNotFoundException.class)
                 .isThrownBy(() -> notificationManager.delete(id))
                 .withMessage("Notification with ID 'bf844a6a-7d75-44a6-ab06-67757304f124' does not exist");

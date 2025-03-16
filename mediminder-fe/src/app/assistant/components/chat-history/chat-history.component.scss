@@ -1,0 +1,31 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+.history {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 300px);
+  overflow: scroll;
+}
+
+p.USER {
+  align-self: flex-end;
+  text-align: right;
+  background-color: mat.m2-get-color-from-palette(theme.$mediminder-accent, 300);
+  border: solid 1px mat.m2-get-color-from-palette(theme.$mediminder-accent, 400);
+  color: mat.m2-get-contrast-color-from-palette(theme.$mediminder-accent, 300);
+}
+
+p.ASSISTANT {
+  align-self: flex-start;
+  background-color: mat.m2-get-color-from-palette(mat.$m2-gray-palette, 200);
+  border: solid 1px mat.m2-get-color-from-palette(mat.$m2-gray-palette, 300);
+  color: mat.m2-get-contrast-color-from-palette(mat.$m2-gray-palette, 200);
+}
+
+p.message {
+  padding: 0.8em 1em;
+  border-radius: 0.5em;
+  max-width: 80%;
+  @include mat.m2-typography-level(theme.$mediminder-typography, 'body-1');
+}

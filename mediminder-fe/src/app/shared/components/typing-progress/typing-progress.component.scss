@@ -1,0 +1,40 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+$dot-size: 0.8em;
+
+.dots {
+  display: flex;
+  gap: 0.3em;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .dot {
+    width: $dot-size;
+    height: $dot-size;
+    animation: blink 1.5s infinite;
+    animation-fill-mode: both;
+    background: mat.m2-get-contrast-color-from-palette(mat.$m2-gray-palette, 200);
+    border-radius: 50%;
+
+    &:nth-child(2) {
+      animation-delay: .2s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: .4s;
+    }
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: .1;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: .1;
+  }
+}

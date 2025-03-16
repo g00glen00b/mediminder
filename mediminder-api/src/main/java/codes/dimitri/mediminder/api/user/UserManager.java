@@ -15,7 +15,9 @@ public interface UserManager {
 
     Optional<UserDTO> findById(@NotNull UUID id);
 
-    Optional<UserDTO> findCurrentUser();
+    Optional<UserDTO> findCurrentUserOptional();
+
+    UserDTO findCurrentUser();
 
     @Transactional
     UserDTO register(@Valid @NotNull RegisterUserRequestDTO request);
