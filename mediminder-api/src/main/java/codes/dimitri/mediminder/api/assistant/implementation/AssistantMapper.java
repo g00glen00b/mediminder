@@ -52,7 +52,7 @@ interface AssistantMapper {
 
     @Named("mapLocalDateTimeToLocalTime")
     default LocalTime mapLocalDateTimeToLocalTime(LocalDateTime dateTime) {
-        return dateTime.toLocalTime();
+        return dateTime == null ? null : dateTime.toLocalTime();
     }
 
     private static String mapIntervalToHumanReadableString(Period interval) {
