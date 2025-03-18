@@ -815,11 +815,12 @@ class CabinetEntryManagerImplTest {
         }
 
         @Test
-        void failsIfTooHighSubtraction() {
+        void deletesAllEntriesIfHigherThanAvailable() {
             var medicationId = UUID.fromString("65729ae5-a7b9-40a0-8299-ba26a6f05745");
-            assertThatExceptionOfType(InvalidCabinetEntryException.class)
-                .isThrownBy(() -> manager.subtractDosesByMedicationId(medicationId, new BigDecimal("100")))
-                .withMessage("There are not enough available doses in your cabinet");
+            var pageRequest = PageRequest.of(0, 10);
+            manager.subtractDosesByMedicationId(medicationId, new BigDecimal("100"));
+            Page<CabinetEntryEntity> results = repository.findAllByMedicationId(medicationId, pageRequest);
+            assertThat(results).isEmpty();
         }
 
         @Test

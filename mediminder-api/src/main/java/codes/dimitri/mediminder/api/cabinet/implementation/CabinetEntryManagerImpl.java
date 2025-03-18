@@ -131,18 +131,13 @@ class CabinetEntryManagerImpl implements CabinetEntryManager {
     @Transactional(noRollbackFor = InvalidCabinetEntryException.class)
     public void subtractDosesByMedicationId(@NotNull UUID medicationId, @NotNull @PositiveOrZero BigDecimal doses) {
         Page<CabinetEntryEntity> entries = findEntriesByMedicationIdSortedByExpiryDate(medicationId);
-        BigDecimal dosesRemainder = reduceDosesFromEntries(doses, entries);
-        if (isPositive(dosesRemainder)) throw new InvalidCabinetEntryException("There are not enough available doses in your cabinet");
+        reduceDosesFromEntries(doses, entries);
         deleteEmptyEntries(entries);
     }
 
     private Page<CabinetEntryEntity> findEntriesByMedicationIdSortedByExpiryDate(UUID medicationId) {
         PageRequest pageRequest = PageRequest.of(0, 20, Sort.Direction.ASC, "expiryDate");
         return repository.findAllWithRemainingDosesByMedicationId(medicationId, pageRequest);
-    }
-
-    private static boolean isPositive(BigDecimal finalRemainder) {
-        return finalRemainder.compareTo(BigDecimal.ZERO) > 0;
     }
 
     private static BigDecimal reduceDosesFromEntries(BigDecimal doses, Streamable<CabinetEntryEntity> entries) {

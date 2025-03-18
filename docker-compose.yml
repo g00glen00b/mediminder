@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: mediminder
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: dbpass
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "8025:8025"
+  api:
+    image: g00glen00b/mediminder-api:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/mediminder
+      SPRING_DATASOURCE_USERNAME: dbuser
+      SPRING_DATASOURCE_PASSWORD: dbpass
+      SPRING_MAIL_HOST: mailpit
+      SPRING_MAIL_PORT: 1025
+      USER_VERIFICATION_URL: http://localhost:8080/user/verify?code=%s
+      USER_PASSWORD_RESET_URL: http://localhost:8080/user/confirm-password-reset?code=%s
+    env_file: ".env"
+  frontend:
+    image: g00glen00b/mediminder-fe:latest
+    ports:
+      - "8080:8080"
+    environment:
+      API_URL: http://api:8080
