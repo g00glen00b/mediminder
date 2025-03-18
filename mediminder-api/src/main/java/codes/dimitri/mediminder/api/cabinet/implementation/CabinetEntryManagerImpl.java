@@ -59,7 +59,7 @@ class CabinetEntryManagerImpl implements CabinetEntryManager {
     }
 
     private CabinetEntryDTO mapEntityToDTO(CabinetEntryEntity entity) {
-        MedicationDTO medication = medicationManager.findByIdForCurrentUserOptional(entity.getMedicationId()).orElse(null);
+        MedicationDTO medication = medicationManager.findByIdAndUserId(entity.getMedicationId(), entity.getUserId()).orElse(null);
         return mapper.toDTO(entity, medication);
     }
 

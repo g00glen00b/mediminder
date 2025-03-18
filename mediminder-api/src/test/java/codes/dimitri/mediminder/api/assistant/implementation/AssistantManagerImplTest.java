@@ -4,9 +4,7 @@ import codes.dimitri.mediminder.api.assistant.AssistantManager;
 import codes.dimitri.mediminder.api.assistant.AssistantRequestDTO;
 import codes.dimitri.mediminder.api.assistant.AssistantResponseDTO;
 import codes.dimitri.mediminder.api.medication.*;
-import codes.dimitri.mediminder.api.schedule.ScheduleDTO;
-import codes.dimitri.mediminder.api.schedule.ScheduleManager;
-import codes.dimitri.mediminder.api.schedule.SchedulePeriodDTO;
+import codes.dimitri.mediminder.api.schedule.*;
 import codes.dimitri.mediminder.api.user.UserDTO;
 import codes.dimitri.mediminder.api.user.UserManager;
 import org.junit.jupiter.api.Nested;
@@ -49,6 +47,8 @@ class AssistantManagerImplTest {
     private UserManager userManager;
     @MockitoBean
     private ScheduleManager scheduleManager;
+    @MockitoBean
+    private EventManager eventManager;
 
     @Nested
     class answer {
@@ -92,11 +92,22 @@ class AssistantManagerImplTest {
                 BigDecimal.ONE,
                 LocalTime.of(8, 0)
             );
+            var event = new EventDTO(
+                UUID.randomUUID(),
+                schedule.id(),
+                medication2,
+                today,
+                today.plusMinutes(1),
+                schedule.dose(),
+                schedule.description()
+            );
             when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             when(userManager.calculateTodayForUser(user.id())).thenReturn(today);
             when(medicationManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(medication1, medication2)));
             when(scheduleManager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
+            when(eventManager.findAll(today.toLocalDate())).thenReturn(List.of(event));
             AssistantResponseDTO answer = assistantManager.answer(request);
+            // Response is based upon assertions made in src/test/resources/wiremock/mappings/openai.json
             assertThat(answer).isEqualTo(new AssistantResponseDTO("Hello, how can I assist you today?"));
         }
 
@@ -140,11 +151,22 @@ class AssistantManagerImplTest {
                 BigDecimal.ONE,
                 LocalTime.of(8, 0)
             );
+            var event = new EventDTO(
+                UUID.randomUUID(),
+                schedule.id(),
+                medication2,
+                today,
+                today.plusMinutes(1),
+                schedule.dose(),
+                schedule.description()
+            );
             when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             when(userManager.calculateTodayForUser(user.id())).thenReturn(today);
             when(medicationManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(medication1, medication2)));
             when(scheduleManager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
+            when(eventManager.findAll(today.toLocalDate())).thenReturn(List.of(event));
             AssistantResponseDTO answer = assistantManager.answer(request);
+            // Response is based upon assertions made in src/test/resources/wiremock/mappings/openai-reasoning.json
             assertThat(answer).isEqualTo(new AssistantResponseDTO("Hello, how can I assist you today if I reasoned?"));
         }
     }

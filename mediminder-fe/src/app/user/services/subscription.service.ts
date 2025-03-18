@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
-import {from, mergeMap, Observable, tap} from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import {from, mergeMap, Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 import {SubscriptionConfiguration} from '../models/subscription-configuration';
 import {environment} from '../../../environment/environment';
 import {SwPush} from '@angular/service-worker';
@@ -14,11 +14,9 @@ export class SubscriptionService {
 
   subscribe() {
     return this.findConfiguration().pipe(
-      tap(n => console.log('Config', n)),
       mergeMap(configuration => from(this.swPush.requestSubscription({
         serverPublicKey: configuration.publicKey
       }))),
-      tap(n => console.log('Subscription', n)),
       mergeMap(subscription => this.subscribeCall(subscription))
     );
   }

@@ -1,5 +1,6 @@
 package codes.dimitri.mediminder.api.common;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,6 +28,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    @ConditionalOnWebApplication
     public SecurityFilterChain securityFilterChain(
         HttpSecurity http,
         HandlerExceptionResolver handlerExceptionResolver) throws Exception {

@@ -88,12 +88,14 @@ class NotificationBatchConfiguration {
     public Step outOfDoseStep(
         UserScheduledMedicationReader reader,
         @Qualifier("compositeOutOfDoseProcessor") CompositeItemProcessor<UserScheduledMedicationDTO, NotificationEntity> compositeOutOfDoseProcessor,
+        CabinetEntryExpiryNotificationProcessor cabinetEntryExpiryNotificationProcessor,
         @Qualifier("compositeNotificationWriter") CompositeItemWriter<NotificationEntity> writer
     ) {
         return new StepBuilder("outOfDoseStep", jobRepository)
             .<UserScheduledMedicationDTO, NotificationEntity>chunk(properties.chunkSize(), transactionManager)
             .reader(reader)
             .processor(compositeOutOfDoseProcessor)
+            .listener(cabinetEntryExpiryNotificationProcessor)
             .writer(writer)
             .build();
     }
@@ -101,6 +103,7 @@ class NotificationBatchConfiguration {
     @Bean
     public Step expiryStep(
         CabinetEntryWithNearExpiryDateReader reader,
+        CabinetEntryExpiryNotificationProcessor cabinetEntryExpiryNotificationProcessor,
         @Qualifier("compositeExpiryProcessor") CompositeItemProcessor<CabinetEntryDTO, NotificationEntity> compositeExpiryProcessor,
         @Qualifier("compositeNotificationWriter") CompositeItemWriter<NotificationEntity> writer
     ) {
@@ -109,6 +112,7 @@ class NotificationBatchConfiguration {
             .reader(reader)
             .processor(compositeExpiryProcessor)
             .writer(writer)
+            .listener(cabinetEntryExpiryNotificationProcessor)
             .build();
     }
 

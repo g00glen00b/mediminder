@@ -413,9 +413,9 @@ class UserManagerImplTest {
     class calculateTodayForUser {
         @ParameterizedTest
         @CsvSource({
-            "bbca513f-1a16-4233-bbb5-ab4076cca88f,2025-02-26T11:00",
-            "0f1f19c2-2d09-43b9-a7fc-ce82b9bfe43a,2025-02-26T00:00",
-            "44a9dc13-9549-4252-98d1-1bc84e31efcf,2025-02-26T00:00"
+            "bbca513f-1a16-4233-bbb5-ab4076cca88f,2025-02-26T21:00",
+            "0f1f19c2-2d09-43b9-a7fc-ce82b9bfe43a,2025-02-26T10:00",
+            "44a9dc13-9549-4252-98d1-1bc84e31efcf,2025-02-26T10:00"
         })
         void returnsCurrentDateForUser(UUID id, LocalDateTime expectedResult) {
             LocalDateTime result = manager.calculateTodayForUser(id);

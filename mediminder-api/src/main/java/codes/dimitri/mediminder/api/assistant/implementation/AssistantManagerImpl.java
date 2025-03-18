@@ -6,15 +6,17 @@ import codes.dimitri.mediminder.api.assistant.AssistantResponseDTO;
 import codes.dimitri.mediminder.api.assistant.InvalidAssistantException;
 import codes.dimitri.mediminder.api.medication.MedicationDTO;
 import codes.dimitri.mediminder.api.medication.MedicationManager;
+import codes.dimitri.mediminder.api.schedule.EventDTO;
+import codes.dimitri.mediminder.api.schedule.EventManager;
 import codes.dimitri.mediminder.api.schedule.ScheduleDTO;
 import codes.dimitri.mediminder.api.schedule.ScheduleManager;
 import codes.dimitri.mediminder.api.user.UserDTO;
 import codes.dimitri.mediminder.api.user.UserManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -33,27 +35,38 @@ import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvis
 @Slf4j
 @Component
 @Validated
-@RequiredArgsConstructor
 class AssistantManagerImpl implements AssistantManager {
     private static final DateTimeFormatter HUMAN_DATE_FORMATTER = DateTimeFormatter.ofPattern("MMMM d, yyyy");
     private final ChatClient chatClient;
     private final MedicationManager medicationManager;
     private final ScheduleManager scheduleManager;
-    private final ObjectMapper objectMapper;
+    private final ObjectWriter objectWriter;
     private final UserManager userManager;
+    private final EventManager eventManager;
     private final AssistantProperties properties;
-    private final AssistantMapper mapper;
     private final AssistantMapper assistantMapper;
+
+    public AssistantManagerImpl(ChatClient chatClient, MedicationManager medicationManager, ScheduleManager scheduleManager, ObjectMapper objectMapper, UserManager userManager, EventManager eventManager, AssistantProperties properties, AssistantMapper assistantMapper) {
+        this.chatClient = chatClient;
+        this.medicationManager = medicationManager;
+        this.scheduleManager = scheduleManager;
+        this.objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+        this.userManager = userManager;
+        this.eventManager = eventManager;
+        this.properties = properties;
+        this.assistantMapper = assistantMapper;
+    }
 
     @Override
     @Retryable(retryFor = MismatchedInputException.class)
     public AssistantResponseDTO answer(@Valid @NotNull AssistantRequestDTO request) {
         UserDTO user = findCurrentUser();
+        LocalDateTime today = userManager.calculateTodayForUser(user.id());
         Map<String, Object> variables = Map.of(
-            "medicationsJson", getNestedMedication(),
+            "medicationsJson", getNestedMedication(today),
             "question", request.question(),
             "name", user.name(),
-            "today", getToday(user)
+            "today", HUMAN_DATE_FORMATTER.format(today)
         );
         return this.chatClient
             .prompt()
@@ -69,22 +82,25 @@ class AssistantManagerImpl implements AssistantManager {
     }
 
     @SneakyThrows
-    private String getNestedMedication() {
+    private String getNestedMedication(LocalDateTime today) {
         var pageable = PageRequest.ofSize(properties.maxSize());
         List<MedicationDTO> medications = getMedication(pageable);
         List<ScheduleDTO> schedules = getSchedules(pageable);
+        List<EventDTO> eventsToday = eventManager.findAll(today.toLocalDate());
+
         List<AssistantMedicationInfo> medicationInfos = medications
             .stream()
-            .map(medication -> mapToMedicationInfo(medication, schedules))
+            .map(medication -> mapToMedicationInfo(medication, schedules, eventsToday))
             .toList();
-        return objectMapper
-            .writerWithDefaultPrettyPrinter()
-            .writeValueAsString(medicationInfos);
+        return objectWriter.writeValueAsString(medicationInfos);
     }
 
-    private AssistantMedicationInfo mapToMedicationInfo(MedicationDTO medication, List<ScheduleDTO> allSchedules) {
+    private AssistantMedicationInfo mapToMedicationInfo(MedicationDTO medication,
+                                                        List<ScheduleDTO> allSchedules,
+                                                        List<EventDTO> allEventsToday) {
         List<AssistantScheduleInfo> schedules = getSchedulesForMedication(allSchedules, medication);
-        return assistantMapper.toAssistantMedicationInfo(medication, schedules);
+        List<AssistantEventInfo> eventsToday = getEventsForMedication(allEventsToday, medication);
+        return assistantMapper.toAssistantMedicationInfo(medication, schedules, eventsToday);
     }
 
     private List<MedicationDTO> getMedication(PageRequest pageable) {
@@ -106,9 +122,10 @@ class AssistantManagerImpl implements AssistantManager {
             .toList();
     }
 
-    private String getToday(UserDTO user) {
-        LocalDateTime today = userManager.calculateTodayForUser(user.id());
-        return HUMAN_DATE_FORMATTER.format(today);
-
+    private List<AssistantEventInfo> getEventsForMedication(List<EventDTO> events, MedicationDTO medication) {
+        return events.stream()
+            .filter(event -> event.medication().id().equals(medication.id()))
+            .map(assistantMapper::toAssistantEventInfo)
+            .toList();
     }
 }

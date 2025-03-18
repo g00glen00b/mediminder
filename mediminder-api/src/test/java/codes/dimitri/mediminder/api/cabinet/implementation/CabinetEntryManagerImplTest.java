@@ -273,7 +273,7 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             var pageRequest = PageRequest.of(0, 10);
-            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
+            when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(Optional.of(medication));
             when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             Page<CabinetEntryDTO> results = manager.findAllForCurrentUser(pageRequest);
             assertThat(results).containsExactly(
@@ -285,22 +285,12 @@ class CabinetEntryManagerImplTest {
                     LocalDate.of(2024, 6, 30)
                 )
             );
-            verify(medicationManager).findByIdForCurrentUserOptional(medication.id());
+            verify(medicationManager).findByIdAndUserId(medication.id(), user.id());
         }
 
         @Test
         void failsIfUserNotAuthenticated() {
-            var medication = new MedicationDTO(
-                UUID.fromString("ec544543-9aff-4172-989d-ebd5d08a0dea"),
-                "Dafalgan 1g",
-                new MedicationTypeDTO("TABLET", "Tablet"),
-                new AdministrationTypeDTO("ORAL", "Oral"),
-                new DoseTypeDTO("TABLET", "tablet(s)"),
-                new BigDecimal("100"),
-                Color.RED
-            );
             var pageRequest = PageRequest.of(0, 10);
-            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
             assertThatExceptionOfType(InvalidCabinetEntryException.class)
                 .isThrownBy(() -> manager.findAllForCurrentUser(pageRequest))
                 .withMessage("User is not authenticated");
@@ -357,7 +347,7 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             UUID id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
-            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
+            when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(Optional.of(medication));
             when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             CabinetEntryDTO result = manager.findByIdForCurrentUser(id);
             assertThat(result).isEqualTo(new CabinetEntryDTO(
@@ -371,17 +361,7 @@ class CabinetEntryManagerImplTest {
 
         @Test
         void failsIfUserNotAuthenticated() {
-            var medication = new MedicationDTO(
-                UUID.fromString("ec544543-9aff-4172-989d-ebd5d08a0dea"),
-                "Dafalgan 1g",
-                new MedicationTypeDTO("TABLET", "Tablet"),
-                new AdministrationTypeDTO("ORAL", "Oral"),
-                new DoseTypeDTO("TABLET", "tablet(s)"),
-                new BigDecimal("100"),
-                Color.RED
-            );
             UUID id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
-            when(medicationManager.findByIdForCurrentUserOptional(any())).thenReturn(Optional.of(medication));
             assertThatExceptionOfType(InvalidCabinetEntryException.class)
                 .isThrownBy(() -> manager.findByIdForCurrentUser(id))
                 .withMessage("User is not authenticated");

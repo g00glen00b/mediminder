@@ -7,6 +7,7 @@ public record AssistantMedicationInfo(
     String medicationType,
     String administrationType,
     String color,
-    List<AssistantScheduleInfo> schedules
+    List<AssistantScheduleInfo> schedules,
+    List<AssistantEventInfo> intakesToday
 ) {
 }
