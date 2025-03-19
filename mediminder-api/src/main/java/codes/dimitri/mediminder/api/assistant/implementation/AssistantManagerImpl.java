@@ -69,7 +69,7 @@ class AssistantManagerImpl implements AssistantManager {
         Map<String, Object> variables = Map.of(
             "medicationsJson", getNestedMedication(today),
             "question", request.question(),
-            "name", user.name(),
+            "name", user.name() == null ? "unknown" : user.name(),
             "today", HUMAN_DATE_FORMATTER.format(today)
         );
         return this.chatClient

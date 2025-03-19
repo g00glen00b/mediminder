@@ -10,7 +10,7 @@ The JSON is structured as follows:
 * `$.administrationType`: The way the medication is administered (e.g. oral, topical, ...)
 * `$.color`: The color the patient associates with the medication.
 * `$.schedules[]`: A list of schedules for the medication. If this list is empty, the patient does not have a regular schedule for this medication (e.g. painkillers that are taken occasionally)
-* `$.schedules[].when`: The time, duration and dosage of when the patient takes the medication. This is written in a human-readable format.
+* `$.schedules[].when`: The time, duration and dosage of when the patient takes the medication. This is written in a human-readable format. If no end date is given, the patient is expected to take the medication indefinitely.
 * `$.schedules[].description`: An additional description of how to apply the medication (e.g. before breakfast, which side to inject, ...)
 * `$.cabinetEntries[]`: A list of cabinet entries for the medication. This is a list of all the packages of the medication that the patient has at home.
 * `$.cabinetEntries[].remainingDoses`: The number of doses remaining in the package (e.g. "2 tablet(s)")
