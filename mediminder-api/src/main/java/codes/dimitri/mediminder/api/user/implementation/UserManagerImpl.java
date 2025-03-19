@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,6 +36,7 @@ class UserManagerImpl implements UserManager {
     private final UserEntityMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final UserMailService mailService;
+    private final ApplicationEventPublisher eventPublisher;
     private final Clock clock;
 
     @Override
@@ -202,6 +204,7 @@ class UserManagerImpl implements UserManager {
     public void deleteCurrentUser() {
         UserEntity entity = findCurrentEntity();
         repository.delete(entity);
+        eventPublisher.publishEvent(new UserDeletedEvent(entity.getId()));
         SecurityContextHolder.clearContext();
     }
 

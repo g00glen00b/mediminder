@@ -34,5 +34,6 @@ class CompletedEventEntity {
         this.targetDate = targetDate;
         this.completedDate = completedDate;
         this.dose = dose;
+        this.schedule.getCompletedEvents().add(this);
     }
 }

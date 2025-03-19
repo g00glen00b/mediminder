@@ -70,7 +70,7 @@ class EventManagerImpl implements EventManager {
 
     @Override
     @Transactional
-    public void delete(@NotNull UUID eventId) {
+    public void uncomplete(@NotNull UUID eventId) {
         UserDTO currentUser = findCurrentUser();
         CompletedEventEntity entity = findCompletedEvent(eventId, currentUser);
         repository.delete(entity);

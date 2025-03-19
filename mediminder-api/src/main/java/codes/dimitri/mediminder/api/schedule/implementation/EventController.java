@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static codes.dimitri.mediminder.api.common.ValidationUtilities.getAnyConstraintViolation;
@@ -35,7 +34,7 @@ class EventController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/api/event/{eventId}")
     public void delete(@PathVariable UUID eventId) {
-        manager.delete(eventId);
+        manager.uncomplete(eventId);
     }
 
     @ExceptionHandler({EventNotFoundException.class, CompletedEventNotFoundException.class})

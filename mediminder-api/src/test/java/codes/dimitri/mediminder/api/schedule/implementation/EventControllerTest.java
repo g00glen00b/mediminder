@@ -154,14 +154,14 @@ class EventControllerTest {
                     .with(user("me@example.org"))
                     .with(csrf()))
                 .andExpect(status().isNoContent());
-            verify(manager).delete(eventId);
+            verify(manager).uncomplete(eventId);
         }
 
         @Test
         void returnsNotFound() throws Exception {
             var eventId = UUID.randomUUID();
             var exception = new CompletedEventNotFoundException(eventId);
-            doThrow(exception).when(manager).delete(eventId);
+            doThrow(exception).when(manager).uncomplete(eventId);
             mvc
                 .perform(delete("/api/event/{eventId}", eventId)
                     .with(user("me@example.org"))

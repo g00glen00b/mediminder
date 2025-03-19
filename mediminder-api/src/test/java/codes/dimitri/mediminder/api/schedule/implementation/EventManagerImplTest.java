@@ -287,7 +287,7 @@ class EventManagerImplTest {
     }
 
     @Nested
-    class delete {
+    class uncomplete {
         @Test
         void deletesEvent() {
             var user = new UserDTO(
@@ -300,7 +300,7 @@ class EventManagerImplTest {
             UUID eventId = UUID.fromString("ebb5c232-2f2c-4c08-a2b6-d5ccc81ac08d");
             when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThat(repository.existsById(eventId)).isTrue();
-            eventManager.delete(eventId);
+            eventManager.uncomplete(eventId);
             assertThat(repository.existsById(eventId)).isFalse();
         }
 
@@ -315,7 +315,7 @@ class EventManagerImplTest {
             );
             UUID eventId = UUID.fromString("ebb5c232-2f2c-4c08-a2b6-d5ccc81ac08d");
             when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
-            eventManager.delete(eventId);
+            eventManager.uncomplete(eventId);
             Optional<EventUncompletedEvent> event = events.stream(EventUncompletedEvent.class).findAny();
             assertThat(event).contains(new EventUncompletedEvent(
                 eventId,
@@ -332,7 +332,7 @@ class EventManagerImplTest {
         void failsIfUserNotAuthenticated() {
             UUID eventId = UUID.fromString("ebb5c232-2f2c-4c08-a2b6-d5ccc81ac08d");
             assertThatExceptionOfType(InvalidEventException.class)
-                .isThrownBy(() -> eventManager.delete(eventId))
+                .isThrownBy(() -> eventManager.uncomplete(eventId))
                 .withMessage("User is not authenticated");
         }
 
@@ -348,7 +348,7 @@ class EventManagerImplTest {
             UUID eventId = UUID.fromString("8cb03ee4-b6e4-4339-a186-7946612d5655");
             when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
             assertThatExceptionOfType(CompletedEventNotFoundException.class)
-                .isThrownBy(() -> eventManager.delete(eventId))
+                .isThrownBy(() -> eventManager.uncomplete(eventId))
                 .withMessage("Completed event with ID '8cb03ee4-b6e4-4339-a186-7946612d5655' does not exist");
         }
     }

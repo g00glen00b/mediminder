@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -847,6 +848,35 @@ class MedicationManagerImplTest {
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessageContaining("The color is required");
+        }
+    }
+
+    @Nested
+    class deleteAllByUserId {
+        @Test
+        void deletesMedication() {
+            UUID id = UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124");
+            manager.deleteAllByUserId(id);
+            assertThat(repository.count()).isEqualTo(3);
+        }
+
+        @Test
+        void deletesNothingIfNoMedicationFound() {
+            UUID id = UUID.fromString("00000000-0000-0000-0000-000000000000");
+            manager.deleteAllByUserId(id);
+            assertThat(repository.count()).isEqualTo(6);
+        }
+
+        @Test
+        void publishesEvents() {
+            UUID id = UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124");
+            manager.deleteAllByUserId(id);
+            Stream<MedicationDeletedEvent> results = events.stream(MedicationDeletedEvent.class);
+            assertThat(results).containsOnly(
+                new MedicationDeletedEvent(UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17")),
+                new MedicationDeletedEvent(UUID.fromString("cc94d538-2da5-4802-b58e-269657835343")),
+                new MedicationDeletedEvent(UUID.fromString("3c071cf0-b371-44fe-91a5-97e2e1347594"))
+            );
         }
     }
 }

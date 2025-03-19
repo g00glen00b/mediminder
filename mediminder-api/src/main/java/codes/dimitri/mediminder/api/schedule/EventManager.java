@@ -14,5 +14,5 @@ public interface EventManager {
     EventDTO complete(@NotNull UUID scheduleId, @NotNull LocalDate targetDate);
 
     @Transactional
-    void delete(@NotNull UUID eventId);
+    void uncomplete(@NotNull UUID eventId);
 }

@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.event.ApplicationEvents;
+import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +44,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
     TestClockConfiguration.class
 })
 @Transactional
+@RecordApplicationEvents
 @Sql("classpath:test-data/users.sql")
 @Sql(value = "classpath:test-data/cleanup-users.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class UserManagerImplTest {
@@ -53,6 +56,8 @@ class UserManagerImplTest {
     private UserEntityRepository repository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ApplicationEvents events;
 
     @AfterEach
     void tearDown() {
@@ -719,10 +724,19 @@ class UserManagerImplTest {
         }
 
         @Test
+        @WithUserDetails("me1@example.org")
+        void publishesDeleteEvent() {
+            manager.deleteCurrentUser();
+            UUID userId = UUID.fromString("03479cd3-7e9a-4b79-8958-522cb1a16b1d");
+            assertThat(events.stream(UserDeletedEvent.class)).contains(new UserDeletedEvent(userId));
+        }
+
+        @Test
         void failsIfNotAuthenticated() {
             assertThatExceptionOfType(InvalidUserException.class)
                 .isThrownBy(() -> manager.deleteCurrentUser())
                 .withMessage("Could not find user");
         }
+
     }
 }

@@ -1,9 +1,6 @@
 package codes.dimitri.mediminder.api.schedule.implementation;
 
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +11,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -33,16 +32,15 @@ public class ScheduleEntity {
     private LocalTime time;
     private String description;
     private BigDecimal dose;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "schedule")
+    private List<CompletedEventEntity> completedEvents;
 
     public ScheduleEntity(UUID userId, UUID medicationId, SchedulePeriodEntity period, Period interval, LocalTime time, String description, BigDecimal dose) {
-        this.id = UUID.randomUUID();
-        this.userId = userId;
-        this.medicationId = medicationId;
-        this.period = period;
-        this.interval = interval;
-        this.time = time;
-        this.description = description;
-        this.dose = dose;
+        this(UUID.randomUUID(), userId, medicationId, period, interval, time, description, dose);
+    }
+
+    public ScheduleEntity(UUID id, UUID userId, UUID medicationId, SchedulePeriodEntity period, Period interval, LocalTime time, String description, BigDecimal dose) {
+        this(id, userId, medicationId, period, interval, time, description, dose, new ArrayList<>());
     }
 
     public boolean isHappeningAt(LocalDate date) {

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -104,6 +105,14 @@ class MedicationManagerImpl implements MedicationManager {
         entity.setDosesPerPackage(request.dosesPerPackage());
         entity.setColor(request.color());
         return mapper.toDTO(entity);
+    }
+
+    @Override
+    public void deleteAllByUserId(UUID userId) {
+        List<MedicationEntity> entities = medicationEntityRepository.findAllByUserId(userId);
+        if (entities.isEmpty()) return;
+        medicationEntityRepository.deleteAll(entities);
+        entities.forEach(entity -> eventPublisher.publishEvent(new MedicationDeletedEvent(entity.getId())));
     }
 
     private MedicationEntity findEntity(UUID id, UserDTO currentUser) {
