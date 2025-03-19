@@ -3,32 +3,7 @@
   [class]="type()"
   [class.no-title]="title() == null"
   [class.closeable]="closeable()">
-    <span
-      class="icon-circle"
-      [class]="type()"
-      [ngSwitch]="type()">
-      <mat-icon
-        fontSet="material-symbols-outlined"
-        *ngSwitchCase="'error'">
-        priority_high
-      </mat-icon>
-      <mat-icon
-        fontSet="material-symbols-outlined"
-        *ngSwitchCase="'warning'">
-        priority_high
-      </mat-icon>
-      <mat-icon
-        fontSet="material-symbols-outlined"
-        *ngSwitchCase="'success'">
-        check
-      </mat-icon>
-      <mat-icon
-        fontSet="material-symbols-outlined"
-        *ngSwitchCase="'info'">
-        info
-      </mat-icon>
-    </span>
-
+  <mediminder-alert-icon [type]="type()"></mediminder-alert-icon>
   @if (title() != null) {
     <h6>{{title()}}</h6>
   }

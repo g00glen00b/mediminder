@@ -55,6 +55,7 @@ export class CabinetOverviewPageComponent {
       cancelLabel: 'Cancel',
       title: 'Confirm deletion',
       content: `Are you sure you want to delete the cabinet entry for ${entry.medication.name}?`,
+      type: 'error',
     };
     this.confirmationService.show(data)
       .pipe(mergeMap(() => this.service.delete(entry.id)))

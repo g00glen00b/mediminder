@@ -55,6 +55,7 @@ export class ScheduleOverviewPageComponent {
       cancelLabel: 'Cancel',
       title: 'Confirm deletion',
       content: `Are you sure you want to delete the schedule for  ${schedule.medication.name}?`,
+      type: 'error',
     };
     this.confirmationService.show(data)
       .pipe(mergeMap(() => this.service.delete(schedule.id)))

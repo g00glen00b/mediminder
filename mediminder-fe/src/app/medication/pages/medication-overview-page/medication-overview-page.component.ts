@@ -55,6 +55,7 @@ export class MedicationOverviewPageComponent {
       cancelLabel: 'Cancel',
       title: 'Confirm deletion',
       content: `Are you sure you want to delete ${medication.name} with all of its cabinet entries and schedules?`,
+      type: 'error',
     };
     this.confirmationService.show(data)
       .pipe(mergeMap(() => this.service.delete(medication.id)))

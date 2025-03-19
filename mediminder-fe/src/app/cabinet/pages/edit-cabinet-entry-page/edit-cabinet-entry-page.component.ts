@@ -65,7 +65,8 @@ export class EditCabinetEntryPageComponent {
       cancelLabel: 'Cancel',
       content: 'Are you sure you want to cancel editing this cabinet entry?',
       title: 'Confirm',
-      okLabel: 'Confirm'
+      okLabel: 'Confirm',
+      type: 'info',
     }).subscribe(() => this.router.navigate([`/cabinet`]));
   }
 }

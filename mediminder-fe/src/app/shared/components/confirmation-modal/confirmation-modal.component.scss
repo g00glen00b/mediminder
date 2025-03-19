@@ -1,0 +1,35 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+.content {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  grid-column-gap: 1em;
+  margin-left: -0.5em;
+  width: calc(100% + 0.5em);
+}
+
+mediminder-alert-icon {
+  grid-column: 1;
+  grid-row: 1 / 3;
+}
+
+h3 {
+  @include mat.m2-typography-level(theme.$mediminder-typography, 'headline-6');
+  grid-column: 2;
+  grid-row: 1;
+}
+
+p {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+[mat-dialog-actions] {
+  padding: 16px 8px 16px 24px;
+  border-top: solid 1px rgba(0, 0, 0, .12);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}

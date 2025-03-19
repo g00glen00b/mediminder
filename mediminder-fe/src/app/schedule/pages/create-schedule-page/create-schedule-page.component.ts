@@ -46,7 +46,8 @@ export class CreateSchedulePageComponent {
       cancelLabel: 'Cancel',
       content: 'Are you sure you want to cancel creating this schedule?',
       title: 'Confirm',
-      okLabel: 'Confirm'
+      okLabel: 'Confirm',
+      type: 'info',
     }).subscribe(() => this.router.navigate([`/schedule`]));
   }
 

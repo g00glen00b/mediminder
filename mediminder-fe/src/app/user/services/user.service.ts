@@ -101,4 +101,10 @@ export class UserService {
       .post<void>(`${environment.apiUrl}/user/logout`, null, {withCredentials: true})
       .pipe(tap(() => this.authenticationState$$.next({initialized: true})));
   }
+
+  delete(): Observable<void> {
+    return this.httpClient
+      .delete<void>(`${environment.apiUrl}/user`, {withCredentials: true})
+      .pipe(tap(() => this.authenticationState$$.next({initialized: true})));
+  }
 }

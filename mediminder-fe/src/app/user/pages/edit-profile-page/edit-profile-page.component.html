@@ -20,10 +20,21 @@
     (confirm)="submitCredentialsForm($event)">
   </mediminder-password-form>
   <h2>Push notifications</h2>
-  <button
-    mat-flat-button
-    color="accent"
-    (click)="enablePushNotifications()">
-    Enable push notifications
-  </button>
+  <div class="actions">
+    <button
+      mat-flat-button
+      color="accent"
+      (click)="enablePushNotifications()">
+      Enable push notifications
+    </button>
+  </div>
+  <h2>Danger zone</h2>
+  <div class="actions">
+    <button
+      mat-stroked-button
+      color="warn"
+      (click)="deleteAccount()">
+      Delete account
+    </button>
+  </div>
 </mediminder-container>

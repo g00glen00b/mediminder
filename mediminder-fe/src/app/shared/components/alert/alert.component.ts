@@ -1,7 +1,7 @@
 import {Component, input, output} from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
-import {NgSwitch, NgSwitchCase} from '@angular/common';
 import {MatIconButton} from '@angular/material/button';
+import {AlertIconComponent} from '../alert-icon/alert-icon.component';
 
 @Component({
   selector: 'mediminder-alert',
@@ -9,10 +9,9 @@ import {MatIconButton} from '@angular/material/button';
   styleUrls: ['./alert.component.scss'],
   standalone: true,
   imports: [
-    NgSwitch,
-    NgSwitchCase,
     MatIconModule,
     MatIconButton,
+    AlertIconComponent,
   ]
 })
 export class AlertComponent {

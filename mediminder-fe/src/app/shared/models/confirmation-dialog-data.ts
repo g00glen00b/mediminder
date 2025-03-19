@@ -3,4 +3,5 @@ export interface ConfirmationDialogData {
   content: string;
   okLabel: string;
   cancelLabel: string;
+  type: 'info' | 'error';
 }

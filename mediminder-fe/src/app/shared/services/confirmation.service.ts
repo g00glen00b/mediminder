@@ -12,7 +12,7 @@ export class ConfirmationService {
 
   show(data: ConfirmationDialogData): Observable<boolean> {
     return this.dialog
-      .open(ConfirmationModalComponent, {data})
+      .open(ConfirmationModalComponent, {data, panelClass: `panel-${data.type}`})
       .afterClosed()
       .pipe(filter(value => value));
   }

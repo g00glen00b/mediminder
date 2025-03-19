@@ -49,7 +49,8 @@ export class CreateMedicationPageComponent {
       cancelLabel: 'Cancel',
       content: 'Are you sure you want to cancel creating this medication?',
       title: 'Confirm',
-      okLabel: 'Confirm'
+      okLabel: 'Confirm',
+      type: 'info',
     }).subscribe(() => this.router.navigate([`/medication`]));
   }
 

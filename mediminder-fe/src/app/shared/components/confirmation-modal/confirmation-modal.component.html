@@ -1,10 +1,11 @@
-<h1 mat-dialog-title>
-  {{data.title}}
-</h1>
 <div mat-dialog-content>
-  <p>
-    {{data.content}}
-  </p>
+  <div class="content">
+    <mediminder-alert-icon [type]="data.type"></mediminder-alert-icon>
+    <h3>{{data.title}}</h3>
+    <p>
+      {{data.content}}
+    </p>
+  </div>
 </div>
 <div mat-dialog-actions>
   <button
@@ -14,8 +15,9 @@
   </button>
   <button
     mat-button
-    [mat-dialog-close]="true"
-    cdkFocusInitial>
+    cdkFocusInitial
+    [color]="buttonType"
+    [mat-dialog-close]="true">
     {{data.okLabel}}
   </button>
 </div>

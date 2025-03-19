@@ -14,6 +14,10 @@ import {ToastrService} from 'ngx-toastr';
 import {UpdateCredentialsRequest} from '../../models/update-credentials-request';
 import {MatButton} from '@angular/material/button';
 import {SubscriptionService} from '../../services/subscription.service';
+import {ConfirmationService} from '../../../shared/services/confirmation.service';
+import {ConfirmationDialogData} from '../../../shared/models/confirmation-dialog-data';
+import {mergeMap} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'mediminder-edit-profile-page',
@@ -33,7 +37,9 @@ import {SubscriptionService} from '../../services/subscription.service';
 export class EditProfilePageComponent {
   private readonly service = inject(UserService);
   private readonly subscriptionService = inject(SubscriptionService);
+  private readonly router = inject(Router);
   private readonly toastr = inject(ToastrService);
+  private readonly confirmationService = inject(ConfirmationService);
   error?: ErrorResponse;
   user = toSignal(this.service.findCurrentUser());
 
@@ -59,5 +65,25 @@ export class EditProfilePageComponent {
       error: error => this.toastr.error(error || 'Could not enable push notifications'),
       complete: () => console.log('Complete'),
     })
+  }
+
+  deleteAccount() {
+    const data: ConfirmationDialogData = {
+      content: 'Are you sure you want to delete your account? This action cannot be undone.',
+      title: 'Delete Account',
+      okLabel: 'Yes',
+      cancelLabel: 'No',
+      type: 'error',
+    };
+    this.confirmationService
+      .show(data)
+      .pipe(mergeMap(() => this.service.delete()))
+      .subscribe({
+        next: () => {
+          this.toastr.success('Your account has been deleted successfully.');
+          this.router.navigate(['/user', 'login']);
+        },
+        error: response => this.toastr.error(response.error.detail),
+      });
   }
 }

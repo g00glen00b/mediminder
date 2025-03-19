@@ -12,3 +12,11 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-mdc-dialog-panel.panel-error .mat-mdc-dialog-surface {
+  border-left: solid 0.6em mat.m2-get-color-from-palette(theme.$mediminder-danger, 500);
+}
+
+.mat-mdc-dialog-panel.panel-info .mat-mdc-dialog-surface {
+  border-left: solid 0.6em mat.m2-get-color-from-palette(theme.$mediminder-primary, A700);
+}
