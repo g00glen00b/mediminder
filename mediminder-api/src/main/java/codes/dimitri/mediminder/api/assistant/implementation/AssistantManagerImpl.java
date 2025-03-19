@@ -4,6 +4,8 @@ import codes.dimitri.mediminder.api.assistant.AssistantManager;
 import codes.dimitri.mediminder.api.assistant.AssistantRequestDTO;
 import codes.dimitri.mediminder.api.assistant.AssistantResponseDTO;
 import codes.dimitri.mediminder.api.assistant.InvalidAssistantException;
+import codes.dimitri.mediminder.api.cabinet.CabinetEntryDTO;
+import codes.dimitri.mediminder.api.cabinet.CabinetEntryManager;
 import codes.dimitri.mediminder.api.medication.MedicationDTO;
 import codes.dimitri.mediminder.api.medication.MedicationManager;
 import codes.dimitri.mediminder.api.schedule.EventDTO;
@@ -43,16 +45,18 @@ class AssistantManagerImpl implements AssistantManager {
     private final ObjectWriter objectWriter;
     private final UserManager userManager;
     private final EventManager eventManager;
+    private final CabinetEntryManager cabinetEntryManager;
     private final AssistantProperties properties;
     private final AssistantMapper assistantMapper;
 
-    public AssistantManagerImpl(ChatClient chatClient, MedicationManager medicationManager, ScheduleManager scheduleManager, ObjectMapper objectMapper, UserManager userManager, EventManager eventManager, AssistantProperties properties, AssistantMapper assistantMapper) {
+    public AssistantManagerImpl(ChatClient chatClient, MedicationManager medicationManager, ScheduleManager scheduleManager, ObjectMapper objectMapper, UserManager userManager, EventManager eventManager, CabinetEntryManager cabinetEntryManager, AssistantProperties properties, AssistantMapper assistantMapper) {
         this.chatClient = chatClient;
         this.medicationManager = medicationManager;
         this.scheduleManager = scheduleManager;
         this.objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
         this.userManager = userManager;
         this.eventManager = eventManager;
+        this.cabinetEntryManager = cabinetEntryManager;
         this.properties = properties;
         this.assistantMapper = assistantMapper;
     }
@@ -86,21 +90,24 @@ class AssistantManagerImpl implements AssistantManager {
         var pageable = PageRequest.ofSize(properties.maxSize());
         List<MedicationDTO> medications = getMedication(pageable);
         List<ScheduleDTO> schedules = getSchedules(pageable);
+        List<CabinetEntryDTO> cabinetEntries = getCabinetEntries(pageable);
         List<EventDTO> eventsToday = eventManager.findAll(today.toLocalDate());
 
         List<AssistantMedicationInfo> medicationInfos = medications
             .stream()
-            .map(medication -> mapToMedicationInfo(medication, schedules, eventsToday))
+            .map(medication -> mapToMedicationInfo(medication, schedules, cabinetEntries, eventsToday))
             .toList();
         return objectWriter.writeValueAsString(medicationInfos);
     }
 
     private AssistantMedicationInfo mapToMedicationInfo(MedicationDTO medication,
                                                         List<ScheduleDTO> allSchedules,
+                                                        List<CabinetEntryDTO> allCabinetEntries,
                                                         List<EventDTO> allEventsToday) {
         List<AssistantScheduleInfo> schedules = getSchedulesForMedication(allSchedules, medication);
+        List<AssistantCabinetEntryInfo> cabinetEntries = getCabinetEntriesForMedication(allCabinetEntries, medication);
         List<AssistantEventInfo> eventsToday = getEventsForMedication(allEventsToday, medication);
-        return assistantMapper.toAssistantMedicationInfo(medication, schedules, eventsToday);
+        return assistantMapper.toAssistantMedicationInfo(medication, schedules, cabinetEntries, eventsToday);
     }
 
     private List<MedicationDTO> getMedication(PageRequest pageable) {
@@ -115,10 +122,23 @@ class AssistantManagerImpl implements AssistantManager {
             .getContent();
     }
 
+    private List<CabinetEntryDTO> getCabinetEntries(PageRequest pageable) {
+        return cabinetEntryManager
+            .findAllForCurrentUser(pageable)
+            .getContent();
+    }
+
     private List<AssistantScheduleInfo> getSchedulesForMedication(List<ScheduleDTO> schedules, MedicationDTO medication) {
         return schedules.stream()
             .filter(schedule -> schedule.medication().id().equals(medication.id()))
             .map(assistantMapper::toAssistantScheduleInfo)
+            .toList();
+    }
+
+    private List<AssistantCabinetEntryInfo> getCabinetEntriesForMedication(List<CabinetEntryDTO> cabinetEntries, MedicationDTO medication) {
+        return cabinetEntries.stream()
+            .filter(cabinetEntry -> cabinetEntry.medication().id().equals(medication.id()))
+            .map(assistantMapper::toAssistantCabinetEntryInfo)
             .toList();
     }
 

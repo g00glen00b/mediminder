@@ -3,6 +3,8 @@ package codes.dimitri.mediminder.api.assistant.implementation;
 import codes.dimitri.mediminder.api.assistant.AssistantManager;
 import codes.dimitri.mediminder.api.assistant.AssistantRequestDTO;
 import codes.dimitri.mediminder.api.assistant.AssistantResponseDTO;
+import codes.dimitri.mediminder.api.cabinet.CabinetEntryDTO;
+import codes.dimitri.mediminder.api.cabinet.CabinetEntryManager;
 import codes.dimitri.mediminder.api.medication.*;
 import codes.dimitri.mediminder.api.schedule.*;
 import codes.dimitri.mediminder.api.user.UserDTO;
@@ -48,6 +50,8 @@ class AssistantManagerImplTest {
     @MockitoBean
     private ScheduleManager scheduleManager;
     @MockitoBean
+    private CabinetEntryManager cabinetEntryManager;
+    @MockitoBean
     private EventManager eventManager;
 
     @Nested
@@ -92,6 +96,13 @@ class AssistantManagerImplTest {
                 BigDecimal.ONE,
                 LocalTime.of(8, 0)
             );
+            var cabinetEntry = new CabinetEntryDTO(
+                UUID.randomUUID(),
+                user.id(),
+                medication2,
+                new BigDecimal("10"),
+                LocalDate.of(2025, 6, 30)
+            );
             var event = new EventDTO(
                 UUID.randomUUID(),
                 schedule.id(),
@@ -105,6 +116,7 @@ class AssistantManagerImplTest {
             when(userManager.calculateTodayForUser(user.id())).thenReturn(today);
             when(medicationManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(medication1, medication2)));
             when(scheduleManager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
+            when(cabinetEntryManager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(cabinetEntry)));
             when(eventManager.findAll(today.toLocalDate())).thenReturn(List.of(event));
             AssistantResponseDTO answer = assistantManager.answer(request);
             // Response is based upon assertions made in src/test/resources/wiremock/mappings/openai.json
@@ -151,6 +163,13 @@ class AssistantManagerImplTest {
                 BigDecimal.ONE,
                 LocalTime.of(8, 0)
             );
+            var cabinetEntry = new CabinetEntryDTO(
+                UUID.randomUUID(),
+                user.id(),
+                medication2,
+                new BigDecimal("10"),
+                LocalDate.of(2025, 6, 30)
+            );
             var event = new EventDTO(
                 UUID.randomUUID(),
                 schedule.id(),
@@ -164,6 +183,7 @@ class AssistantManagerImplTest {
             when(userManager.calculateTodayForUser(user.id())).thenReturn(today);
             when(medicationManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(medication1, medication2)));
             when(scheduleManager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
+            when(cabinetEntryManager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(cabinetEntry)));
             when(eventManager.findAll(today.toLocalDate())).thenReturn(List.of(event));
             AssistantResponseDTO answer = assistantManager.answer(request);
             // Response is based upon assertions made in src/test/resources/wiremock/mappings/openai-reasoning.json
