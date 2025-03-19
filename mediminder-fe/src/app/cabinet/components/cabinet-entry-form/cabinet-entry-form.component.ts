@@ -77,4 +77,9 @@ export class CabinetEntryFormComponent implements OnChanges {
   getMedicationLabel(medication?: string | Medication): string {
     return getMedicationLabel(medication);
   }
+
+  setMedication(medication: Medication) {
+    this.medication.set(medication);
+    this.remainingDoses.update(remainingDoses => remainingDoses > 0 ? remainingDoses : medication.dosesPerPackage);
+  }
 }

@@ -9,7 +9,8 @@
         name="medication"
         #medicationElement
         #medicationInput="ngModel"
-        [(ngModel)]="medication"
+        [ngModel]="medication()"
+        (ngModelChange)="setMedication($event)"
         (input)="medicationInputValue.set(medicationElement.value)"
         [matAutocomplete]="medicationAutocomplete" />
       @if (!disableBasicFields()) {
@@ -42,6 +43,7 @@
         matInput
         required
         min="0"
+        [max]="medication()?.dosesPerPackage || 0"
         #remainingDosesInput="ngModel"
         [(ngModel)]="remainingDoses"
         name="remainingDoses" />
@@ -54,6 +56,11 @@
       @else if (remainingDosesInput.errors?.['min']) {
         <mat-error>
           Please enter at least zero or more remaining doses
+        </mat-error>
+      }
+      @else if (remainingDosesInput.errors?.['max']) {
+        <mat-error>
+          Please enter no more doses than initially available for '{{medication()?.name || 'n/a'}}' ({{medication()?.dosesPerPackage || 0}})
         </mat-error>
       }
     </mat-form-field>
