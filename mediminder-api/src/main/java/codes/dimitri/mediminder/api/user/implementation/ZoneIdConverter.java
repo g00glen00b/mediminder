@@ -9,7 +9,7 @@ import java.time.ZoneId;
 class ZoneIdConverter implements AttributeConverter<ZoneId, String> {
     @Override
     public String convertToDatabaseColumn(ZoneId attribute) {
-        return attribute.getId();
+        return attribute == null ? null : attribute.getId();
     }
 
     @Override
