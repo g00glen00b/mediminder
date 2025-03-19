@@ -9,6 +9,10 @@ import {ContainerComponent} from '../../../shared/components/container/container
 import {
   NotificationOverviewPageComponent
 } from '../../../notification/pages/notification-overview-page/notification-overview-page.component';
+import {HeroActionsDirective} from '../../../shared/components/hero/hero-actions.directive';
+import {MatAnchor} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'mediminder-home-page',
@@ -18,7 +22,11 @@ import {
     HeroDescriptionDirective,
     HeroTitleDirective,
     ContainerComponent,
-    NotificationOverviewPageComponent
+    NotificationOverviewPageComponent,
+    HeroActionsDirective,
+    MatAnchor,
+    MatIcon,
+    RouterLink
   ],
   templateUrl: './home-page.component.html',
   standalone: true,
