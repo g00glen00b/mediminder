@@ -49,4 +49,7 @@ public interface UserManager {
 
     @Transactional
     void resetCredentials(@Valid @NotNull ResetCredentialsRequestDTO request);
+
+    @Transactional
+    void deleteCurrentUser();
 }

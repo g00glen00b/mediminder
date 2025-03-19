@@ -198,6 +198,13 @@ class UserManagerImpl implements UserManager {
         entity.setPasswordResetCode(null);
     }
 
+    @Override
+    public void deleteCurrentUser() {
+        UserEntity entity = findCurrentEntity();
+        repository.delete(entity);
+        SecurityContextHolder.clearContext();
+    }
+
     private void validateUniqueVerificationCode(String verificationCode) {
         if (repository.existsByVerificationCode(verificationCode)) {
             throw new UserCodeGenerationException("Could not generate a unique verification code");

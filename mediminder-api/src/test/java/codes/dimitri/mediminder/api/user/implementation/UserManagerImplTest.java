@@ -707,4 +707,22 @@ class UserManagerImplTest {
                 .isThrownBy(() -> manager.resetCredentials(null));
         }
     }
+
+    @Nested
+    class delete {
+        @Test
+        @WithUserDetails("me1@example.org")
+        void deletesEntity() {
+            manager.deleteCurrentUser();
+            UUID userId = UUID.fromString("03479cd3-7e9a-4b79-8958-522cb1a16b1d");
+            assertThat(repository.existsById(userId)).isFalse();
+        }
+
+        @Test
+        void failsIfNotAuthenticated() {
+            assertThatExceptionOfType(InvalidUserException.class)
+                .isThrownBy(() -> manager.deleteCurrentUser())
+                .withMessage("Could not find user");
+        }
+    }
 }
