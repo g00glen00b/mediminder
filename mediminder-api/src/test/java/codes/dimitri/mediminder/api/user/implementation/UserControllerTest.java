@@ -636,4 +636,31 @@ class UserControllerTest {
             verifyNoInteractions(task);
         }
     }
+
+    @Nested
+    class deleteCurrentUser {
+        @Test
+        void deletesUser() throws Exception {
+            mvc
+                .perform(delete("/api/user")
+                    .with(user("me@example.org"))
+                    .with(csrf()))
+                .andExpect(status().isNoContent());
+            verify(manager).deleteCurrentUser();
+        }
+
+        @Test
+        void returnsInvalidUser() throws Exception {
+            var exception = new InvalidUserException("Invalid user");
+            doThrow(exception).when(manager).deleteCurrentUser();
+            mvc
+                .perform(delete("/api/user")
+                    .with(user("me@example.org"))
+                    .with(csrf()))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.title").value("Invalid user"))
+                .andExpect(jsonPath("$.type").value("https://mediminder/user/invalid"))
+                .andExpect(jsonPath("$.detail").value(exception.getMessage()));
+        }
+    }
 }

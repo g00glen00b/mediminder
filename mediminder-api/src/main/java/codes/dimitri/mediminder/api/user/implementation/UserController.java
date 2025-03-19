@@ -95,6 +95,13 @@ class UserController {
         return CompletableFuture.runAsync(task);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @SecurityRequirements
+    @DeleteMapping
+    public void deleteCurrentUser() {
+        manager.deleteCurrentUser();
+    }
+
     @ExceptionHandler(InvalidUserException.class)
     public ErrorResponse handleInvalidUser(InvalidUserException ex) {
         return ErrorResponse
