@@ -3,6 +3,8 @@ package codes.dimitri.mediminder.api.user.implementation;
 import codes.dimitri.mediminder.api.user.*;
 import codes.dimitri.mediminder.api.user.implementation.cleanup.UserCodeCleanupBatchTask;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.constraints.Email;
@@ -98,8 +100,10 @@ class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @SecurityRequirements
     @DeleteMapping
-    public void deleteCurrentUser() {
+    public void deleteCurrentUser(HttpServletRequest request) {
         manager.deleteCurrentUser();
+        HttpSession session = request.getSession(false);
+        if (session != null) session.invalidate();
     }
 
     @ExceptionHandler(InvalidUserException.class)
