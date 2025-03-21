@@ -40,22 +40,11 @@ class UserManagerImpl implements UserManager {
     private final Clock clock;
 
     @Override
-    public Optional<UserDTO> findById(@NotNull UUID id) {
-        return repository
-            .findById(id)
-            .map(mapper::toDTO);
-    }
-
-    @Override
-    public Optional<UserDTO> findCurrentUserOptional() {
-        return findCurrentUserId()
-            .flatMap(this::findById);
-    }
-
-    @Override
     public UserDTO findCurrentUser() {
-        return findCurrentUserOptional()
-            .orElseThrow(() -> new InvalidUserException("Could not find user"));
+        return findCurrentUserId()
+            .flatMap(repository::findById)
+            .map(mapper::toDTO)
+            .orElseThrow(CurrentUserNotFoundException::new);
     }
 
     private Optional<UUID> findCurrentUserId() {

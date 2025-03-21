@@ -65,33 +65,11 @@ class UserManagerImplTest {
     }
 
     @Nested
-    class findById {
-        @Test
-        void returnsResult() {
-            UUID id = UUID.fromString("03479cd3-7e9a-4b79-8958-522cb1a16b1d");
-            UserDTO result = manager.findById(id).orElseThrow();
-            assertThat(result).isEqualTo(new UserDTO(
-               id,
-               "User 1",
-               ZoneId.of("UTC"),
-               true,
-               true
-            ));
-        }
-
-        @Test
-        void failsIfIdNotGiven() {
-            assertThatExceptionOfType(ConstraintViolationException.class)
-                .isThrownBy(() -> manager.findById(null));
-        }
-    }
-
-    @Nested
     class findCurrentUser {
         @Test
         @WithUserDetails("me1@example.org")
         void returnsResult() {
-            UserDTO result = manager.findCurrentUserOptional().orElseThrow();
+            UserDTO result = manager.findCurrentUser();
             assertThat(result).isEqualTo(new UserDTO(
                 UUID.fromString("03479cd3-7e9a-4b79-8958-522cb1a16b1d"),
                 "User 1",
@@ -103,8 +81,10 @@ class UserManagerImplTest {
 
         @Test
         @WithAnonymousUser
-        void returnsNothingIfAnonymous() {
-            assertThat(manager.findCurrentUserOptional()).isEmpty();
+        void failsIfNotAuthenticated() {
+            assertThatExceptionOfType(CurrentUserNotFoundException.class)
+                .isThrownBy(() -> manager.findCurrentUser())
+                .withMessage("Current user not found");
         }
     }
 

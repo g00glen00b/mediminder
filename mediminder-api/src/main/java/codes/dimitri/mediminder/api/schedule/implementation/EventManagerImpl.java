@@ -2,7 +2,9 @@ package codes.dimitri.mediminder.api.schedule.implementation;
 
 import codes.dimitri.mediminder.api.medication.MedicationDTO;
 import codes.dimitri.mediminder.api.medication.MedicationManager;
+import codes.dimitri.mediminder.api.medication.MedicationNotFoundException;
 import codes.dimitri.mediminder.api.schedule.*;
+import codes.dimitri.mediminder.api.user.CurrentUserNotFoundException;
 import codes.dimitri.mediminder.api.user.UserDTO;
 import codes.dimitri.mediminder.api.user.UserManager;
 import jakarta.validation.constraints.NotNull;
@@ -83,9 +85,11 @@ class EventManagerImpl implements EventManager {
     }
 
     private UserDTO findCurrentUser() {
-        return userManager
-            .findCurrentUserOptional()
-            .orElseThrow(() -> new InvalidEventException("User is not authenticated"));
+        try {
+            return userManager.findCurrentUser();
+        } catch (CurrentUserNotFoundException ex) {
+            throw new InvalidEventException("User is not authenticated", ex);
+        }
     }
 
     private List<EventDTO> findAllCompletedEventDTOs(LocalDate date, UserDTO user) {
@@ -138,15 +142,19 @@ class EventManagerImpl implements EventManager {
     }
 
     private MedicationDTO findMedication(UUID medicationid) {
-        return medicationManager
-            .findByIdForCurrentUserOptional(medicationid)
-            .orElse(null);
+        try {
+            return medicationManager.findByIdForCurrentUser(medicationid);
+        } catch (MedicationNotFoundException ex) {
+            return null;
+        }
     }
 
     private MedicationDTO findMedicationOrThrowException(UUID medicationid) {
-        return medicationManager
-            .findByIdForCurrentUserOptional(medicationid)
-            .orElseThrow(() -> new InvalidEventException("Medication is not found"));
+        try {
+            return medicationManager.findByIdForCurrentUser(medicationid);
+        } catch (MedicationNotFoundException ex) {
+            throw new InvalidEventException("Medication is not found", ex);
+        }
     }
 
     private void validateNotYetCompleted(UUID scheduleId, LocalDateTime targetDate) {

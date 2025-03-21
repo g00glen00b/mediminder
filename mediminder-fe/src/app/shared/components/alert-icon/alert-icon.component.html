@@ -1,0 +1,25 @@
+<span
+  class="icon-circle"
+  [class]="type()"
+  [ngSwitch]="type()">
+      <mat-icon
+        fontSet="material-symbols-outlined"
+        *ngSwitchCase="'error'">
+        priority_high
+      </mat-icon>
+      <mat-icon
+        fontSet="material-symbols-outlined"
+        *ngSwitchCase="'warning'">
+        priority_high
+      </mat-icon>
+      <mat-icon
+        fontSet="material-symbols-outlined"
+        *ngSwitchCase="'success'">
+        check
+      </mat-icon>
+      <mat-icon
+        fontSet="material-symbols-outlined"
+        *ngSwitchCase="'info'">
+        info
+      </mat-icon>
+    </span>

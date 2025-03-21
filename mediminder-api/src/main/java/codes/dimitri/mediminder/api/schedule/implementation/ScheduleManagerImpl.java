@@ -2,7 +2,9 @@ package codes.dimitri.mediminder.api.schedule.implementation;
 
 import codes.dimitri.mediminder.api.medication.MedicationDTO;
 import codes.dimitri.mediminder.api.medication.MedicationManager;
+import codes.dimitri.mediminder.api.medication.MedicationNotFoundException;
 import codes.dimitri.mediminder.api.schedule.*;
+import codes.dimitri.mediminder.api.user.CurrentUserNotFoundException;
 import codes.dimitri.mediminder.api.user.UserDTO;
 import codes.dimitri.mediminder.api.user.UserManager;
 import jakarta.validation.Valid;
@@ -91,15 +93,19 @@ class ScheduleManagerImpl implements ScheduleManager {
     }
 
     private UserDTO findCurrentUser() {
-        return userManager
-            .findCurrentUserOptional()
-            .orElseThrow(() -> new InvalidScheduleException("User is not authenticated"));
+        try {
+            return userManager.findCurrentUser();
+        } catch (CurrentUserNotFoundException ex) {
+            throw new InvalidScheduleException("User is not authenticated", ex);
+        }
     }
 
     private MedicationDTO findMedication(UUID medicationId, UUID userId) {
-        return medicationManager
-            .findByIdAndUserId(medicationId, userId)
-            .orElseThrow(() -> new InvalidScheduleException("Medication is not found"));
+        try {
+            return medicationManager.findByIdAndUserId(medicationId, userId);
+        } catch (MedicationNotFoundException ex) {
+            throw new InvalidScheduleException("Medication is not found", ex);
+        }
     }
 
     private ScheduleEntity findEntity(UUID id, UserDTO currentUser) {
@@ -134,7 +140,15 @@ class ScheduleManagerImpl implements ScheduleManager {
     }
 
     private ScheduleDTO mapEntityToDTO(ScheduleEntity entity) {
-        MedicationDTO medication = medicationManager.findByIdAndUserId(entity.getMedicationId(), entity.getUserId()).orElse(null);
+        MedicationDTO medication = findMedicationOrEmpty(entity.getMedicationId(), entity.getUserId());
         return mapper.toDTO(entity, medication);
+    }
+
+    private MedicationDTO findMedicationOrEmpty(UUID medicationId, UUID userId) {
+        try {
+            return medicationManager.findByIdAndUserId(medicationId, userId);
+        } catch (MedicationNotFoundException ex) {
+            return null;
+        }
     }
 }

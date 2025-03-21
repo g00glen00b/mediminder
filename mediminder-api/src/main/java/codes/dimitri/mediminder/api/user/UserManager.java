@@ -8,15 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface UserManager {
-
-    Optional<UserDTO> findById(@NotNull UUID id);
-
-    Optional<UserDTO> findCurrentUserOptional();
-
     UserDTO findCurrentUser();
 
     @Transactional

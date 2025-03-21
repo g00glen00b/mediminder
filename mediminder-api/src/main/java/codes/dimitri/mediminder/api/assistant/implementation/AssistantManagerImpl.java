@@ -12,6 +12,7 @@ import codes.dimitri.mediminder.api.schedule.EventDTO;
 import codes.dimitri.mediminder.api.schedule.EventManager;
 import codes.dimitri.mediminder.api.schedule.ScheduleDTO;
 import codes.dimitri.mediminder.api.schedule.ScheduleManager;
+import codes.dimitri.mediminder.api.user.CurrentUserNotFoundException;
 import codes.dimitri.mediminder.api.user.UserDTO;
 import codes.dimitri.mediminder.api.user.UserManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -81,8 +82,11 @@ class AssistantManagerImpl implements AssistantManager {
     }
 
     private UserDTO findCurrentUser() {
-        return userManager.findCurrentUserOptional()
-            .orElseThrow(() -> new InvalidAssistantException("User is not authenticated"));
+        try {
+            return userManager.findCurrentUser();
+        } catch (CurrentUserNotFoundException ex) {
+            throw new InvalidAssistantException(ex);
+        }
     }
 
     @SneakyThrows

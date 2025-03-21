@@ -2,6 +2,7 @@ package codes.dimitri.mediminder.api.schedule.implementation;
 
 import codes.dimitri.mediminder.api.medication.*;
 import codes.dimitri.mediminder.api.schedule.*;
+import codes.dimitri.mediminder.api.user.CurrentUserNotFoundException;
 import codes.dimitri.mediminder.api.user.UserDTO;
 import codes.dimitri.mediminder.api.user.UserManager;
 import jakarta.validation.ConstraintViolationException;
@@ -72,8 +73,8 @@ class ScheduleManagerImplTest {
                 Color.RED
             );
             var pageRequest = PageRequest.of(0, 10);
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
-            when(medicationManager.findByIdAndUserId(any(), any())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUser()).thenReturn(user);
+            when(medicationManager.findByIdAndUserId(any(), any())).thenReturn(medication);
             var schedules = manager.findAllForCurrentUser(pageRequest);
             assertThat(schedules).containsExactly(new ScheduleDTO(
                 UUID.fromString("945b1bea-b447-4701-a137-3e447c35ffa3"),
@@ -94,6 +95,7 @@ class ScheduleManagerImplTest {
         @Test
         void failsIfUserNotAuthenticated() {
             var pageRequest = PageRequest.of(0, 10);
+            when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidScheduleException.class)
                 .isThrownBy(() -> manager.findAllForCurrentUser(pageRequest))
                 .withMessage("User is not authenticated");
@@ -109,7 +111,7 @@ class ScheduleManagerImplTest {
                 false
             );
             var pageRequest = PageRequest.of(0, 10);
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             var schedules = manager.findAllForCurrentUser(pageRequest);
             assertThat(schedules).containsExactly(new ScheduleDTO(
                 UUID.fromString("945b1bea-b447-4701-a137-3e447c35ffa3"),
@@ -164,8 +166,8 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
-            when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUser()).thenReturn(user);
+            when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(medication);
             var schedule = manager.createForCurrentUser(request);
             assertThat(schedule).isEqualTo(new ScheduleDTO(
                 schedule.id(),
@@ -211,8 +213,8 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
-            when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUser()).thenReturn(user);
+            when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(medication);
             var schedule = manager.createForCurrentUser(request);
             ScheduleEntity entity = repository.findById(schedule.id()).orElseThrow();
             assertThat(entity)
@@ -249,7 +251,8 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
+            when(medicationManager.findByIdAndUserId(request.medicationId(), user.id())).thenThrow(new MedicationNotFoundException(request.medicationId()));
             assertThatExceptionOfType(InvalidScheduleException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessage("Medication is not found");
@@ -268,6 +271,7 @@ class ScheduleManagerImplTest {
                 "Before breakfast",
                 new BigDecimal("1")
             );
+            when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidScheduleException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request))
                 .withMessage("User is not authenticated");
@@ -488,8 +492,8 @@ class ScheduleManagerImplTest {
                 "After breakfast",
                 new BigDecimal("2")
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
-            when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUser()).thenReturn(user);
+            when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(medication);
             ScheduleDTO result = manager.updateForCurrentUser(id, request);
             assertThat(result).isEqualTo(new ScheduleDTO(
                 id,
@@ -535,8 +539,8 @@ class ScheduleManagerImplTest {
                 "After breakfast",
                 new BigDecimal("2")
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
-            when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUser()).thenReturn(user);
+            when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(medication);
             manager.updateForCurrentUser(id, request);
             ScheduleEntity entity = repository.findById(id).orElseThrow();
             assertThat(entity)
@@ -566,6 +570,7 @@ class ScheduleManagerImplTest {
                 "After breakfast",
                 new BigDecimal("2")
             );
+            when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidScheduleException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessage("User is not authenticated");
@@ -574,6 +579,7 @@ class ScheduleManagerImplTest {
         @Test
         void failsIfMedicationNotGiven() {
             UUID id = UUID.fromString("945b1bea-b447-4701-a137-3e447c35ffa3");
+            var medicationId = UUID.fromString("fb384363-0446-4fdc-a62d-098c20ddf286");
             var request = new UpdateScheduleRequestDTO(
                 Period.ofDays(2),
                 new SchedulePeriodDTO(
@@ -591,7 +597,8 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
+            when(medicationManager.findByIdAndUserId(medicationId, user.id())).thenThrow(new MedicationNotFoundException(medicationId));
             assertThatExceptionOfType(InvalidScheduleException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessage("Medication is not found");
@@ -617,7 +624,7 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(ScheduleNotFoundException.class)
                 .isThrownBy(() -> manager.updateForCurrentUser(id, request))
                 .withMessage("Schedule with ID '08a6aa16-8449-418e-93ff-c7975731066d' does not exist");
@@ -818,7 +825,7 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             manager.deleteForCurrentUser(id);
             assertThat(repository.findById(id)).isEmpty();
         }
@@ -826,6 +833,7 @@ class ScheduleManagerImplTest {
         @Test
         void failsIfUserNotAuthenticated() {
             UUID id = UUID.fromString("945b1bea-b447-4701-a137-3e447c35ffa3");
+            when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidScheduleException.class)
                 .isThrownBy(() -> manager.deleteForCurrentUser(id))
                 .withMessage("User is not authenticated");
@@ -841,7 +849,7 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(ScheduleNotFoundException.class)
                 .isThrownBy(() -> manager.deleteForCurrentUser(id))
                 .withMessage("Schedule with ID '08a6aa16-8449-418e-93ff-c7975731066d' does not exist");
@@ -928,8 +936,8 @@ class ScheduleManagerImplTest {
                 new BigDecimal("50"),
                 Color.RED
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
-            when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(Optional.of(medication));
+            when(userManager.findCurrentUser()).thenReturn(user);
+            when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(medication);
             var schedule = manager.findByIdForCurrentUser(id);
             assertThat(schedule).isEqualTo(new ScheduleDTO(
                 id,
@@ -956,7 +964,7 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             var schedule = manager.findByIdForCurrentUser(id);
             assertThat(schedule).isEqualTo(new ScheduleDTO(
                 id,
@@ -976,6 +984,7 @@ class ScheduleManagerImplTest {
         @Test
         void failsIfUserNotAuthenticated() {
             UUID id = UUID.fromString("945b1bea-b447-4701-a137-3e447c35ffa3");
+            when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidScheduleException.class)
                 .isThrownBy(() -> manager.findByIdForCurrentUser(id))
                 .withMessage("User is not authenticated");
@@ -991,7 +1000,7 @@ class ScheduleManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(ScheduleNotFoundException.class)
                 .isThrownBy(() -> manager.findByIdForCurrentUser(id))
                 .withMessage("Schedule with ID '08a6aa16-8449-418e-93ff-c7975731066d' does not exist");
@@ -1070,7 +1079,7 @@ class ScheduleManagerImplTest {
             );
             var userId = UUID.fromString("9133c9d2-0b6c-4915-9752-512d2dca9330");
             var pageRequest = PageRequest.of(0, 10);
-            when(medicationManager.findByIdAndUserId(medication.id(), userId)).thenReturn(Optional.of(medication));
+            when(medicationManager.findByIdAndUserId(medication.id(), userId)).thenReturn(medication);
             Page<ScheduleDTO> results = manager.findAllWithinPeriod(period, pageRequest);
             assertThat(results).containsExactly(new ScheduleDTO(
                 UUID.fromString("f2f2de45-3000-45fc-af12-fa8cfce5c2ff"),

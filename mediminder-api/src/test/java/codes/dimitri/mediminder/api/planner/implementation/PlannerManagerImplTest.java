@@ -6,6 +6,7 @@ import codes.dimitri.mediminder.api.planner.InvalidPlannerException;
 import codes.dimitri.mediminder.api.planner.MedicationPlannerDTO;
 import codes.dimitri.mediminder.api.schedule.ScheduleManager;
 import codes.dimitri.mediminder.api.schedule.SchedulePeriodDTO;
+import codes.dimitri.mediminder.api.user.CurrentUserNotFoundException;
 import codes.dimitri.mediminder.api.user.UserDTO;
 import codes.dimitri.mediminder.api.user.UserManager;
 import jakarta.validation.ConstraintViolationException;
@@ -85,7 +86,7 @@ class PlannerManagerImplTest {
                 Color.YELLOW
             );
             var medicationPage = new PageImpl<>(List.of(medication1, medication2));
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             when(userManager.calculateTodayForUser(user.id())).thenReturn(today);
             when(medicationManager.findAllForCurrentUser(null, pageRequest)).thenReturn(medicationPage);
             when(cabinetEntryManager.calculateTotalRemainingDosesByMedicationId(medication1.id())).thenReturn(new BigDecimal("30"));
@@ -100,6 +101,7 @@ class PlannerManagerImplTest {
 
         @Test
         void failsIfUserNotAuthenticated() {
+            when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidPlannerException.class)
                 .isThrownBy(() -> plannerManager.findAll(LocalDate.now(), PageRequest.of(0, 10)))
                 .withMessage("User is not authenticated");

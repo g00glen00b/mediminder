@@ -112,7 +112,7 @@ class AssistantManagerImplTest {
                 schedule.dose(),
                 schedule.description()
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             when(userManager.calculateTodayForUser(user.id())).thenReturn(today);
             when(medicationManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(medication1, medication2)));
             when(scheduleManager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
@@ -179,7 +179,7 @@ class AssistantManagerImplTest {
                 schedule.dose(),
                 schedule.description()
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             when(userManager.calculateTodayForUser(user.id())).thenReturn(today);
             when(medicationManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(medication1, medication2)));
             when(scheduleManager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));

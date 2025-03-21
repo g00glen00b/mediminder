@@ -3,6 +3,8 @@ package codes.dimitri.mediminder.api.cabinet.implementation;
 import codes.dimitri.mediminder.api.cabinet.*;
 import codes.dimitri.mediminder.api.medication.MedicationDTO;
 import codes.dimitri.mediminder.api.medication.MedicationManager;
+import codes.dimitri.mediminder.api.medication.MedicationNotFoundException;
+import codes.dimitri.mediminder.api.user.CurrentUserNotFoundException;
 import codes.dimitri.mediminder.api.user.UserDTO;
 import codes.dimitri.mediminder.api.user.UserManager;
 import jakarta.validation.Valid;
@@ -59,8 +61,16 @@ class CabinetEntryManagerImpl implements CabinetEntryManager {
     }
 
     private CabinetEntryDTO mapEntityToDTO(CabinetEntryEntity entity) {
-        MedicationDTO medication = medicationManager.findByIdAndUserId(entity.getMedicationId(), entity.getUserId()).orElse(null);
+        MedicationDTO medication = findMedicationOrEmtpy(entity.getMedicationId(), entity.getUserId());
         return mapper.toDTO(entity, medication);
+    }
+
+    private MedicationDTO findMedicationOrEmtpy(UUID medicationId, UUID userId) {
+        try {
+            return medicationManager.findByIdAndUserId(medicationId, userId);
+        } catch (MedicationNotFoundException ex) {
+            return null;
+        }
     }
 
     @Override
@@ -96,16 +106,20 @@ class CabinetEntryManagerImpl implements CabinetEntryManager {
             .orElseThrow(() -> new CabinetEntryNotFoundException(id));
     }
 
-    private MedicationDTO findMedication(UUID medicationid) {
-        return medicationManager
-            .findByIdForCurrentUserOptional(medicationid)
-            .orElseThrow(() -> new InvalidCabinetEntryException("Medication is not found"));
+    private MedicationDTO findMedication(UUID medicationId) {
+        try {
+            return medicationManager.findByIdForCurrentUser(medicationId);
+        } catch (MedicationNotFoundException ex) {
+            throw new InvalidCabinetEntryException("Medication is not found", ex);
+        }
     }
 
     private UserDTO findCurrentUser() {
-        return userManager
-            .findCurrentUserOptional()
-            .orElseThrow(() -> new InvalidCabinetEntryException("User is not authenticated"));
+        try {
+            return userManager.findCurrentUser();
+        } catch (CurrentUserNotFoundException ex) {
+            throw new InvalidCabinetEntryException("User is not authenticated", ex);
+        }
     }
 
     private static void validateRemainingDoses(BigDecimal remainingDoses, MedicationDTO medication) {

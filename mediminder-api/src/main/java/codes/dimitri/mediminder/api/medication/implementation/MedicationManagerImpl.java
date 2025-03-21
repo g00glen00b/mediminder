@@ -1,6 +1,7 @@
 package codes.dimitri.mediminder.api.medication.implementation;
 
 import codes.dimitri.mediminder.api.medication.*;
+import codes.dimitri.mediminder.api.user.CurrentUserNotFoundException;
 import codes.dimitri.mediminder.api.user.UserDTO;
 import codes.dimitri.mediminder.api.user.UserManager;
 import jakarta.validation.Valid;
@@ -14,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -65,22 +65,17 @@ class MedicationManagerImpl implements MedicationManager {
     }
 
     @Override
-    public Optional<MedicationDTO> findByIdForCurrentUserOptional(@NotNull UUID id) {
+    public MedicationDTO findByIdForCurrentUser(UUID id) {
         UserDTO currentUser = findCurrentUser();
         return findByIdAndUserId(id, currentUser.id());
     }
 
     @Override
-    public MedicationDTO findByIdForCurrentUser(UUID id) {
-        return findByIdForCurrentUserOptional(id)
-            .orElseThrow(() -> new MedicationNotFoundException(id));
-    }
-
-    @Override
-    public Optional<MedicationDTO> findByIdAndUserId(@NotNull UUID id, @NotNull UUID userId) {
+    public MedicationDTO findByIdAndUserId(@NotNull UUID id, @NotNull UUID userId) {
         return medicationEntityRepository
             .findByIdAndUserId(id, userId)
-            .map(mapper::toDTO);
+            .map(mapper::toDTO)
+            .orElseThrow(() -> new MedicationNotFoundException(id));
     }
 
     @Override
@@ -122,7 +117,11 @@ class MedicationManagerImpl implements MedicationManager {
     }
 
     private UserDTO findCurrentUser() {
-        return userManager.findCurrentUserOptional().orElseThrow(() -> new InvalidMedicationException("User is not authenticated"));
+        try {
+            return userManager.findCurrentUser();
+        } catch (CurrentUserNotFoundException ex) {
+            throw new InvalidMedicationException("User is not authenticated", ex);
+        }
     }
 
     private MedicationTypeEntity findMedicationType(String medicationTypeId) {

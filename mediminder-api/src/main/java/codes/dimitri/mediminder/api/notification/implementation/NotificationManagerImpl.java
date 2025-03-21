@@ -1,6 +1,7 @@
 package codes.dimitri.mediminder.api.notification.implementation;
 
 import codes.dimitri.mediminder.api.notification.*;
+import codes.dimitri.mediminder.api.user.CurrentUserNotFoundException;
 import codes.dimitri.mediminder.api.user.UserDTO;
 import codes.dimitri.mediminder.api.user.UserManager;
 import jakarta.validation.Valid;
@@ -75,9 +76,11 @@ class NotificationManagerImpl implements NotificationManager {
     }
 
     private UserDTO findCurrentUser() {
-        return userManager
-            .findCurrentUserOptional()
-            .orElseThrow(() -> new InvalidNotificationException("User is not authenticated"));
+        try {
+            return userManager.findCurrentUser();
+        } catch (CurrentUserNotFoundException ex) {
+            throw new InvalidNotificationException("User is not authenticated", ex);
+        }
     }
 
     private NotificationEntity findEntity(UUID id, UserDTO currentUser) {

@@ -5,6 +5,7 @@ import codes.dimitri.mediminder.api.medication.MedicationManager;
 import codes.dimitri.mediminder.api.notification.*;
 import codes.dimitri.mediminder.api.schedule.ScheduleManager;
 import codes.dimitri.mediminder.api.shared.TestClockConfiguration;
+import codes.dimitri.mediminder.api.user.CurrentUserNotFoundException;
 import codes.dimitri.mediminder.api.user.UserDTO;
 import codes.dimitri.mediminder.api.user.UserManager;
 import jakarta.validation.ConstraintViolationException;
@@ -80,7 +81,7 @@ class NotificationManagerImplTest {
                     "auth3"
                 )
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             notificationManager.subscribe(request);
             List<SubscriptionEntity> results = subscriptionRepository.findAll();
             assertThat(results)
@@ -110,7 +111,7 @@ class NotificationManagerImplTest {
                     "auth3"
                 )
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             notificationManager.subscribe(request);
             List<SubscriptionEntity> results = subscriptionRepository.findAll();
             assertThat(results)
@@ -133,6 +134,7 @@ class NotificationManagerImplTest {
                     "auth3"
                 )
             );
+            when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidNotificationException.class)
                 .isThrownBy(() -> notificationManager.subscribe(request))
                 .withMessage("User is not authenticated");
@@ -251,7 +253,7 @@ class NotificationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             notificationManager.unsubscribe();
             assertThat(subscriptionRepository.existsById(user.id())).isFalse();
         }
@@ -265,13 +267,14 @@ class NotificationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             notificationManager.unsubscribe();
             assertThat(subscriptionRepository.count()).isEqualTo(2);
         }
 
         @Test
         void failsIfUserNotAuthenticated() {
+            when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidNotificationException.class)
                 .isThrownBy(() -> notificationManager.unsubscribe())
                 .withMessage("User is not authenticated");
@@ -290,7 +293,7 @@ class NotificationManagerImplTest {
                 false
             );
             var pageRequest = PageRequest.of(0, 10);
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             Page<NotificationDTO> results = notificationManager.findAll(pageRequest);
             assertThat(results).containsExactly(
                 new NotificationDTO(
@@ -311,6 +314,7 @@ class NotificationManagerImplTest {
         @Test
         void failsIfUserNotAuthenticated() {
             var pageRequest = PageRequest.of(0, 10);
+            when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidNotificationException.class)
                 .isThrownBy(() -> notificationManager.findAll(pageRequest))
                 .withMessage("User is not authenticated");
@@ -335,7 +339,7 @@ class NotificationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             notificationManager.delete(id);
             NotificationEntity result = notificationRepository.findById(id).orElseThrow();
             assertThat(result.isActive()).isFalse();
@@ -351,7 +355,7 @@ class NotificationManagerImplTest {
                 true,
                 false
             );
-            when(userManager.findCurrentUserOptional()).thenReturn(Optional.of(user));
+            when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(NotificationNotFoundException.class)
                 .isThrownBy(() -> notificationManager.delete(id))
                 .withMessage("Notification with ID 'bf844a6a-7d75-44a6-ab06-67757304f124' does not exist");
@@ -359,6 +363,7 @@ class NotificationManagerImplTest {
 
         @Test
         void failsIfUserNotAuthenticated() {
+            when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidNotificationException.class)
                 .isThrownBy(() -> notificationManager.delete(UUID.randomUUID()))
                 .withMessage("User is not authenticated");

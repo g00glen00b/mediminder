@@ -7,6 +7,7 @@ import codes.dimitri.mediminder.api.planner.MedicationPlannerDTO;
 import codes.dimitri.mediminder.api.planner.PlannerManager;
 import codes.dimitri.mediminder.api.schedule.ScheduleManager;
 import codes.dimitri.mediminder.api.schedule.SchedulePeriodDTO;
+import codes.dimitri.mediminder.api.user.CurrentUserNotFoundException;
 import codes.dimitri.mediminder.api.user.UserDTO;
 import codes.dimitri.mediminder.api.user.UserManager;
 import jakarta.validation.constraints.NotNull;
@@ -45,6 +46,10 @@ class PlannerManagerImpl implements PlannerManager {
     }
 
     private UserDTO findCurrentUser() {
-        return userManager.findCurrentUserOptional().orElseThrow(() -> new InvalidPlannerException("User is not authenticated"));
+        try {
+            return userManager.findCurrentUser();
+        } catch (CurrentUserNotFoundException ex) {
+            throw new InvalidPlannerException("User is not authenticated", ex);
+        }
     }
 }
