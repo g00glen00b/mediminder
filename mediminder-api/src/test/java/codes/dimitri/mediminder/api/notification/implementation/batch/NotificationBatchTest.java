@@ -62,6 +62,7 @@ import static org.mockito.Mockito.*;
     "classpath:test-data/cleanup-users.sql",
     "classpath:test-data/cleanup-medication.sql",
     "classpath:test-data/cleanup-subscriptions.sql",
+    "classpath:test-data/cleanup-documents.sql"
 }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class NotificationBatchTest {
     private static final UUID USER_ID = UUID.fromString("03479cd3-7e9a-4b79-8958-522cb1a16b1d");
@@ -105,7 +106,7 @@ class NotificationBatchTest {
             .toJobParameters();
         var jobExecution = jobLauncherTestUtils.launchJob(parameters);
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
-        assertThat(repository.count()).isEqualTo(6);
+        assertThat(repository.count()).isEqualTo(8);
     }
 
     @Test
@@ -280,6 +281,88 @@ class NotificationBatchTest {
             .anySatisfy(payload -> {
                 payload.extractingJsonPathStringValue("$.notification.title").isEqualTo("Cabinet entry almost expired");
                 payload.extractingJsonPathStringValue("$.notification.body").isEqualTo("A cabinet entry for 'Dafalgan' will expire on February 27, 2025");
+            });
+    }
+
+    @Test
+    void createsExpiredDocumentNotification() throws Exception {
+        UUID documentId = UUID.fromString("d1ccc34f-7fc3-4f65-b4da-8ae8ff0accf0");
+        var date = LocalDateTime.of(2025, 2, 26, 0, 0);
+        var parameters = new JobParametersBuilder()
+            .addLocalDateTime("date", date)
+            .toJobParameters();
+        jobLauncherTestUtils.launchJob(parameters);
+        assertThat(repository.findAll())
+            .filteredOn(entity -> documentId.equals(entity.getInitiatorId()))
+            .singleElement()
+            .usingRecursiveComparison()
+            .ignoringFields("id")
+            .isEqualTo(new NotificationEntity(
+                USER_ID,
+                NotificationType.DOCUMENT_EXPIRED,
+                documentId,
+                "Document expired",
+                "Document 'file1.pdf' is expired",
+                ZonedDateTime.of(2025, 3, 5, 10, 0, 0, 0, ZoneOffset.UTC).toInstant()
+            ));
+    }
+
+    @Test
+    void sendsExpiredDocumentPushNotification() throws Exception {
+        var date = LocalDateTime.of(2025, 2, 26, 0, 0);
+        var parameters = new JobParametersBuilder()
+            .addLocalDateTime("date", date)
+            .toJobParameters();
+        jobLauncherTestUtils.launchJob(parameters);
+        verify(pushService, atLeastOnce()).send(anyNotificiation.capture());
+        assertThat(anyNotificiation.getAllValues())
+            .extracting(Notification::getPayload)
+            .map(String::new)
+            .map(payload -> new JsonContentAssert(PushNotificationPayloadWrapper.class, payload))
+            .anySatisfy(payload -> {
+                payload.extractingJsonPathStringValue("$.notification.title").isEqualTo("Document expired");
+                payload.extractingJsonPathStringValue("$.notification.body").isEqualTo("Document 'file1.pdf' is expired");
+            });
+    }
+
+    @Test
+    void createsAlmostExpiredDocumentNotification() throws Exception {
+        UUID documentId = UUID.fromString("691090bd-1142-4265-9fde-c2e744a282c1");
+        var date = LocalDateTime.of(2025, 2, 26, 0, 0);
+        var parameters = new JobParametersBuilder()
+            .addLocalDateTime("date", date)
+            .toJobParameters();
+        jobLauncherTestUtils.launchJob(parameters);
+        assertThat(repository.findAll())
+            .filteredOn(entity -> documentId.equals(entity.getInitiatorId()))
+            .singleElement()
+            .usingRecursiveComparison()
+            .ignoringFields("id")
+            .isEqualTo(new NotificationEntity(
+                USER_ID,
+                NotificationType.DOCUMENT_ALMOST_EXPIRED,
+                documentId,
+                "Document almost expired",
+                "Document 'file2.pdf' will expire on February 27, 2025",
+                ZonedDateTime.of(2025, 3, 5, 10, 0, 0, 0, ZoneOffset.UTC).toInstant()
+            ));
+    }
+
+    @Test
+    void sendsAlmostExpiredDocumentPushNotification() throws Exception {
+        var date = LocalDateTime.of(2025, 2, 26, 0, 0);
+        var parameters = new JobParametersBuilder()
+            .addLocalDateTime("date", date)
+            .toJobParameters();
+        jobLauncherTestUtils.launchJob(parameters);
+        verify(pushService, atLeastOnce()).send(anyNotificiation.capture());
+        assertThat(anyNotificiation.getAllValues())
+            .extracting(Notification::getPayload)
+            .map(String::new)
+            .map(payload -> new JsonContentAssert(PushNotificationPayloadWrapper.class, payload))
+            .anySatisfy(payload -> {
+                payload.extractingJsonPathStringValue("$.notification.title").isEqualTo("Document almost expired");
+                payload.extractingJsonPathStringValue("$.notification.body").isEqualTo("Document 'file2.pdf' will expire on February 27, 2025");
             });
     }
 

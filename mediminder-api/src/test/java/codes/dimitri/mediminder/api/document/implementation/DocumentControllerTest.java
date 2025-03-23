@@ -44,10 +44,12 @@ class DocumentControllerTest {
         @Test
         void returnsResults() throws Exception {
             var pageRequest = PageRequest.of(0, 10, Sort.Direction.ASC, "id");
+            LocalDate expiryDate = LocalDate.of(2026, 1, 31);
             var document = new DocumentDTO(
                 UUID.randomUUID(),
+                UUID.randomUUID(),
                 "filename.pdf",
-                LocalDate.of(2026, 1, 31),
+                expiryDate,
                 new MedicationDTO(
                     UUID.randomUUID(),
                     "Dafalgan",
@@ -59,12 +61,13 @@ class DocumentControllerTest {
                 ),
                 "Package insert Dafalgan"
             );
-            when(manager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(document)));
+            when(manager.findAllForCurrentUser(expiryDate, pageRequest)).thenReturn(new PageImpl<>(List.of(document)));
             mvc
                 .perform(get("/api/document")
                     .param("page", "0")
                     .param("size", "10")
                     .param("sort", "id,asc")
+                    .param("expiredOn", "2026-01-31")
                     .with(user("me@example.org")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("content[0].id").value(document.id().toString()));
@@ -76,6 +79,7 @@ class DocumentControllerTest {
         @Test
         void returnsResult() throws Exception {
             var document = new DocumentDTO(
+                UUID.randomUUID(),
                 UUID.randomUUID(),
                 "filename.pdf",
                 LocalDate.of(2026, 1, 31),
@@ -123,6 +127,7 @@ class DocumentControllerTest {
                 "Package insert Dafalgan"
             );
             var result = new DocumentDTO(
+                UUID.randomUUID(),
                 UUID.randomUUID(),
                 "filename.pdf",
                 LocalDate.of(2026, 1, 31),
@@ -228,6 +233,7 @@ class DocumentControllerTest {
                 "Package insert Dafalgan"
             );
             var document = new DocumentDTO(
+                UUID.randomUUID(),
                 UUID.randomUUID(),
                 "filename.pdf",
                 LocalDate.of(2026, 1, 31),

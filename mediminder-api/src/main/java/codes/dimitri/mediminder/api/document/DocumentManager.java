@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 public interface DocumentManager {
@@ -14,9 +15,10 @@ public interface DocumentManager {
     DocumentDTO createForCurrentUser(@Valid @NotNull CreateDocumentRequestDTO request, @NotNull MultipartFile file);
     @Transactional
     DocumentDTO updateForCurrentUser(@NotNull UUID id, @Valid @NotNull UpdateDocumentRequestDTO request);
-    Page<DocumentDTO> findAllForCurrentUser(@NotNull Pageable pageable);
+    Page<DocumentDTO> findAllForCurrentUser(LocalDate expiredOn, @NotNull Pageable pageable);
     DocumentDTO findByIdForCurrentUser(@NotNull UUID id);
     ResourceWithMetadataDTO downloadDocumentForCurrentUser(@NotNull UUID id);
     @Transactional
     void deleteForCurrentUser(@NotNull UUID id);
+    Page<DocumentDTO> findAllWithExpiryDateBefore(@NotNull LocalDate expiredOn, @NotNull Pageable pageable);
 }

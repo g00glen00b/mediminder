@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @RestController
@@ -26,8 +27,10 @@ class DocumentController {
     private final DocumentManager manager;
 
     @GetMapping
-    public Page<DocumentDTO> findAll(@ParameterObject Pageable pageable) {
-        return manager.findAllForCurrentUser(pageable);
+    public Page<DocumentDTO> findAll(
+        @RequestParam(required = false) LocalDate expiredOn,
+        @ParameterObject Pageable pageable) {
+        return manager.findAllForCurrentUser(expiredOn, pageable);
     }
 
     @GetMapping("/{id}")

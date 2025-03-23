@@ -9,6 +9,8 @@ import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.mock.web.MockMultipartFile;
@@ -93,6 +95,7 @@ class DocumentManagerImplTest {
             var result = manager.createForCurrentUser(request, file);
             assertThat(result).isEqualTo(new DocumentDTO(
                 result.id(),
+                user.id(),
                 "file.pdf",
                 LocalDate.of(2025, 6, 30),
                 medication,
@@ -302,6 +305,7 @@ class DocumentManagerImplTest {
             var result = manager.updateForCurrentUser(id, request);
             assertThat(result).isEqualTo(new DocumentDTO(
                 result.id(),
+                user.id(),
                 "file.pdf",
                 LocalDate.of(2025, 6, 30),
                 medication,
@@ -468,10 +472,10 @@ class DocumentManagerImplTest {
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(medication);
-            when(userManager.findCurrentUser()).thenReturn(user);
-            var result = manager.findAllForCurrentUser(pageRequest);
+            var result = manager.findAllForCurrentUser(null, pageRequest);
             assertThat(result).containsOnly(new DocumentDTO(
                 UUID.fromString("af3edd34-a8e2-4356-9877-2481eae06dfb"),
+                user.id(),
                 "file.pdf",
                 LocalDate.of(2026, 1, 31),
                 medication,
@@ -479,10 +483,29 @@ class DocumentManagerImplTest {
             ));
         }
 
+        @ParameterizedTest
+        @CsvSource({
+            "2026-01-30,0",
+            "2026-01-31,1",
+        })
+        void returnsResultsWithExpiryDate(LocalDate expiresOn, int expectedResults) {
+            var user = new UserDTO(
+                UUID.fromString("c00385bb-3551-4cd9-b786-8a71f1c1b9d8"),
+                "Harry Potter",
+                ZoneId.of("Europe/Brussels"),
+                true,
+                false
+            );
+            var pageRequest = PageRequest.of(0, 10);
+            when(userManager.findCurrentUser()).thenReturn(user);
+            var result = manager.findAllForCurrentUser(expiresOn, pageRequest);
+            assertThat(result).hasSize(expectedResults);
+        }
+
         @Test
         void failsIfPageableNotGiven() {
             assertThatExceptionOfType(ConstraintViolationException.class)
-                .isThrownBy(() -> manager.findAllForCurrentUser(null));
+                .isThrownBy(() -> manager.findAllForCurrentUser(null, null));
         }
 
         @Test
@@ -490,7 +513,7 @@ class DocumentManagerImplTest {
             var pageRequest = PageRequest.of(0, 10);
             when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidDocumentException.class)
-                .isThrownBy(() -> manager.findAllForCurrentUser(pageRequest))
+                .isThrownBy(() -> manager.findAllForCurrentUser(null, pageRequest))
                 .withMessage("User is not authenticated");
         }
 
@@ -507,9 +530,10 @@ class DocumentManagerImplTest {
             UUID medicationId = UUID.fromString("dcb33d3c-5e8e-4f54-b965-64dc17e0a285");
             when(userManager.findCurrentUser()).thenReturn(user);
             when(medicationManager.findByIdAndUserId(medicationId, user.id())).thenThrow(new MedicationNotFoundException(medicationId));
-            var result = manager.findAllForCurrentUser(pageRequest);
+            var result = manager.findAllForCurrentUser(null, pageRequest);
             assertThat(result).containsOnly(new DocumentDTO(
                 UUID.fromString("af3edd34-a8e2-4356-9877-2481eae06dfb"),
+                user.id(),
                 "file.pdf",
                 LocalDate.of(2026, 1, 31),
                 null,
@@ -543,6 +567,7 @@ class DocumentManagerImplTest {
             var result = manager.findByIdForCurrentUser(UUID.fromString("af3edd34-a8e2-4356-9877-2481eae06dfb"));
             assertThat(result).isEqualTo(new DocumentDTO(
                 result.id(),
+                user.id(),
                 "file.pdf",
                 LocalDate.of(2026, 1, 31),
                 medication,
@@ -565,6 +590,7 @@ class DocumentManagerImplTest {
             var result = manager.findByIdForCurrentUser(UUID.fromString("af3edd34-a8e2-4356-9877-2481eae06dfb"));
             assertThat(result).isEqualTo(new DocumentDTO(
                 result.id(),
+                user.id(),
                 "file.pdf",
                 LocalDate.of(2026, 1, 31),
                 null,
@@ -690,6 +716,29 @@ class DocumentManagerImplTest {
         void failsIfIdNotGiven() {
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.deleteForCurrentUser(null));
+        }
+    }
+
+    @Nested
+    class findAllWithExpiryDateBefore {
+        @Test
+        void returnsResults() {
+            var pageRequest = PageRequest.of(0, 10);
+            var result = manager.findAllWithExpiryDateBefore(LocalDate.of(2026, 1, 31), pageRequest);
+            assertThat(result).hasSize(1);
+        }
+
+        @Test
+        void failsIfPageableNotGiven() {
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findAllWithExpiryDateBefore(LocalDate.now(), null));
+        }
+
+        @Test
+        void failsIfExpiryDateNotGiven() {
+            var pageRequest = PageRequest.of(0, 10);
+            assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> manager.findAllWithExpiryDateBefore(null, pageRequest));
         }
     }
 

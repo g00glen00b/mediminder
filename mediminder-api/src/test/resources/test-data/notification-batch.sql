@@ -18,6 +18,11 @@ values ('61b1056e-66b2-4665-9d65-3469cb7b8ffe', '03479cd3-7e9a-4b79-8958-522cb1a
        ('56c1db4e-7427-4eba-b3de-b7ea5d118b1c', '03479cd3-7e9a-4b79-8958-522cb1a16b1d', 'cd7637ae-fda8-413a-a5e4-c0e1f0f68325', '2025-01-01', null, 'P1D', '10:30', 'After breakfast', 1),
        ('a5a85d19-7fc8-454a-883a-88ce836b9411', '03479cd3-7e9a-4b79-8958-522cb1a16b1d', 'c266f875-0033-4cad-b96f-e17c37c81b66', '2025-01-01', null, 'P1D', '12:30', 'After lunch', 1);
 
+insert into document (id, user_id, related_medication_id, content_type, expiry_date, filename, description)
+values ('d1ccc34f-7fc3-4f65-b4da-8ae8ff0accf0', '03479cd3-7e9a-4b79-8958-522cb1a16b1d', null, 'application/pdf', '2025-02-26', 'file1.pdf', 'Medical attest for Dafalgan'),
+       ('691090bd-1142-4265-9fde-c2e744a282c1', '03479cd3-7e9a-4b79-8958-522cb1a16b1d', null, 'application/pdf', '2025-02-27', 'file2.pdf', 'Medical attest for Hydrocortisone 14mg'),
+       ('3e98dce5-5372-4e44-82db-45d649c89c61', '03479cd3-7e9a-4b79-8958-522cb1a16b1d', null, 'application/pdf', '2025-03-12', 'file3.pdf', 'Medical attest for Hydrocortisone 8mg');
+
 insert into notification (id, user_id, type, initiator_id, title, message, delete_at, active)
 values ('2272b371-d6df-420e-b875-875321deb7e7', '03479cd3-7e9a-4b79-8958-522cb1a16b1d', 'CABINET_ENTRY_EXPIRED', '7e61721b-2d6d-49c4-b33f-c23ff74b1a70', 'Cabinet entry notification', 'Cabinet entry notification message', '2025-01-01 10:00:00', true);
 

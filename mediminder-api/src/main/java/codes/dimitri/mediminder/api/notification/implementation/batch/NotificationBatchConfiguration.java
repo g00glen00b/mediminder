@@ -1,6 +1,7 @@
 package codes.dimitri.mediminder.api.notification.implementation.batch;
 
 import codes.dimitri.mediminder.api.cabinet.CabinetEntryDTO;
+import codes.dimitri.mediminder.api.document.DocumentDTO;
 import codes.dimitri.mediminder.api.notification.implementation.NotificationEntity;
 import codes.dimitri.mediminder.api.notification.implementation.NotificationProperties;
 import codes.dimitri.mediminder.api.schedule.ScheduleDTO;
@@ -36,11 +37,13 @@ class NotificationBatchConfiguration {
         @Qualifier("notificationCleanupStep") Step notificationCleanupStep,
         @Qualifier("outOfDoseStep") Step outOfDoseStep,
         @Qualifier("expiryStep") Step expiryStep,
+        @Qualifier("documentExpiryStep") Step documentExpiryStep,
         @Qualifier("intakeStep") Step intakeStep) {
         return new JobBuilder("notificationJob", jobRepository)
             .start(notificationCleanupStep)
             .next(outOfDoseStep)
             .next(expiryStep)
+            .next(documentExpiryStep)
             .next(intakeStep)
             .build();
     }
@@ -63,6 +66,14 @@ class NotificationBatchConfiguration {
     @Bean
     public CompositeItemProcessor<CabinetEntryDTO, NotificationEntity> compositeExpiryProcessor(
         CabinetEntryExpiryNotificationProcessor processor,
+        NotificationExistenceProcessor existenceProcessor
+    ) {
+        return new CompositeItemProcessor<>(processor, existenceProcessor);
+    }
+
+    @Bean
+    public CompositeItemProcessor<DocumentDTO, NotificationEntity> compositeDocumentExpiryProcessor(
+        DocumentExpiryNotificationProcessor processor,
         NotificationExistenceProcessor existenceProcessor
     ) {
         return new CompositeItemProcessor<>(processor, existenceProcessor);
@@ -113,6 +124,22 @@ class NotificationBatchConfiguration {
             .processor(compositeExpiryProcessor)
             .writer(writer)
             .listener(cabinetEntryExpiryNotificationProcessor)
+            .build();
+    }
+
+    @Bean
+    public Step documentExpiryStep(
+        DocumentWithNearExpiryDateReader reader,
+        DocumentExpiryNotificationProcessor documentExpiryNotificationProcessor,
+        @Qualifier("compositeDocumentExpiryProcessor") CompositeItemProcessor<DocumentDTO, NotificationEntity> compositeDocumentExpiryProcessor,
+        @Qualifier("compositeNotificationWriter") CompositeItemWriter<NotificationEntity> writer
+    ) {
+        return new StepBuilder("documentExpiryStep", jobRepository)
+            .<DocumentDTO, NotificationEntity>chunk(properties.chunkSize(), transactionManager)
+            .reader(reader)
+            .processor(compositeDocumentExpiryProcessor)
+            .writer(writer)
+            .listener(documentExpiryNotificationProcessor)
             .build();
     }
 

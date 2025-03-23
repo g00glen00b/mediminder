@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -65,9 +66,8 @@ class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public Page<DocumentDTO> findAllForCurrentUser(@NotNull Pageable pageable) {
-        return repository
-            .findAllByUserId(findCurrentUser().id(), pageable)
+    public Page<DocumentDTO> findAllForCurrentUser(LocalDate expiredOn, @NotNull Pageable pageable) {
+        return findAllEntities(expiredOn, pageable)
             .map(entity -> mapper.toDTO(entity, findMedicationSafe(entity.getRelatedMedicationId(), entity.getUserId())));
     }
 
@@ -95,6 +95,13 @@ class DocumentManagerImpl implements DocumentManager {
         DocumentEntity entity = findEntity(id, findCurrentUser());
         storageService.delete(entity);
         repository.delete(entity);
+    }
+
+    @Override
+    public Page<DocumentDTO> findAllWithExpiryDateBefore(LocalDate expiredOn, Pageable pageable) {
+        return repository
+            .findAllByExpiryDateLessThanEqual(expiredOn, pageable)
+            .map(entity -> mapper.toDTO(entity, findMedicationSafe(entity.getRelatedMedicationId(), entity.getUserId())));
     }
 
     private UserDTO findCurrentUser() {
@@ -139,5 +146,14 @@ class DocumentManagerImpl implements DocumentManager {
         String filename = file.getOriginalFilename();
         if (filename == null) throw new InvalidDocumentException("Filename is empty");
         if (filename.length() > 128) throw new InvalidDocumentException("Filename '" + filename + "' cannot contain more than 128 characters");
+    }
+
+    private Page<DocumentEntity> findAllEntities(LocalDate expiresOn, @NotNull Pageable pageable) {
+        UUID userId = findCurrentUser().id();
+        if (expiresOn == null) {
+            return repository.findAllByUserId(userId, pageable);
+        } else {
+            return repository.findAllByUserIdAndExpiryDateLessThanEqual(userId, expiresOn, pageable);
+        }
     }
 }

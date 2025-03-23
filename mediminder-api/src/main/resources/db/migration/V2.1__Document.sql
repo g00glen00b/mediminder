@@ -8,3 +8,6 @@ create table document
     filename              varchar(64)  not null,
     description           varchar(128) null
 );
+
+alter type notification_type add value 'DOCUMENT_EXPIRED';
+alter type notification_type add value 'DOCUMENT_ALMOST_EXPIRED';

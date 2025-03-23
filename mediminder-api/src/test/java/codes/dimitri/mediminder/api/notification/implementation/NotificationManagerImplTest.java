@@ -1,6 +1,7 @@
 package codes.dimitri.mediminder.api.notification.implementation;
 
 import codes.dimitri.mediminder.api.cabinet.CabinetEntryManager;
+import codes.dimitri.mediminder.api.document.DocumentManager;
 import codes.dimitri.mediminder.api.medication.MedicationManager;
 import codes.dimitri.mediminder.api.notification.*;
 import codes.dimitri.mediminder.api.schedule.ScheduleManager;
@@ -23,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,6 +58,8 @@ class NotificationManagerImplTest {
     private MedicationManager medicationManager;
     @MockitoBean
     private CabinetEntryManager cabinetEntryManager;
+    @MockitoBean
+    private DocumentManager documentManager;
     @Autowired
     private SubscriptionEntityRepository subscriptionRepository;
     @Autowired
