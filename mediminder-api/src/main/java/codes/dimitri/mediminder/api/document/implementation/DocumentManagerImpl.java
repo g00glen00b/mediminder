@@ -43,7 +43,7 @@ class DocumentManagerImpl implements DocumentManager {
             user.id(),
             file.getOriginalFilename(),
             file.getContentType(),
-            request.expiresAt(),
+            request.expiryDate(),
             request.relatedMedicationId(),
             request.description()
         );
@@ -58,7 +58,7 @@ class DocumentManagerImpl implements DocumentManager {
         UserDTO user = findCurrentUser();
         DocumentEntity entity = findEntity(id, user);
         MedicationDTO medication = findMedication(request.relatedMedicationId(), entity.getUserId());
-        entity.setExpiryDate(request.expiresAt());
+        entity.setExpiryDate(request.expiryDate());
         entity.setRelatedMedicationId(request.relatedMedicationId());
         entity.setDescription(request.description());
         DocumentEntity savedEntity = repository.save(entity);

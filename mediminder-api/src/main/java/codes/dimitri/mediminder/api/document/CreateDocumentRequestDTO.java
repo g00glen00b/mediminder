@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record CreateDocumentRequestDTO(
-    LocalDate expiresAt,
+    LocalDate expiryDate,
     UUID relatedMedicationId,
     @Size(max = 128, message = "Description should not contain more than {max} characters")
     String description
