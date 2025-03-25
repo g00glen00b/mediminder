@@ -1,0 +1,9 @@
+<mat-accordion>
+  @for (document of documents(); track document.id) {
+    <mediminder-document-list-item
+      [document]="document"
+      (delete)="delete.emit(document)"
+      (download)="download.emit(document)">
+    </mediminder-document-list-item>
+  }
+</mat-accordion>

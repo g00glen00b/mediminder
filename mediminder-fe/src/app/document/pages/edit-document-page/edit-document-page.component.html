@@ -1,0 +1,24 @@
+<mediminder-hero>
+  <hero-title>Edit document</hero-title>
+  <hero-description>Edit the information of the medical document</hero-description>
+</mediminder-hero>
+<mediminder-container>
+  <mediminder-alert type="info">
+    <p>
+      Only the metadata of the document can be edited.
+      If you wish to change the document itself, you need to delete the current document and upload a new one.
+    </p>
+  </mediminder-alert>
+  @if (error != undefined) {
+    <mediminder-alert type="error">
+      {{error.detail}}
+    </mediminder-alert>
+  }
+  <mediminder-document-form
+    [document]="document()"
+    [disableBasicFields]="true"
+    okLabel="Edit"
+    (confirm)="submit($event)"
+    (cancel)="cancel()">
+  </mediminder-document-form>
+</mediminder-container>

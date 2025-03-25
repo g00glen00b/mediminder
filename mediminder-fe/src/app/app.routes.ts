@@ -22,6 +22,10 @@ export const routes: Routes = [
     loadChildren: () => import('./schedule/routes'),
   },
   {
+    path: 'document',
+    loadChildren: () => import('./document/routes'),
+  },
+  {
     path: 'planner',
     loadChildren: () => import('./planner/routes'),
   },

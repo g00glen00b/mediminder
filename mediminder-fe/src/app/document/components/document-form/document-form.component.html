@@ -1,0 +1,94 @@
+<form #form="ngForm" (submit)="confirm.emit(requestWrapper())">
+  <div class="grid">
+    @if (!disableBasicFields()) {
+      <mat-form-field appearance="fill" id="file">
+        <mat-label>Document</mat-label>
+        <ngx-mat-file-input
+          [(ngModel)]="file"
+          name="file"
+          required
+          #fileInput="ngModel"
+          accept="application/pdf|image/*|application/vnd.*|application/msword">
+        </ngx-mat-file-input>
+        @if (fileInput.hasError('maxContentSize')) {
+          <mat-error>File size must be less than 5MB</mat-error>
+        }
+        @if (fileInput.hasError('required')) {
+          <mat-error>File is required</mat-error>
+        }
+      </mat-form-field>
+    }
+    @else {
+      <mat-form-field appearance="fill" id="file">
+        <mat-label>Document</mat-label>
+        <input
+          matInput
+          type="text"
+          disabled
+          required
+          value="{{document()?.filename}}" />
+      </mat-form-field>
+    }
+    <mat-form-field appearance="fill" id="medication">
+      <mat-label>Medication</mat-label>
+      <input
+        matInput
+        type="text"
+        name="medication"
+        [(ngModel)]="relatedMedication"
+        #relatedMedicationElement
+        (input)="relatedMedicationInputValue.set(relatedMedicationElement.value)"
+        [matAutocomplete]="relatedMedicationAutocomplete" />
+      @if (!disableBasicFields()) {
+        <a
+          mat-button
+          matSuffix
+          routerLink="/medication/create">
+          Create
+        </a>
+      }
+      <mat-autocomplete
+        #relatedMedicationAutocomplete="matAutocomplete"
+        requireSelection
+        [displayWith]="getMedicationLabel">
+        @for (medication of relatedMedications().content; track medication.id) {
+          <mat-option [value]="medication">{{medication.name}}</mat-option>
+        }
+      </mat-autocomplete>
+      <mat-hint>Enter the name of the medication</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="fill" id="expiryDate">
+      <mat-label>Expiry date</mat-label>
+      <input
+        matInput
+        name="expiryDate"
+        [(ngModel)]="expiryDate"
+        [matDatepicker]="expiryDatePicker" />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="expiryDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #expiryDatePicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="fill" id="description">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        name="description"
+        rows="3"
+        [(ngModel)]="description"
+        maxlength="128">
+      </textarea>
+    </mat-form-field>
+  </div>
+
+  <div class="actions">
+    <button
+      mat-flat-button
+      color="accent"
+      [disabled]="form.invalid">
+      {{okLabel()}}
+    </button>
+    <button mat-button type="button" (click)="cancel.emit()">
+      Cancel
+    </button>
+  </div>
+</form>

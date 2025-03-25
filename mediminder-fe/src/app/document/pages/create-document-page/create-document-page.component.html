@@ -1,0 +1,18 @@
+<mediminder-hero>
+  <hero-title>Upload a document</hero-title>
+  <hero-description>Add the information of the medical document</hero-description>
+</mediminder-hero>
+<mediminder-container>
+  @if (error != undefined) {
+    <mediminder-alert type="error">
+      {{error.detail}}
+    </mediminder-alert>
+  }
+  <mediminder-document-form
+    [document]="originalDocument()"
+    [disableBasicFields]="false"
+    okLabel="Upload"
+    (cancel)="cancel()"
+    (confirm)="submit($event)">
+  </mediminder-document-form>
+</mediminder-container>

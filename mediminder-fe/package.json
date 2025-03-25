@@ -26,6 +26,7 @@
     "date-fns": "^4.1.0",
     "healthicons": "^1.0.1",
     "material-symbols": "^0.16.0",
+    "ngx-custom-material-file-input": "^19.0.1",
     "ngx-date-fns": "^12.0.0",
     "ngx-toastr": "^19.0.0",
     "roboto-fontface": "^0.10.0",

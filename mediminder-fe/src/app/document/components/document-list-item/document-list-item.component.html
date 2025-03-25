@@ -1,0 +1,57 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-icon
+        fontSet="material-symbols-outlined">
+        description
+      </mat-icon>
+      {{document().filename}}
+    </mat-panel-title>
+    <mat-panel-description>
+      <div class="text">
+        @if (document().expiryDate != null) {
+          Expires in {{document().expiryDate! | dfnsParseIso | dfnsFormatDistanceToNowPure}}
+        }
+      </div>
+      @if (!expiresSoon()) {
+        <mat-icon
+          class="success"
+          fontSet="material-symbols-outlined">
+          done
+        </mat-icon>
+      }
+      @else {
+        <mat-icon
+          class="warning"
+          fontSet="material-symbols-outlined">
+          priority_high
+        </mat-icon>
+      }
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-list>
+    <mat-list-item>
+      <span matListItemTitle>{{document().relatedMedication?.name || 'n/a'}}</span>
+      <span matListItemLine>Related medication</span>
+    </mat-list-item>
+    <mat-list-item>
+      @if (document().expiryDate != null) {
+        <span matListItemTitle>{{document().expiryDate! | dfnsParseIso | dfnsFormat: 'MMMM do, yyyy'}}</span>
+      }
+      @else {
+        <span matListItemTitle>n/a</span>
+      }
+      <span matListItemLine>Expiry date</span>
+    </mat-list-item>
+    <mat-list-item>
+      <span matListItemTitle>{{document().description || 'n/a'}}</span>
+      <span matListItemLine>Description</span>
+    </mat-list-item>
+  </mat-list>
+  <mat-action-row>
+    <button mat-button (click)="download.emit(document())">Download</button>
+    <a mat-button [routerLink]="['/document', document().id, 'duplicate']">Duplicate</a>
+    <a mat-button [routerLink]="['/document', document().id, 'edit']">Edit</a>
+    <button mat-button color="warn" (click)="delete.emit(document())">Delete</button>
+  </mat-action-row>
+</mat-expansion-panel>
