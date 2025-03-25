@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {PageRequest, pageRequestToHttpParams} from '../../shared/models/page-request';
-import {map, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Page} from '../../shared/models/page';
 import {environment} from '../../../environment/environment';
 import {CreateDocumentRequest} from '../models/create-document-request';
