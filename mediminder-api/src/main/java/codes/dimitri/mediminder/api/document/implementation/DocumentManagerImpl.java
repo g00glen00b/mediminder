@@ -12,6 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -66,8 +67,8 @@ class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public Page<DocumentDTO> findAllForCurrentUser(LocalDate expiredOn, @NotNull Pageable pageable) {
-        return findAllEntities(expiredOn, pageable)
+    public Page<DocumentDTO> findAllForCurrentUser(LocalDate expiredOn, UUID medicationId, @NotNull Pageable pageable) {
+        return findAllEntities(expiredOn, medicationId, pageable)
             .map(entity -> mapper.toDTO(entity, findMedicationSafe(entity.getRelatedMedicationId(), entity.getUserId())));
     }
 
@@ -148,12 +149,13 @@ class DocumentManagerImpl implements DocumentManager {
         if (filename.length() > 128) throw new InvalidDocumentException("Filename '" + filename + "' cannot contain more than 128 characters");
     }
 
-    private Page<DocumentEntity> findAllEntities(LocalDate expiresOn, @NotNull Pageable pageable) {
+    private Page<DocumentEntity> findAllEntities(LocalDate expiresOn, UUID medicationId, @NotNull Pageable pageable) {
         UUID userId = findCurrentUser().id();
-        if (expiresOn == null) {
-            return repository.findAllByUserId(userId, pageable);
-        } else {
-            return repository.findAllByUserIdAndExpiryDateLessThanEqual(userId, expiresOn, pageable);
-        }
+        Specification<DocumentEntity> specification = Specification.allOf(
+            DocumentSpecifications.userId(userId),
+            DocumentSpecifications.relatedMedicationId(medicationId),
+            DocumentSpecifications.expiryDateLessThanOrEqualTo(expiresOn)
+        );
+        return repository.findAll(specification, pageable);
     }
 }

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public interface ScheduleManager {
-    Page<ScheduleDTO> findAllForCurrentUser(@NotNull Pageable pageable);
+    Page<ScheduleDTO> findAllForCurrentUser(UUID medicationId, @NotNull Pageable pageable);
 
     Page<ScheduleDTO> findAllWithinPeriod(@Valid @NotNull SchedulePeriodDTO period, @NotNull Pageable pageable);
 

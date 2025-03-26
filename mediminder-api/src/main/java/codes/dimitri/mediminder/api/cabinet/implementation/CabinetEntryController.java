@@ -23,8 +23,8 @@ class CabinetEntryController {
     private final CabinetEntryManager manager;
 
     @GetMapping
-    public Page<CabinetEntryDTO> findAll(@ParameterObject Pageable pageable) {
-        return manager.findAllForCurrentUser(pageable);
+    public Page<CabinetEntryDTO> findAll(@RequestParam(required = false) UUID medicationId, @ParameterObject Pageable pageable) {
+        return manager.findAllForCurrentUser(medicationId, pageable);
     }
 
     @GetMapping("/{id}")

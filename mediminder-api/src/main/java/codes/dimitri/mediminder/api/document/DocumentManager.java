@@ -15,7 +15,7 @@ public interface DocumentManager {
     DocumentDTO createForCurrentUser(@Valid @NotNull CreateDocumentRequestDTO request, @NotNull MultipartFile file);
     @Transactional
     DocumentDTO updateForCurrentUser(@NotNull UUID id, @Valid @NotNull UpdateDocumentRequestDTO request);
-    Page<DocumentDTO> findAllForCurrentUser(LocalDate expiredOn, @NotNull Pageable pageable);
+    Page<DocumentDTO> findAllForCurrentUser(LocalDate expiredOn, UUID medicationId, @NotNull Pageable pageable);
     DocumentDTO findByIdForCurrentUser(@NotNull UUID id);
     ResourceWithMetadataDTO downloadDocumentForCurrentUser(@NotNull UUID id);
     @Transactional

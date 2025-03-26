@@ -29,8 +29,9 @@ class DocumentController {
     @GetMapping
     public Page<DocumentDTO> findAll(
         @RequestParam(required = false) LocalDate expiredOn,
+        @RequestParam(required = false) UUID medicationId,
         @ParameterObject Pageable pageable) {
-        return manager.findAllForCurrentUser(expiredOn, pageable);
+        return manager.findAllForCurrentUser(expiredOn, medicationId, pageable);
     }
 
     @GetMapping("/{id}")

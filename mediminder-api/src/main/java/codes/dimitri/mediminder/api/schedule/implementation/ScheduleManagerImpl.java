@@ -32,11 +32,18 @@ class ScheduleManagerImpl implements ScheduleManager {
     private final ScheduleEntityMapper mapper;
 
     @Override
-    public Page<ScheduleDTO> findAllForCurrentUser(@NotNull Pageable pageable) {
-        UserDTO user = findCurrentUser();
-        return repository
-            .findAllByUserId(user.id(), pageable)
+    public Page<ScheduleDTO> findAllForCurrentUser(UUID medicationId, @NotNull Pageable pageable) {
+        return findAllScheduleEntities(medicationId, pageable)
             .map(this::mapEntityToDTO);
+    }
+
+    private Page<ScheduleEntity> findAllScheduleEntities(UUID medicationId, Pageable pageable) {
+        UserDTO user = findCurrentUser();
+        if (medicationId == null) {
+            return repository.findAllByUserId(user.id(), pageable);
+        } else {
+            return repository.findAllByMedicationIdAndUserId(medicationId, user.id(), pageable);
+        }
     }
 
     @Override

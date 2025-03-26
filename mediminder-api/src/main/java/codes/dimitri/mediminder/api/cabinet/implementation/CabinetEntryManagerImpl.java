@@ -53,11 +53,18 @@ class CabinetEntryManagerImpl implements CabinetEntryManager {
     }
 
     @Override
-    public Page<CabinetEntryDTO> findAllForCurrentUser(@NotNull Pageable pageable) {
-        UserDTO currentUser = findCurrentUser();
-        return repository
-            .findAllByUserId(currentUser.id(), pageable)
+    public Page<CabinetEntryDTO> findAllForCurrentUser(UUID medicationId, @NotNull Pageable pageable) {
+        return findAllEntities(medicationId, pageable)
             .map(this::mapEntityToDTO);
+    }
+
+    private Page<CabinetEntryEntity> findAllEntities(UUID medicationId, Pageable pageable) {
+        UserDTO currentUser = findCurrentUser();
+        if (medicationId == null) {
+            return repository.findAllByUserId(currentUser.id(), pageable);
+        } else {
+            return repository.findAllByMedicationIdAndUserId(medicationId, currentUser.id(), pageable);
+        }
     }
 
     private CabinetEntryDTO mapEntityToDTO(CabinetEntryEntity entity) {

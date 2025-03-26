@@ -472,7 +472,39 @@ class DocumentManagerImplTest {
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(medication);
-            var result = manager.findAllForCurrentUser(null, pageRequest);
+            var result = manager.findAllForCurrentUser(null, null, pageRequest);
+            assertThat(result).containsOnly(new DocumentDTO(
+                UUID.fromString("af3edd34-a8e2-4356-9877-2481eae06dfb"),
+                user.id(),
+                "file.pdf",
+                LocalDate.of(2026, 1, 31),
+                medication,
+                "Medical attest for Hydrocortisone"
+            ));
+        }
+
+        @Test
+        void returnsResultsWithMedicationId() {
+            var user = new UserDTO(
+                UUID.fromString("c00385bb-3551-4cd9-b786-8a71f1c1b9d8"),
+                "Harry Potter",
+                ZoneId.of("Europe/Brussels"),
+                true,
+                false
+            );
+            var pageRequest = PageRequest.of(0, 10);
+            var medication = new MedicationDTO(
+                UUID.fromString("dcb33d3c-5e8e-4f54-b965-64dc17e0a285"),
+                "Dafalgan",
+                new MedicationTypeDTO("TABLET", "Tablet"),
+                new AdministrationTypeDTO("ORAL", "Oral"),
+                new DoseTypeDTO("TABLET", "tablet(s)"),
+                new BigDecimal("100"),
+                Color.RED
+            );
+            when(userManager.findCurrentUser()).thenReturn(user);
+            when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(medication);
+            var result = manager.findAllForCurrentUser(null, medication.id(), pageRequest);
             assertThat(result).containsOnly(new DocumentDTO(
                 UUID.fromString("af3edd34-a8e2-4356-9877-2481eae06dfb"),
                 user.id(),
@@ -498,14 +530,14 @@ class DocumentManagerImplTest {
             );
             var pageRequest = PageRequest.of(0, 10);
             when(userManager.findCurrentUser()).thenReturn(user);
-            var result = manager.findAllForCurrentUser(expiresOn, pageRequest);
+            var result = manager.findAllForCurrentUser(expiresOn, null, pageRequest);
             assertThat(result).hasSize(expectedResults);
         }
 
         @Test
         void failsIfPageableNotGiven() {
             assertThatExceptionOfType(ConstraintViolationException.class)
-                .isThrownBy(() -> manager.findAllForCurrentUser(null, null));
+                .isThrownBy(() -> manager.findAllForCurrentUser(null, null, null));
         }
 
         @Test
@@ -513,7 +545,7 @@ class DocumentManagerImplTest {
             var pageRequest = PageRequest.of(0, 10);
             when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidDocumentException.class)
-                .isThrownBy(() -> manager.findAllForCurrentUser(null, pageRequest))
+                .isThrownBy(() -> manager.findAllForCurrentUser(null, null, pageRequest))
                 .withMessage("User is not authenticated");
         }
 
@@ -530,7 +562,7 @@ class DocumentManagerImplTest {
             UUID medicationId = UUID.fromString("dcb33d3c-5e8e-4f54-b965-64dc17e0a285");
             when(userManager.findCurrentUser()).thenReturn(user);
             when(medicationManager.findByIdAndUserId(medicationId, user.id())).thenThrow(new MedicationNotFoundException(medicationId));
-            var result = manager.findAllForCurrentUser(null, pageRequest);
+            var result = manager.findAllForCurrentUser(null, null, pageRequest);
             assertThat(result).containsOnly(new DocumentDTO(
                 UUID.fromString("af3edd34-a8e2-4356-9877-2481eae06dfb"),
                 user.id(),

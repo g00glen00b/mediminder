@@ -12,7 +12,6 @@ import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Optional;
 import java.util.UUID;
 
 import static codes.dimitri.mediminder.api.common.ValidationUtilities.getAnyConstraintViolation;
@@ -24,8 +23,8 @@ class ScheduleController {
     private final ScheduleManager manager;
 
     @GetMapping
-    public Page<ScheduleDTO> findAll(@ParameterObject Pageable pageable) {
-        return manager.findAllForCurrentUser(pageable);
+    public Page<ScheduleDTO> findAll(@RequestParam(required = false) UUID medicationId, @ParameterObject Pageable pageable) {
+        return manager.findAllForCurrentUser(medicationId, pageable);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

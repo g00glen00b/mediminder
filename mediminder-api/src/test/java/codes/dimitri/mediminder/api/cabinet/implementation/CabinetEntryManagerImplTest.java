@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -277,7 +276,41 @@ class CabinetEntryManagerImplTest {
             var pageRequest = PageRequest.of(0, 10);
             when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(medication);
             when(userManager.findCurrentUser()).thenReturn(user);
-            Page<CabinetEntryDTO> results = manager.findAllForCurrentUser(pageRequest);
+            Page<CabinetEntryDTO> results = manager.findAllForCurrentUser(null, pageRequest);
+            assertThat(results).containsExactly(
+                new CabinetEntryDTO(
+                    UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c"),
+                    UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                    medication,
+                    new BigDecimal("80"),
+                    LocalDate.of(2024, 6, 30)
+                )
+            );
+            verify(medicationManager).findByIdAndUserId(medication.id(), user.id());
+        }
+
+        @Test
+        void returnsResultsWithMedicationId() {
+            var user = new UserDTO(
+                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "Harry Potter",
+                ZoneId.of("Europe/Brussels"),
+                true,
+                false
+            );
+            var medication = new MedicationDTO(
+                UUID.fromString("ec544543-9aff-4172-989d-ebd5d08a0dea"),
+                "Dafalgan 1g",
+                new MedicationTypeDTO("TABLET", "Tablet"),
+                new AdministrationTypeDTO("ORAL", "Oral"),
+                new DoseTypeDTO("TABLET", "tablet(s)"),
+                new BigDecimal("100"),
+                Color.RED
+            );
+            var pageRequest = PageRequest.of(0, 10);
+            when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(medication);
+            when(userManager.findCurrentUser()).thenReturn(user);
+            Page<CabinetEntryDTO> results = manager.findAllForCurrentUser(medication.id(), pageRequest);
             assertThat(results).containsExactly(
                 new CabinetEntryDTO(
                     UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c"),
@@ -295,7 +328,7 @@ class CabinetEntryManagerImplTest {
             var pageRequest = PageRequest.of(0, 10);
             when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidCabinetEntryException.class)
-                .isThrownBy(() -> manager.findAllForCurrentUser(pageRequest))
+                .isThrownBy(() -> manager.findAllForCurrentUser(null, pageRequest))
                 .withMessage("User is not authenticated");
         }
 
@@ -310,7 +343,7 @@ class CabinetEntryManagerImplTest {
             );
             var pageRequest = PageRequest.of(0, 10);
             when(userManager.findCurrentUser()).thenReturn(user);
-            Page<CabinetEntryDTO> results = manager.findAllForCurrentUser(pageRequest);
+            Page<CabinetEntryDTO> results = manager.findAllForCurrentUser(null, pageRequest);
             assertThat(results).containsExactly(
                 new CabinetEntryDTO(
                     UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c"),
@@ -325,7 +358,7 @@ class CabinetEntryManagerImplTest {
         @Test
         void failsIfPageableNotGiven() {
             assertThatExceptionOfType(ConstraintViolationException.class)
-                .isThrownBy(() -> manager.findAllForCurrentUser(null));
+                .isThrownBy(() -> manager.findAllForCurrentUser(null, null));
         }
     }
 

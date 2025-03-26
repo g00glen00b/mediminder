@@ -15,7 +15,7 @@ public interface CabinetEntryManager {
     @Transactional
     CabinetEntryDTO createForCurrentUser(@Valid @NotNull CreateCabinetEntryRequestDTO request);
 
-    Page<CabinetEntryDTO> findAllForCurrentUser(@NotNull Pageable pageable);
+    Page<CabinetEntryDTO> findAllForCurrentUser(UUID medicationId, @NotNull Pageable pageable);
 
     CabinetEntryDTO findByIdForCurrentUser(@NotNull UUID id);
 

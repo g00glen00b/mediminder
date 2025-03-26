@@ -24,7 +24,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
 import java.time.ZoneId;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,7 +74,45 @@ class ScheduleManagerImplTest {
             var pageRequest = PageRequest.of(0, 10);
             when(userManager.findCurrentUser()).thenReturn(user);
             when(medicationManager.findByIdAndUserId(any(), any())).thenReturn(medication);
-            var schedules = manager.findAllForCurrentUser(pageRequest);
+            var schedules = manager.findAllForCurrentUser(null, pageRequest);
+            assertThat(schedules).containsExactly(new ScheduleDTO(
+                UUID.fromString("945b1bea-b447-4701-a137-3e447c35ffa3"),
+                user.id(),
+                medication,
+                Period.ofDays(1),
+                new SchedulePeriodDTO(
+                    LocalDate.of(2024, 6, 30),
+                    null
+                ),
+                "Before breakfast",
+                new BigDecimal("1"),
+                LocalTime.of(10, 0)
+            ));
+            verify(medicationManager).findByIdAndUserId(medication.id(), user.id());
+        }
+
+        @Test
+        void returnsResultsForMedicationId() {
+            var user = new UserDTO(
+                UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                "Harry Potter",
+                ZoneId.of("UTC"),
+                true,
+                false
+            );
+            var medication = new MedicationDTO(
+                UUID.fromString("fb384363-0446-4fdc-a62d-098c20ddf286"),
+                "Dafalgan 1g",
+                new MedicationTypeDTO("TABLET", "Tablet"),
+                new AdministrationTypeDTO("ORAL", "Oral"),
+                new DoseTypeDTO("TABLET", "tablet(s)"),
+                new BigDecimal("50"),
+                Color.RED
+            );
+            var pageRequest = PageRequest.of(0, 10);
+            when(userManager.findCurrentUser()).thenReturn(user);
+            when(medicationManager.findByIdAndUserId(any(), any())).thenReturn(medication);
+            var schedules = manager.findAllForCurrentUser(medication.id(), pageRequest);
             assertThat(schedules).containsExactly(new ScheduleDTO(
                 UUID.fromString("945b1bea-b447-4701-a137-3e447c35ffa3"),
                 user.id(),
@@ -97,7 +134,7 @@ class ScheduleManagerImplTest {
             var pageRequest = PageRequest.of(0, 10);
             when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidScheduleException.class)
-                .isThrownBy(() -> manager.findAllForCurrentUser(pageRequest))
+                .isThrownBy(() -> manager.findAllForCurrentUser(null, pageRequest))
                 .withMessage("User is not authenticated");
         }
 
@@ -112,7 +149,7 @@ class ScheduleManagerImplTest {
             );
             var pageRequest = PageRequest.of(0, 10);
             when(userManager.findCurrentUser()).thenReturn(user);
-            var schedules = manager.findAllForCurrentUser(pageRequest);
+            var schedules = manager.findAllForCurrentUser(null, pageRequest);
             assertThat(schedules).containsExactly(new ScheduleDTO(
                 UUID.fromString("945b1bea-b447-4701-a137-3e447c35ffa3"),
                 user.id(),
@@ -131,7 +168,7 @@ class ScheduleManagerImplTest {
         @Test
         void failsIfPageableNotGiven() {
             assertThatExceptionOfType(ConstraintViolationException.class)
-                .isThrownBy(() -> manager.findAllForCurrentUser(null));
+                .isThrownBy(() -> manager.findAllForCurrentUser(null, null));
         }
     }
 

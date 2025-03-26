@@ -61,7 +61,7 @@ class DocumentControllerTest {
                 ),
                 "Package insert Dafalgan"
             );
-            when(manager.findAllForCurrentUser(expiryDate, pageRequest)).thenReturn(new PageImpl<>(List.of(document)));
+            when(manager.findAllForCurrentUser(expiryDate, null, pageRequest)).thenReturn(new PageImpl<>(List.of(document)));
             mvc
                 .perform(get("/api/document")
                     .param("page", "0")
@@ -145,7 +145,7 @@ class DocumentControllerTest {
             var json = """
                 {
                     "relatedMedicationId": "a0eebc4b-1f2d-4b8c-9f3d-5a7e6f8b1c2e",
-                    "expiresAt": "2026-01-31",
+                    "expiryDate": "2026-01-31",
                     "description": "Package insert Dafalgan"
                 }
                 """;
@@ -172,7 +172,7 @@ class DocumentControllerTest {
             var json = """
                 {
                     "relatedMedicationId": "a0eebc4b-1f2d-4b8c-9f3d-5a7e6f8b1c2e",
-                    "expiresAt": "2026-01-31",
+                    "expiryDate": "2026-01-31",
                     "description": "Package insert Dafalgan"
                 }
                 """;
@@ -202,7 +202,7 @@ class DocumentControllerTest {
             var json = """
                 {
                     "relatedMedicationId": "a0eebc4b-1f2d-4b8c-9f3d-5a7e6f8b1c2e",
-                    "expiresAt": "2026-01-31",
+                    "expiryDate": "2026-01-31",
                     "description": "Package insert Dafalgan"
                 }
                 """;
@@ -251,7 +251,7 @@ class DocumentControllerTest {
             var json = """
                 {
                     "relatedMedicationId": "a0eebc4b-1f2d-4b8c-9f3d-5a7e6f8b1c2e",
-                    "expiresAt": "2026-01-31",
+                    "expiryDate": "2026-01-31",
                     "description": "Package insert Dafalgan"
                 }
                 """;
@@ -282,7 +282,7 @@ class DocumentControllerTest {
                     .content("""
                         {
                             "relatedMedicationId": "a0eebc4b-1f2d-4b8c-9f3d-5a7e6f8b1c2e",
-                            "expiresAt": "2026-01-31",
+                            "expiryDate": "2026-01-31",
                             "description": "Package insert Dafalgan"
                         }
                         """)
@@ -310,7 +310,7 @@ class DocumentControllerTest {
                     .content("""
                         {
                             "relatedMedicationId": "a0eebc4b-1f2d-4b8c-9f3d-5a7e6f8b1c2e",
-                            "expiresAt": "2026-01-31",
+                            "expiryDate": "2026-01-31",
                             "description": "Package insert Dafalgan"
                         }
                         """)
@@ -338,7 +338,7 @@ class DocumentControllerTest {
                     .content("""
                         {
                             "relatedMedicationId": "a0eebc4b-1f2d-4b8c-9f3d-5a7e6f8b1c2e",
-                            "expiresAt": "2026-01-31",
+                            "expiryDate": "2026-01-31",
                             "description": "Package insert Dafalgan"
                         }
                         """)

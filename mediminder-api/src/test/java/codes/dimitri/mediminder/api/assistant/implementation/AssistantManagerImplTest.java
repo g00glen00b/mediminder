@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -115,8 +114,8 @@ class AssistantManagerImplTest {
             when(userManager.findCurrentUser()).thenReturn(user);
             when(userManager.calculateTodayForUser(user.id())).thenReturn(today);
             when(medicationManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(medication1, medication2)));
-            when(scheduleManager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
-            when(cabinetEntryManager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(cabinetEntry)));
+            when(scheduleManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
+            when(cabinetEntryManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(cabinetEntry)));
             when(eventManager.findAll(today.toLocalDate())).thenReturn(List.of(event));
             AssistantResponseDTO answer = assistantManager.answer(request);
             // Response is based upon assertions made in src/test/resources/wiremock/mappings/openai.json
@@ -182,8 +181,8 @@ class AssistantManagerImplTest {
             when(userManager.findCurrentUser()).thenReturn(user);
             when(userManager.calculateTodayForUser(user.id())).thenReturn(today);
             when(medicationManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(medication1, medication2)));
-            when(scheduleManager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
-            when(cabinetEntryManager.findAllForCurrentUser(pageRequest)).thenReturn(new PageImpl<>(List.of(cabinetEntry)));
+            when(scheduleManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
+            when(cabinetEntryManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(cabinetEntry)));
             when(eventManager.findAll(today.toLocalDate())).thenReturn(List.of(event));
             AssistantResponseDTO answer = assistantManager.answer(request);
             // Response is based upon assertions made in src/test/resources/wiremock/mappings/openai-reasoning.json

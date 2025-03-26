@@ -14,6 +14,7 @@ import java.util.UUID;
 
 interface ScheduleEntityRepository extends JpaRepository<ScheduleEntity, UUID> {
     Page<ScheduleEntity> findAllByUserId(UUID userId, Pageable pageable);
+    Page<ScheduleEntity> findAllByMedicationIdAndUserId(UUID medicationId, UUID userId, Pageable pageable);
     Optional<ScheduleEntity> findByIdAndUserId(UUID id, UUID userId);
     @Query("""
         select s from ScheduleEntity s

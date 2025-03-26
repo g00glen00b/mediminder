@@ -56,7 +56,7 @@ class CabinetEntryControllerTest {
             );
             var page = new PageImpl<>(List.of(entry));
             var pageRequest = PageRequest.of(0, 10, Sort.Direction.ASC, "id");
-            when(manager.findAllForCurrentUser(pageRequest)).thenReturn(page);
+            when(manager.findAllForCurrentUser(null, pageRequest)).thenReturn(page);
             mvc
                 .perform(get("/api/cabinet")
                     .param("page", "0")

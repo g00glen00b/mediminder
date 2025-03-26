@@ -65,7 +65,7 @@ class ScheduleControllerTest {
             );
             var pageRequest = PageRequest.of(0, 10, Sort.Direction.ASC, "id");
             var page = new PageImpl<>(List.of(schedule));
-            when(manager.findAllForCurrentUser(pageRequest)).thenReturn(page);
+            when(manager.findAllForCurrentUser(null, pageRequest)).thenReturn(page);
             mvc
                 .perform(get("/api/schedule")
                     .param("page", "0")
