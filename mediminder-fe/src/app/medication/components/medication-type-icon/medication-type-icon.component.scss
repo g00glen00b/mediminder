@@ -1,0 +1,58 @@
+.cubicle {
+  width: 3em;
+  height: 3em;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.RED {
+  background-color: #fb8989;
+  color: #6a0e0e;
+}
+
+.ORANGE {
+  background-color: #fdc992;
+  color: #9e4b06;
+}
+
+.YELLOW {
+  background-color: #f1f1a4;
+  color: #68682a;
+}
+
+.GREEN {
+  background-color: #a7cca7;
+  color: #014701;
+}
+
+.BLUE {
+  background-color: #88b8e8;
+  color: #275075;
+}
+
+.INDIGO {
+  background-color: #a388b6;
+  color: #3a2257;
+}
+
+.VIOLET {
+  background-color: #ddb1dd;
+  color: #7e497e;
+}
+
+.BLACK {
+  color: #bcbaba;
+  background-color: #272727;
+}
+
+.GRAY {
+  background-color: #b1b1b1;
+  color: #2e2e2e;
+}
+
+.WHITE {
+  background-color: #dcdcdc;
+  color: #2e2e2e;
+}

@@ -3,6 +3,7 @@ import {MedicationType} from '../../models/medication-type';
 import {NgSwitch, NgSwitchCase, NgSwitchDefault} from '@angular/common';
 import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
+import {Color} from '../../../shared/models/color';
 
 @Component({
   selector: 'mediminder-medication-type-icon',
@@ -19,7 +20,8 @@ import {DomSanitizer} from '@angular/platform-browser';
 export class MedicationTypeIconComponent {
   private readonly iconRegistry = inject(MatIconRegistry);
   private readonly domSanitizer = inject(DomSanitizer);
-  medicationType = input.required<MedicationType>()
+  medicationType = input.required<MedicationType>();
+  color = input.required<Color>();
 
   constructor() {
     const pillsIcon = this.domSanitizer.bypassSecurityTrustResourceUrl('healthicons/medications/pills_2.svg');

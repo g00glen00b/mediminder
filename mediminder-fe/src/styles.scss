@@ -11,7 +11,11 @@
 @include mat.typography-hierarchy(theme.$mediminder-typography);
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: rgba(0, 0, 0, .03);
+}
 
 .mat-mdc-dialog-panel.panel-error .mat-mdc-dialog-surface {
   border-left: solid 0.6em mat.m2-get-color-from-palette(theme.$mediminder-danger, 500);

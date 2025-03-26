@@ -1,12 +1,9 @@
-<mat-drawer-container>
-  <mat-drawer #drawer mode="over">
-    <mediminder-sidenav-navbar (closeToggle)="drawer.toggle()"></mediminder-sidenav-navbar>
-    <mediminder-sidenav (logout)="logout()"></mediminder-sidenav>
-  </mat-drawer>
-  @if (isLoggedIn()) {
-    <mediminder-navbar (menuToggle)="drawer.toggle()"></mediminder-navbar>
-  }
-  <main>
-    <router-outlet></router-outlet>
-  </main>
-</mat-drawer-container>
+@if (isLoggedIn()) {
+  <mediminder-navbar></mediminder-navbar>
+}
+<main>
+  <router-outlet></router-outlet>
+</main>
+@if (isLoggedIn()) {
+  <mediminder-bottom-nav></mediminder-bottom-nav>
+}

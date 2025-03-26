@@ -3,6 +3,7 @@ import {RouterLink} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'mediminder-navbar',
@@ -13,6 +14,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatButtonModule,
     MatIconModule,
     RouterLink,
+    NgOptimizedImage,
   ]
 })
 export class NavbarComponent {
