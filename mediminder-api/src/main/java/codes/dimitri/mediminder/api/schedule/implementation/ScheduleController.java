@@ -23,8 +23,8 @@ class ScheduleController {
     private final ScheduleManager manager;
 
     @GetMapping
-    public Page<ScheduleDTO> findAll(@RequestParam(required = false) UUID medicationId, @ParameterObject Pageable pageable) {
-        return manager.findAllForCurrentUser(medicationId, pageable);
+    public Page<ScheduleDTO> findAll(@RequestParam(required = false) UUID medicationId, @RequestParam(required = false) boolean onlyActive, @ParameterObject Pageable pageable) {
+        return manager.findAllForCurrentUser(medicationId, onlyActive, pageable);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

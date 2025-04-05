@@ -1,11 +1,10 @@
-import {Component, DestroyRef, inject, input} from '@angular/core';
+import {Component, DestroyRef, inject, input, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {ConfirmationService} from '../../../shared/services/confirmation.service';
 import {ErrorResponse} from '../../../shared/models/error-response';
 import {MedicationService} from '../../services/medication.service';
 import {UpdateMedicationRequest} from '../../models/update-medication-request';
-import {CreateMedicationRequest} from '../../models/create-medication-request';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
 import {ContainerComponent} from '../../../shared/components/container/container.component';
 import {AlertComponent} from '../../../shared/components/alert/alert.component';
@@ -14,6 +13,7 @@ import {HeroTitleDirective} from '../../../shared/components/hero/hero-title.dir
 import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {switchMap} from 'rxjs';
+import {NavbarService} from '../../../shared/services/navbar.service';
 
 @Component({
   selector: 'mediminder-edit-medication-page',
@@ -29,7 +29,8 @@ import {switchMap} from 'rxjs';
   templateUrl: './edit-medication-page.component.html',
   styleUrl: './edit-medication-page.component.scss'
 })
-export class EditMedicationPageComponent {
+export class EditMedicationPageComponent implements OnInit {
+  private readonly navbarService = inject(NavbarService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
   private readonly toastr = inject(ToastrService);
@@ -43,13 +44,16 @@ export class EditMedicationPageComponent {
   ));
   error?: ErrorResponse;
 
-  submit(originalRequest: CreateMedicationRequest) {
-    const {name, administrationTypeId, color, dosesPerPackage, doseTypeId} = originalRequest;
-    const request: UpdateMedicationRequest = {name, administrationTypeId, color, dosesPerPackage, doseTypeId};
+  ngOnInit() {
+    this.navbarService.enableBackButton([`/medication`, this.id()]);
+    this.navbarService.setTitle('Edit Medication');
+  }
+
+  submit(request: UpdateMedicationRequest) {
     this.medicationService.update(this.id(), request).subscribe({
       next: medication => {
         this.toastr.success(`Successfully updated '${medication.name}'`);
-        this.router.navigate([`/medication`]);
+        this.router.navigate([`/medication`, medication.id]);
       },
       error: response => this.error = response.error,
     })
@@ -62,6 +66,6 @@ export class EditMedicationPageComponent {
       title: 'Confirm',
       okLabel: 'Confirm',
       type: 'info',
-    }).subscribe(() => this.router.navigate([`/medication`]));
+    }).subscribe(() => this.router.navigate([`/medication`, this.id()]));
   }
 }

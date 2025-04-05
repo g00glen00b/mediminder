@@ -14,8 +14,10 @@ import {UpdateScheduleRequest} from '../models/update-schedule-request';
 export class ScheduleService {
   private readonly httpClient = inject(HttpClient);
 
-  findAll(pageRequest: PageRequest): Observable<Page<Schedule>> {
-    const params = pageRequestToHttpParams(pageRequest);
+  findAll(pageRequest: PageRequest, medicationId?: string, onlyActive: boolean = false): Observable<Page<Schedule>> {
+    let params = pageRequestToHttpParams(pageRequest);
+    if (medicationId != null) params = params.set('medicationId', medicationId);
+    if (onlyActive) params = params.set('onlyActive', onlyActive);
     return this.httpClient.get<Page<Schedule>>(`${environment.apiUrl}/schedule`, {params});
   }
 

@@ -1,0 +1,27 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+nav {
+  display: flex;
+  justify-content: space-around;
+  background-color: mat.m2-get-color-from-palette(mat.$m2-gray-palette, 100);
+  padding: 1em 0;
+  border-top: solid 1px mat.m2-get-color-from-palette(mat.$m2-gray-palette, 300);
+}
+
+a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: mat.m2-get-contrast-color-from-palette(mat.$m2-gray-palette, 100);
+  text-decoration: none;
+  transition: color .3s;
+}
+
+a.active {
+  color: mat.m2-get-color-from-palette(theme.$mediminder-primary, A700);
+}
+
+a:hover, a:focus {
+  color: mat.m2-get-color-from-palette(theme.$mediminder-primary, A700);
+}

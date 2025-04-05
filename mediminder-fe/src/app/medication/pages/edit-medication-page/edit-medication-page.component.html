@@ -8,11 +8,12 @@
       {{error.detail}}
     </mediminder-alert>
   }
-  <mediminder-medication-form
-    [medication]="medication()"
-    [disableBasicFields]="true"
-    okLabel="Edit"
-    (confirm)="submit($event)"
-    (cancel)="cancel()">
-  </mediminder-medication-form>
+  @if (medication() != null) {
+    <mediminder-medication-form
+      [medication]="medication()!"
+      okLabel="Edit"
+      (confirm)="submit($event)"
+      (cancel)="cancel()">
+    </mediminder-medication-form>
+  }
 </mediminder-container>

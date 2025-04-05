@@ -11,15 +11,11 @@ button {
   .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, auto);
+    grid-template-rows: repeat(2, auto);
     grid-gap: 1em;
   }
 
   #name {
-    grid-column: 1 / 3;
-  }
-
-  #medicationType {
     grid-column: 1;
   }
 

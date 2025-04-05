@@ -1,0 +1,21 @@
+<mat-form-field appearance="fill" id="name">
+  <mat-label>Name</mat-label>
+  <input
+    matInput
+    required
+    type="text"
+    #nameInput="ngModel"
+    [(ngModel)]="name"
+    name="name" />
+  @if (nameInput.errors?.['required']) {
+    <mat-error>
+      Please select a valid medication type
+    </mat-error>
+  }
+</mat-form-field>
+<mediminder-medication-type-picker
+  name="type"
+  [types]="medicationTypes().content"
+  required
+  [(ngModel)]="medicationType">
+</mediminder-medication-type-picker>

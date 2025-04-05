@@ -1,0 +1,12 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+mediminder-medication-type-icon {
+  margin-right: 1em;
+  font-size: 0.8em;
+}
+
+mediminder-action-header {
+  margin-top: 2em;
+  display: block;
+}

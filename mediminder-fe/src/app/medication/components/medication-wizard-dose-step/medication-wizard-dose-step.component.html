@@ -1,0 +1,61 @@
+<div class="grid">
+  <mat-form-field appearance="fill" id="administrationType">
+    <mat-label>Administration type</mat-label>
+    <mat-select
+      name="administrationType"
+      [(ngModel)]="administrationType"
+      [disabled]="administrationTypes().page.totalElements < 2"
+      #administrationTypeInput="ngModel"
+      required>
+      @for (type of administrationTypes().content; track type.id) {
+        <mat-option [value]="type">{{type.name}}</mat-option>
+      }
+    </mat-select>
+    <mat-hint>Select the type of administration from the list</mat-hint>
+    @if (administrationTypeInput.errors?.['required']) {
+      <mat-error>
+        Please select a valid administration type
+      </mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field appearance="fill" id="dosesPerPackage">
+    <mat-label>Doses per package</mat-label>
+    <input
+      type="number"
+      matInput
+      required
+      min="0"
+      [(ngModel)]="dosesPerPackage"
+      #dosesPerPackageInput="ngModel"
+      name="dosesPerPackage" />
+    @if (dosesPerPackageInput.errors?.['required']) {
+      <mat-error>
+        Please select a valid number of doses per package
+      </mat-error>
+    }
+    @else if (dosesPerPackageInput.errors?.['min']) {
+      <mat-error>
+        Please select a positive number of doses per package
+      </mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field appearance="fill" id="doseType">
+    <mat-label>Dose type</mat-label>
+    <mat-select
+      name="doseType"
+      [(ngModel)]="doseType"
+      [disabled]="doseTypes().page.totalElements < 2"
+      #doseTypeInput="ngModel"
+      required>
+      @for (type of doseTypes().content; track type.id) {
+        <mat-option [value]="type">{{type.name}}</mat-option>
+      }
+    </mat-select>
+    <mat-hint>Select the type of dose from the list</mat-hint>
+    @if (doseTypeInput.errors?.['required']) {
+      <mat-error>
+        Please select a valid dose type
+      </mat-error>
+    }
+  </mat-form-field>
+</div>

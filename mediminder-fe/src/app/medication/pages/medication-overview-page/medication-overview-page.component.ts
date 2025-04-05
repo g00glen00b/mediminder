@@ -1,14 +1,6 @@
 import {Component, DestroyRef, inject, signal} from '@angular/core';
 import {ContainerComponent} from '../../../shared/components/container/container.component';
 import {EmptyStateComponent} from '../../../shared/components/empty-state/empty-state.component';
-import {HeroActionsDirective} from '../../../shared/components/hero/hero-actions.directive';
-import {HeroComponent} from '../../../shared/components/hero/hero.component';
-import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
-import {HeroTitleDirective} from '../../../shared/components/hero/hero-title.directive';
-import {MatAnchor} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
-import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {RouterLink} from '@angular/router';
 import {MedicationListComponent} from '../../components/medication-list/medication-list.component';
 import {ConfirmationService} from '../../../shared/services/confirmation.service';
 import {ToastrService} from 'ngx-toastr';
@@ -19,6 +11,12 @@ import {emptyPage} from '../../../shared/models/page';
 import {ConfirmationDialogData} from '../../../shared/models/confirmation-dialog-data';
 import {MedicationService} from '../../services/medication.service';
 import {Medication} from '../../models/medication';
+import {HeroComponent} from '../../../shared/components/hero/hero.component';
+import {HeroTitleDirective} from '../../../shared/components/hero/hero-title.directive';
+import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
+import {MatFabAnchor} from '@angular/material/button';
+import {RouterLink} from '@angular/router';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'mediminder-medication-overview-page',
@@ -26,14 +24,12 @@ import {Medication} from '../../models/medication';
     MedicationListComponent,
     ContainerComponent,
     EmptyStateComponent,
-    HeroActionsDirective,
     HeroComponent,
-    HeroDescriptionDirective,
     HeroTitleDirective,
-    MatAnchor,
+    HeroDescriptionDirective,
+    MatFabAnchor,
     MatIcon,
-    MatPaginator,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './medication-overview-page.component.html',
   styleUrl: './medication-overview-page.component.scss'
@@ -66,13 +62,5 @@ export class MedicationOverviewPageComponent {
         },
         error: response => this.toastr.error(response.error.detail),
       });
-  }
-
-  onPageChange($event: PageEvent) {
-    this.pageRequest.set({
-      ...this.pageRequest(),
-      page: $event.pageIndex,
-      size: $event.pageSize,
-    });
   }
 }

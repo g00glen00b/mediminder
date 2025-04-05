@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {CreateCabinetEntryRequest} from '../models/create-cabinet-entry-request';
 import {Observable} from 'rxjs';
 import {CabinetEntry} from '../models/cabinet-entry';
@@ -14,8 +14,9 @@ import {UpdateCabinetEntryRequest} from '../models/update-cabinet-entry-request'
 export class CabinetService {
   private readonly httpClient = inject(HttpClient);
 
-  findAll(pageRequest: PageRequest): Observable<Page<CabinetEntry>> {
-    const params = pageRequestToHttpParams(pageRequest);
+  findAll(pageRequest: PageRequest, medicationId?: string): Observable<Page<CabinetEntry>> {
+    let params = pageRequestToHttpParams(pageRequest);
+    if (medicationId != null) params = params.set('medicationId', medicationId);
     return this.httpClient.get<Page<CabinetEntry>>(`${environment.apiUrl}/cabinet`, {params});
   }
 

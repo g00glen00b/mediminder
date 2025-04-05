@@ -30,11 +30,13 @@ export class MedicationTypeIconComponent {
     const bottleIcon = this.domSanitizer.bypassSecurityTrustResourceUrl('healthicons/devices/medicine_bottle.svg');
     const inhalerIcon = this.domSanitizer.bypassSecurityTrustResourceUrl('healthicons/devices/asthma_inhaler.svg');
     const syringeIcon = this.domSanitizer.bypassSecurityTrustResourceUrl('healthicons/devices/syringe.svg');
+    const dropIcon = this.domSanitizer.bypassSecurityTrustResourceUrl('healthicons/body/blood_drop.svg');
     this.iconRegistry.addSvgIcon('medications-pills-2', pillsIcon);
     this.iconRegistry.addSvgIcon('contraceptives-contraceptive-patch', patchIcon);
     this.iconRegistry.addSvgIcon('contraceptives-implant', implantIcon);
     this.iconRegistry.addSvgIcon('devices-medicine-bottle', bottleIcon);
     this.iconRegistry.addSvgIcon('devices-asthma-inhaler', inhalerIcon);
     this.iconRegistry.addSvgIcon('devices-syringe', syringeIcon);
+    this.iconRegistry.addSvgIcon('body-blood-drop', dropIcon);
   }
 }

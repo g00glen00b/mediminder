@@ -1,0 +1,15 @@
+<div class="picker">
+  @for (type of types(); track type.id) {
+    <button
+      type="button"
+      [disabled]="isDisabled"
+      [class.active]="type.id === selected?.id"
+      (click)="onSelect(type)">
+      <mediminder-medication-type-icon
+        color="TRANSPARENT"
+        [medicationType]="type">
+      </mediminder-medication-type-icon>
+      {{type.name}}
+    </button>
+  }
+</div>

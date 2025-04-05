@@ -1,35 +1,19 @@
-<mat-accordion>
-  @for (medication of medications(); track medication.id) {
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <mediminder-color-indicator [color]="medication.color"></mediminder-color-indicator>
-<!--          <mediminder-medication-type-icon [medicationType]="medication.medicationType"></mediminder-medication-type-icon>-->
-          {{medication.name}}
-        </mat-panel-title>
-        <mat-panel-description>
-          {{medication.administrationType.name}}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <mat-list>
-        <mat-list-item>
-          <span matListItemTitle>{{medication.medicationType.name}}</span>
-          <span matListItemLine>Medication type</span>
-        </mat-list-item>
-        <mat-list-item>
-          <span matListItemTitle>{{medication.administrationType.name}}</span>
-          <span matListItemLine>Administration type</span>
-        </mat-list-item>
-        <mat-list-item>
-          <span matListItemTitle>{{medication.dosesPerPackage}} {{medication.doseType.name}}</span>
-          <span matListItemLine>Doses per package</span>
-        </mat-list-item>
-      </mat-list>
-      <mat-action-row>
-        <a mat-button [routerLink]="['/medication', medication.id, 'duplicate']">Duplicate</a>
-        <a mat-button [routerLink]="['/medication', medication.id, 'edit']">Edit</a>
-        <button mat-button color="warn" (click)="delete.emit(medication)">Delete</button>
-      </mat-action-row>
-    </mat-expansion-panel>
-  }
-</mat-accordion>
+@for (medication of medications(); track medication.id) {
+  <mat-card (click)="navigateToDetailPage(medication)">
+    <mat-card-content>
+      <mediminder-medication-type-icon
+        [medicationType]="medication.medicationType"
+        [color]="medication.color">
+      </mediminder-medication-type-icon>
+      <div class="name">{{medication.name}}</div>
+      <div class="description">{{medication.administrationType.name}}</div>
+      <div class="actions">
+        <a
+          mat-icon-button
+          [routerLink]="['/medication', medication.id]">
+          <mat-icon fontSet="material-symbols-outlined">chevron_right</mat-icon>
+        </a>
+      </div>
+    </mat-card-content>
+  </mat-card>
+}

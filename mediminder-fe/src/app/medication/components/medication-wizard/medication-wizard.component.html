@@ -1,0 +1,82 @@
+<mat-stepper orientation="vertical" linear color="accent">
+  <ng-template matStepperIcon="done">
+    <mat-icon fontSet="material-symbols-outlined">check</mat-icon>
+  </ng-template>
+  <ng-template matStepperIcon="edit">
+    <mat-icon fontSet="material-symbols-outlined">create</mat-icon>
+  </ng-template>
+  <mat-step [stepControl]="basicForm.control">
+    <ng-template matStepLabel>Basic information</ng-template>
+    <form #basicForm=ngForm>
+      <mediminder-medication-wizard-basic-step
+        [(name)]="name"
+        [(medicationType)]="medicationType">
+      </mediminder-medication-wizard-basic-step>
+      <button
+        type="button"
+        mat-button
+        (click)="cancel.emit()">
+        Cancel
+      </button>
+      <button
+        type="submit"
+        mat-flat-button
+        color="primary"
+        [disabled]="basicForm.invalid"
+        matStepperNext>
+        Next
+      </button>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="dosesForm.control">
+    <ng-template matStepLabel>Doses</ng-template>
+    <form #dosesForm="ngForm">
+      @if (medicationType() != undefined) {
+        <mediminder-medication-wizard-dose-step
+          [medicationType]="medicationType()!"
+          [(administrationType)]="administrationType"
+          [(dosesPerPackage)]="dosesPerPackage"
+          [(doseType)]="doseType">
+        </mediminder-medication-wizard-dose-step>
+        <button
+          type="button"
+          mat-button
+          (click)="cancel.emit()">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          mat-flat-button
+          color="primary"
+          [disabled]="dosesForm.invalid"
+          matStepperNext>
+          Next
+        </button>
+      }
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Color</ng-template>
+    <form #colorForm="ngForm" (submit)="create.emit(request())">
+      @if (medicationType() != undefined) {
+        <mediminder-medication-wizard-color-step
+          [(color)]="color"
+          [type]="medicationType()!">
+        </mediminder-medication-wizard-color-step>
+        <button
+          type="button"
+          mat-button
+          (click)="cancel.emit()">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          mat-flat-button
+          color="primary"
+          [disabled]="colorForm.invalid">
+          Create
+        </button>
+      }
+    </form>
+  </mat-step>
+</mat-stepper>

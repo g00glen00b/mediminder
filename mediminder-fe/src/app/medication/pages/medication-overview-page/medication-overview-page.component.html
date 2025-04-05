@@ -1,15 +1,6 @@
 <mediminder-hero>
-  <hero-title>My known medication</hero-title>
-  <hero-description>Here you can find an overview of your known medication. This contains both past and present medication unrelated to what's in your current cabinet.</hero-description>
-  <hero-actions>
-    <a
-      mat-flat-button
-      color="accent"
-      routerLink="/medication/create">
-      <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
-      Add
-    </a>
-  </hero-actions>
+  <hero-title>My medication</hero-title>
+  <hero-description>My known medication</hero-description>
 </mediminder-hero>
 <mediminder-container>
   @if (medications().page.totalElements > 0) {
@@ -17,13 +8,6 @@
       [medications]="medications().content"
       (delete)="delete($event)">
     </mediminder-medication-list>
-    <mat-paginator
-      [length]="medications().page.totalElements"
-      [pageSize]="medications().page.size"
-      [showFirstLastButtons]="true"
-      [pageSizeOptions]="[5, 10, 20, 50]"
-      (page)="onPageChange($event)">
-    </mat-paginator>
   }
   @else {
     <mediminder-empty-state
@@ -31,4 +15,11 @@
       title="Create some medications first">
     </mediminder-empty-state>
   }
+  <a
+    mat-fab extended
+    color="primary"
+    routerLink="/medication/create">
+    <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+    Add
+  </a>
 </mediminder-container>

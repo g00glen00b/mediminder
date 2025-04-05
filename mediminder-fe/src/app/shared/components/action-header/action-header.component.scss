@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+.action-header {
+  display: flex;
+  flex-direction: row;
+}
+
+h2 {
+  @include mat.m2-typography-level(theme.$mediminder-typography, 'headline-5');
+}
+
+.actions {
+  margin-left: auto;
+}

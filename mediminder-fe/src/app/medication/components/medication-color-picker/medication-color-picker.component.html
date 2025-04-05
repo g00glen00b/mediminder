@@ -1,0 +1,16 @@
+<div class="picker">
+  @for (color of colors; track color.color) {
+    <button
+      type="button"
+      [disabled]="isDisabled"
+      [class]="color.color"
+      [class.active]="color.color === selected"
+      (click)="onSelect(color)">
+      <mediminder-medication-type-icon
+        color="TRANSPARENT"
+        [medicationType]="type()">
+      </mediminder-medication-type-icon>
+      {{color.name}}
+    </button>
+  }
+</div>

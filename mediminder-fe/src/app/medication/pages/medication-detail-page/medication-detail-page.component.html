@@ -1,0 +1,57 @@
+<mediminder-hero>
+  <hero-title>
+    <mediminder-medication-type-icon
+      [medicationType]="medication()!.medicationType"
+      [color]="medication()!.color">
+    </mediminder-medication-type-icon>
+    {{ medication()?.name }}
+  </hero-title>
+</mediminder-hero>
+<mediminder-container>
+  @if (medication() != null) {
+    <mediminder-action-header title="Details">
+      <a
+        mat-flat-button
+        [routerLink]="['/medication', medication()!.id, 'edit']"
+        color="accent">
+        <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
+        Edit
+      </a>
+    </mediminder-action-header>
+    <mediminder-medication-details-card
+      [medication]="medication()!">
+    </mediminder-medication-details-card>
+  }
+  <mediminder-action-header title="Schedules">
+    <a
+      mat-flat-button
+      [routerLink]="['/medication', medication()!.id, 'schedule', 'create']"
+      color="accent">
+      <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+      Add schedule
+    </a>
+  </mediminder-action-header>
+  @if (schedules().content.length > 0) {
+    <mediminder-schedule-list
+      [schedules]="schedules().content">
+    </mediminder-schedule-list>
+  }
+  <mediminder-action-header title="Cabinet">
+    <a
+      mat-flat-button
+      [routerLink]="['/medication', medication()!.id, 'edit']"
+      color="accent">
+      <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+      Add entry
+    </a>
+  </mediminder-action-header>
+  <mediminder-action-header title="Documents">
+    <a
+      mat-flat-button
+      [routerLink]="['/medication', medication()!.id, 'edit']"
+      color="accent">
+      <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+      Add document
+    </a>
+  </mediminder-action-header>
+</mediminder-container>

@@ -14,12 +14,12 @@ export const routes: Routes = [
     loadChildren: () => import('./cabinet/routes'),
   },
   {
-    path: 'medication',
-    loadChildren: () => import('./medication/routes'),
+    path: 'medication/:medicationId/schedule',
+    loadChildren: () => import('./schedule/routes'),
   },
   {
-    path: 'schedule',
-    loadChildren: () => import('./schedule/routes'),
+    path: 'medication',
+    loadChildren: () => import('./medication/routes'),
   },
   {
     path: 'document',

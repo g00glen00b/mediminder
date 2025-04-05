@@ -3,7 +3,9 @@
   [class]="type()"
   [class.no-title]="title() == null"
   [class.closeable]="closeable()">
-  <mediminder-alert-icon [type]="type()"></mediminder-alert-icon>
+  <div class="icon">
+    <mediminder-alert-icon [type]="type()"></mediminder-alert-icon>
+  </div>
   @if (title() != null) {
     <h6>{{title()}}</h6>
   }

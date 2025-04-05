@@ -22,16 +22,20 @@
                   <span>{{event.description}}</span>
                 }
               </div>
-              @if (event.completedDate != null) {
-                <button mat-flat-button disabled>Taken</button>
-              }
-              @else {
-                <button
-                  mat-flat-button
-                  (click)="complete.emit(event)">
-                  Take
-                </button>
-              }
+              <div class="actions">
+                @if (event.completedDate != null) {
+                  <button mat-icon-button disabled>
+                    <mat-icon fontSet="material-symbols-outlined">check</mat-icon>
+                  </button>
+                }
+                @else {
+                  <button
+                    mat-flat-button
+                    (click)="complete.emit(event)">
+                    Take
+                  </button>
+                }
+              </div>
             </li>
           }
         </ul>

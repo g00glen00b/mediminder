@@ -1,0 +1,46 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+.picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+  grid-gap: 2em;
+  margin-bottom: 2em;
+}
+
+
+.picker button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+  background-color: #ececec;
+  color: #2e2e2e;
+  border-radius: 0.5em;
+  transition: background-color .3s;
+  border: none;
+  @include mat.m2-typography-level(theme.$mediminder-typography, 'button');
+}
+
+.picker button:hover:not([disabled]) {
+  background-color: #cfcfcf;
+}
+
+.picker button:active:not([disabled]) {
+  background-color: #bfbfbf;
+}
+
+.picker button[disabled] {
+  cursor: not-allowed;
+  background-color: #f3f3f3;
+  color: #6e6e6e;
+}
+
+.picker button mediminder-medication-type-icon {
+  margin-bottom: 1em;
+}
+
+.picker button.active {
+  outline: solid 3px mat.m2-get-color-from-palette(theme.$mediminder-accent, 900);
+  background-color: #cfcfcf;
+}

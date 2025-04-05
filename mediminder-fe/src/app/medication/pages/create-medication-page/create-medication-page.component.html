@@ -8,10 +8,8 @@
       {{error.detail}}
     </mediminder-alert>
   }
-  <mediminder-medication-form
-    [medication]="originalMedication()"
-    [disableBasicFields]="false"
-    (confirm)="submit($event)"
+  <mediminder-medication-wizard
+    (create)="submit($event)"
     (cancel)="cancel()">
-  </mediminder-medication-form>
+  </mediminder-medication-wizard>
 </mediminder-container>

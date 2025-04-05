@@ -8,11 +8,12 @@
       {{error.detail}}
     </mediminder-alert>
   }
-  <mediminder-schedule-form
-    [schedule]="originalSchedule()"
-    [disableBasicFields]="false"
-    okLabel="Add"
-    (cancel)="cancel()"
-    (confirm)="submit($event)">
-  </mediminder-schedule-form>
+  @if (medication() != undefined) {
+    <mediminder-schedule-form
+      [medication]="medication()!"
+      okLabel="Add"
+      (cancel)="cancel()"
+      (confirm)="submit($event)">
+    </mediminder-schedule-form>
+  }
 </mediminder-container>

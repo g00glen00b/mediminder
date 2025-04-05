@@ -8,9 +8,6 @@ import {
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
 import {MatList, MatListItem, MatListItemLine, MatListItemTitle} from '@angular/material/list';
-import {
-  MedicationTypeIconComponent
-} from '../../../medication/components/medication-type-icon/medication-type-icon.component';
 import {MatIcon} from '@angular/material/icon';
 
 @Component({
@@ -25,9 +22,7 @@ import {MatIcon} from '@angular/material/icon';
     MatListItem,
     MatListItemLine,
     MatListItemTitle,
-    MedicationTypeIconComponent,
     MatIcon,
-
   ],
   templateUrl: './planner-list-item.component.html',
   styleUrl: './planner-list-item.component.scss'

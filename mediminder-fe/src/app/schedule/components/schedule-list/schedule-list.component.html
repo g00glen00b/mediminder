@@ -1,61 +1,32 @@
-<mat-accordion>
-  @for (schedule of schedules(); track schedule.id) {
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <mediminder-color-indicator [color]="schedule.medication.color"></mediminder-color-indicator>
-<!--          <mediminder-medication-type-icon [medicationType]="schedule.medication.medicationType"></mediminder-medication-type-icon>-->
-          {{schedule.medication.name}}
-        </mat-panel-title>
-        <mat-panel-description>
-          {{schedule.dose}} {{schedule.medication.doseType.name}}
-          every {{schedule.interval | interval}}
-          at {{schedule.time | dfnsParsePure: 'HH:mm:ss':0 | dfnsFormat: 'HH:mm'}}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <mat-list>
+<mat-card>
+  <mat-card-content>
+    <mat-list>
+      @for (schedule of schedules(); track schedule.id) {
         <mat-list-item>
-          <span matListItemTitle>{{schedule.medication.medicationType.name}}</span>
-          <span matListItemLine>Medication type</span>
+          <mat-icon
+            fontSet="material-symbols-outlined"
+            matListItemIcon>
+            schedule
+          </mat-icon>
+          <div matListItemTitle>
+            {{schedule.dose | number}} {{schedule.medication.doseType.name}}
+          </div>
+          <div matListItemLine>
+            At {{schedule.time | dfnsParsePure: 'HH:mm:ss':0 | dfnsFormat: 'HH:mm'}}
+          </div>
+          <div matListItemLine>
+            Every {{schedule.interval | interval}}
+          </div>
+          <div matListItemMeta>
+            <a
+              [routerLink]="['/medication', schedule.medication.id, 'schedule', schedule.id, 'edit']"
+              color="primary"
+              mat-icon-button>
+              <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
+            </a>
+          </div>
         </mat-list-item>
-        <mat-list-item>
-          <span matListItemTitle>{{schedule.medication.administrationType.name}}</span>
-          <span matListItemLine>Administration type</span>
-        </mat-list-item>
-        <mat-list-item>
-          <span matListItemTitle>{{schedule.dose}} {{schedule.medication.doseType.name}}</span>
-          <span matListItemLine>Dose</span>
-        </mat-list-item>
-        <mat-list-item>
-          <span matListItemTitle>{{schedule.interval | interval}}</span>
-          <span matListItemLine>Interval</span>
-        </mat-list-item>
-        <mat-list-item>
-          <span matListItemTitle>{{schedule.time | dfnsParsePure: 'HH:mm:ss':0 | dfnsFormat: 'HH:mm'}}</span>
-          <span matListItemLine>Time</span>
-        </mat-list-item>
-        <mat-list-item>
-          <span matListItemTitle>
-            <span>{{schedule.period.startingAt | dfnsParseIso | dfnsFormat: 'MMMM do, yyyy'}}</span>
-            &mdash;
-            @if (schedule.period.endingAtInclusive != null) {
-              <span>
-                {{schedule.period.endingAtInclusive | dfnsParseIso | dfnsFormat: 'MMMM do, yyyy'}}
-              </span>
-            }
-          </span>
-          <span matListItemLine>Period</span>
-        </mat-list-item>
-        <mat-list-item>
-          <span matListItemTitle>{{schedule.description || 'n/a'}}</span>
-          <span matListItemLine>Description</span>
-        </mat-list-item>
-      </mat-list>
-      <mat-action-row>
-        <a mat-button [routerLink]="['/schedule', schedule.id, 'duplicate']">Duplicate</a>
-        <a mat-button [routerLink]="['/schedule', schedule.id, 'edit']">Edit</a>
-        <button mat-button color="warn" (click)="delete.emit(schedule)">Delete</button>
-      </mat-action-row>
-    </mat-expansion-panel>
-  }
-</mat-accordion>
+      }
+    </mat-list>
+  </mat-card-content>
+</mat-card>

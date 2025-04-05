@@ -8,13 +8,12 @@ import {
 } from 'ngx-date-fns';
 import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
-import {RouterLink} from '@angular/router';
-import {
-  MedicationTypeIconComponent
-} from '../../../medication/components/medication-type-icon/medication-type-icon.component';
-import {ColorIndicatorComponent} from '../../../shared/components/color-indicator/color-indicator.component';
 import {Schedule} from '../../models/schedule';
 import {IntervalPipe} from '../../pipes/interval.pipe';
+import {MatCard, MatCardContent} from '@angular/material/card';
+import {MatIcon} from '@angular/material/icon';
+import {DecimalPipe} from '@angular/common';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'mediminder-schedule-list',
@@ -24,12 +23,14 @@ import {IntervalPipe} from '../../pipes/interval.pipe';
     MatButtonModule,
     ParseIsoPipeModule,
     FormatPipeModule,
-    RouterLink,
-    MedicationTypeIconComponent,
-    ColorIndicatorComponent,
     FormatDistanceToNowPurePipeModule,
     IntervalPipe,
     ParsePurePipeModule,
+    MatCard,
+    MatCardContent,
+    MatIcon,
+    DecimalPipe,
+    RouterLink,
   ],
   templateUrl: './schedule-list.component.html',
   styleUrl: './schedule-list.component.scss'

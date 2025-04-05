@@ -1,0 +1,130 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+.picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+  grid-gap: 2em;
+  margin-bottom: 2em;
+}
+
+
+.picker button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+  border-radius: 0.5em;
+  transition: background-color .3s;
+  border: none;
+  @include mat.m2-typography-level(theme.$mediminder-typography, 'button');
+}
+
+.picker button.RED:hover:not([disabled]) {
+  background-color: #fb9e9e;
+}
+
+.picker button.ORANGE:hover:not([disabled]) {
+  background-color: #fdd1a0;
+}
+
+.picker button.YELLOW:hover:not([disabled]) {
+  background-color: #fdf9ca;
+}
+
+.picker button.GREEN:hover:not([disabled]) {
+  background-color: #c2e3c2;
+}
+
+.picker button.BLUE:hover:not([disabled]) {
+  background-color: #a4caf3;
+}
+
+.picker button.INDIGO:hover:not([disabled]) {
+  background-color: #c6b1d8;
+}
+
+.picker button.VIOLET:hover:not([disabled]) {
+  background-color: #f3d5f3;
+}
+
+.picker button.BLACK:hover:not([disabled]) {
+  background-color: #434343;
+}
+
+.picker button.GRAY:hover:not([disabled]) {
+  background-color: #c5c5c5;
+}
+
+.picker button.WHITE:hover:not([disabled]) {
+  background-color: #ededed;
+}
+
+.picker button:active:not([disabled]) {
+  background-color: #bfbfbf;
+}
+
+.picker button[disabled] {
+  cursor: not-allowed;
+  background-color: #f3f3f3;
+  color: #6e6e6e;
+}
+
+.picker button mediminder-medication-type-icon {
+  margin-bottom: 1em;
+}
+
+.picker button.active {
+  outline: solid 3px mat.m2-get-color-from-palette(theme.$mediminder-accent, 900);
+  background-color: #cfcfcf;
+}
+
+.picker button.RED {
+  background-color: #fb8989;
+  color: #6a0e0e;
+}
+
+.picker button.ORANGE {
+  background-color: #fdc992;
+  color: #9e4b06;
+}
+
+.picker button.YELLOW {
+  background-color: #fff5b1;
+  color: #68682a;
+}
+
+.picker button.GREEN {
+  background-color: #a7cca7;
+  color: #014701;
+}
+
+.picker button.BLUE {
+  background-color: #88b8e8;
+  color: #275075;
+}
+
+.picker button.INDIGO {
+  background-color: #a388b6;
+  color: #3a2257;
+}
+
+.picker button.VIOLET {
+  background-color: #ddb1dd;
+  color: #7e497e;
+}
+
+.picker button.BLACK {
+  color: #bcbaba;
+  background-color: #272727;
+}
+
+.picker button.GRAY {
+  background-color: #b1b1b1;
+  color: #2e2e2e;
+}
+
+.picker button.WHITE {
+  background-color: #dcdcdc;
+  color: #2e2e2e;
+}

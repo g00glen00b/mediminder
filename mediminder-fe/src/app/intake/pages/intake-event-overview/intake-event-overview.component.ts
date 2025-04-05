@@ -47,14 +47,14 @@ export class IntakeEventOverviewComponent {
   complete(event: IntakeEvent) {
     this.service.complete(event.scheduleId, this.targetDate()).subscribe({
       next: () => this.refreshDate.set(new Date()),
-      error: () => this.toastr.error(`Could not change intake event for ${event.medication.name}`),
+      error: () => this.toastr.error(`Could not complete ${event.medication.name}`),
     });
   }
 
   delete(event: IntakeEvent) {
     this.service.delete(event.id!).subscribe({
       next: () => this.refreshDate.set(new Date()),
-      error: () => this.toastr.error(`Could not change intake event for ${event.medication.name}`),
+      error: () => this.toastr.error(`Could not cancel ${event.medication.name}`),
     });
   }
 }

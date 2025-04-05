@@ -1,4 +1,4 @@
-export type Color = 'RED' | 'ORANGE' | 'YELLOW' | 'GREEN' | 'BLUE' | 'INDIGO' | 'VIOLET' | 'BLACK' | 'WHITE' | 'GRAY';
+export type Color = 'RED' | 'ORANGE' | 'YELLOW' | 'GREEN' | 'BLUE' | 'INDIGO' | 'VIOLET' | 'BLACK' | 'WHITE' | 'GRAY' | 'TRANSPARENT';
 
 export interface ColorOption {
   color: Color;

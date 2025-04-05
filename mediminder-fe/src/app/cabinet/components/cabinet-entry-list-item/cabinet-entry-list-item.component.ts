@@ -10,9 +10,6 @@ import {
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
 import {MatList, MatListItem, MatListItemLine, MatListItemTitle} from '@angular/material/list';
-import {
-  MedicationTypeIconComponent
-} from '../../../medication/components/medication-type-icon/medication-type-icon.component';
 import {CabinetEntry} from '../../models/cabinet-entry';
 import {RouterLink} from '@angular/router';
 import {differenceInDays} from 'date-fns';
@@ -35,7 +32,6 @@ import {MatIcon} from '@angular/material/icon';
     MatListItem,
     MatListItemLine,
     MatListItemTitle,
-    MedicationTypeIconComponent,
     ParseIsoPipeModule,
     RouterLink,
     MatIcon

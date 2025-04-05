@@ -122,7 +122,7 @@ class AssistantManagerImpl implements AssistantManager {
 
     private List<ScheduleDTO> getSchedules(PageRequest pageable) {
         return scheduleManager
-            .findAllForCurrentUser(null, pageable)
+            .findAllForCurrentUser(null, true, pageable)
             .getContent();
     }
 

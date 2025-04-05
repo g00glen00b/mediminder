@@ -1,10 +1,23 @@
 <mat-toolbar color="primary">
-  <a routerLink="/home">
-    <img
-      alt="Logo"
-      ngSrc="assets/icons/icon-192x192.png"
-      width="192"
-      height="192" />
-    Mediminder
-  </a>
+  @if (state()!.backButtonRoute && state().title) {
+    <button
+      (click)="navigateBack()"
+      mat-icon-button>
+      <mat-icon
+        fontSet="material-symbols-outlined">
+        chevron_left
+      </mat-icon>
+    </button>
+    {{state().title}}
+  }
+  @else {
+    <a routerLink="/home">
+      <img
+        alt="Logo"
+        ngSrc="assets/icons/icon-192x192.png"
+        width="192"
+        height="192" />
+      Mediminder
+    </a>
+  }
 </mat-toolbar>

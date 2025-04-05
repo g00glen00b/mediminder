@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, input} from '@angular/core';
+import {Component, DestroyRef, inject, input, OnInit} from '@angular/core';
 import {AlertComponent} from '../../../shared/components/alert/alert.component';
 import {ContainerComponent} from '../../../shared/components/container/container.component';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
@@ -12,7 +12,9 @@ import {ErrorResponse} from '../../../shared/models/error-response';
 import {ScheduleService} from '../../services/schedule.service';
 import {CreateScheduleRequest} from '../../models/create-schedule-request';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {filter, switchMap} from 'rxjs';
+import {switchMap} from 'rxjs';
+import {MedicationService} from '../../../medication/services/medication.service';
+import {NavbarService} from '../../../shared/services/navbar.service';
 
 @Component({
   selector: 'mediminder-create-schedule-page',
@@ -27,19 +29,26 @@ import {filter, switchMap} from 'rxjs';
   templateUrl: './create-schedule-page.component.html',
   styleUrl: './create-schedule-page.component.scss'
 })
-export class CreateSchedulePageComponent {
+export class CreateSchedulePageComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
   private readonly toastr = inject(ToastrService);
+  private readonly navbarService = inject(NavbarService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly scheduleService = inject(ScheduleService);
+  private readonly medicationService = inject(MedicationService);
   error?: ErrorResponse;
   id = input<string>();
-  originalSchedule = toSignal(toObservable(this.id).pipe(
+  medicationId = input.required<string>();
+  medication = toSignal(toObservable(this.medicationId).pipe(
     takeUntilDestroyed(this.destroyRef),
-    filter(id => id != null),
-    switchMap(id => this.scheduleService.findById(id))
+    switchMap(id => this.medicationService.findById(id))
   ));
+
+  ngOnInit() {
+    this.navbarService.setTitle('Create Schedule');
+    this.navbarService.enableBackButton(['/medication', this.medicationId()]);
+  }
 
   cancel(): void {
     this.confirmationService.show({
@@ -48,7 +57,7 @@ export class CreateSchedulePageComponent {
       title: 'Confirm',
       okLabel: 'Confirm',
       type: 'info',
-    }).subscribe(() => this.router.navigate([`/schedule`]));
+    }).subscribe(() => this.router.navigate([`/medication`, this.medicationId()]));
   }
 
   submit(request: CreateScheduleRequest): void {
@@ -56,7 +65,7 @@ export class CreateSchedulePageComponent {
     this.scheduleService.create(request).subscribe({
       next: schedule => {
         this.toastr.success(`Successfully created schedule for '${schedule.medication.name}'`);
-        this.router.navigate([`/schedule`]);
+        this.router.navigate([`/medication`, this.medicationId()]);
       },
       error: response => this.error = response.error,
     })

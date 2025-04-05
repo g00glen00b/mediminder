@@ -63,7 +63,6 @@ export class EditProfilePageComponent {
     this.subscriptionService.subscribe().subscribe({
       next: () => this.toastr.success('Successfully enabled push notifications'),
       error: error => this.toastr.error(error || 'Could not enable push notifications'),
-      complete: () => console.log('Complete'),
     })
   }
 

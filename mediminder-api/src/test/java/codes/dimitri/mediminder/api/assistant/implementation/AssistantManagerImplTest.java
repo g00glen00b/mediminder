@@ -114,7 +114,7 @@ class AssistantManagerImplTest {
             when(userManager.findCurrentUser()).thenReturn(user);
             when(userManager.calculateTodayForUser(user.id())).thenReturn(today);
             when(medicationManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(medication1, medication2)));
-            when(scheduleManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
+            when(scheduleManager.findAllForCurrentUser(null, true, pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
             when(cabinetEntryManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(cabinetEntry)));
             when(eventManager.findAll(today.toLocalDate())).thenReturn(List.of(event));
             AssistantResponseDTO answer = assistantManager.answer(request);
@@ -181,7 +181,7 @@ class AssistantManagerImplTest {
             when(userManager.findCurrentUser()).thenReturn(user);
             when(userManager.calculateTodayForUser(user.id())).thenReturn(today);
             when(medicationManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(medication1, medication2)));
-            when(scheduleManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
+            when(scheduleManager.findAllForCurrentUser(null, true, pageRequest)).thenReturn(new PageImpl<>(List.of(schedule)));
             when(cabinetEntryManager.findAllForCurrentUser(null, pageRequest)).thenReturn(new PageImpl<>(List.of(cabinetEntry)));
             when(eventManager.findAll(today.toLocalDate())).thenReturn(List.of(event));
             AssistantResponseDTO answer = assistantManager.answer(request);

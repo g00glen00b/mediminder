@@ -12,12 +12,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,18 +34,20 @@ class ScheduleManagerImpl implements ScheduleManager {
     private final ScheduleEntityMapper mapper;
 
     @Override
-    public Page<ScheduleDTO> findAllForCurrentUser(UUID medicationId, @NotNull Pageable pageable) {
-        return findAllScheduleEntities(medicationId, pageable)
+    public Page<ScheduleDTO> findAllForCurrentUser(UUID medicationId, boolean onlyActive, @NotNull Pageable pageable) {
+        return findAllScheduleEntities(medicationId, onlyActive, pageable)
             .map(this::mapEntityToDTO);
     }
 
-    private Page<ScheduleEntity> findAllScheduleEntities(UUID medicationId, Pageable pageable) {
+    private Page<ScheduleEntity> findAllScheduleEntities(UUID medicationId, boolean onlyActive, Pageable pageable) {
         UserDTO user = findCurrentUser();
-        if (medicationId == null) {
-            return repository.findAllByUserId(user.id(), pageable);
-        } else {
-            return repository.findAllByMedicationIdAndUserId(medicationId, user.id(), pageable);
-        }
+        LocalDateTime today = userManager.calculateTodayForUser(user.id());
+        Specification<ScheduleEntity> query = Specification.allOf(
+            ScheduleSpecifications.medicationId(medicationId),
+            ScheduleSpecifications.userId(user.id()),
+            ScheduleSpecifications.onlyActive(onlyActive, today.toLocalDate())
+        );
+        return repository.findAll(query, pageable);
     }
 
     @Override

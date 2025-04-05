@@ -1,0 +1,18 @@
+<mat-card>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item>
+        <span matListItemTitle>{{medication().medicationType.name}}</span>
+        <span matListItemLine>Type</span>
+      </mat-list-item>
+      <mat-list-item>
+        <span matListItemTitle>{{medication().administrationType.name}}</span>
+        <span matListItemLine>Administration type</span>
+      </mat-list-item>
+      <mat-list-item>
+        <span matListItemTitle>{{medication().dosesPerPackage | number}} {{medication().doseType.name}}</span>
+        <span matListItemLine>Maximum doses per package</span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

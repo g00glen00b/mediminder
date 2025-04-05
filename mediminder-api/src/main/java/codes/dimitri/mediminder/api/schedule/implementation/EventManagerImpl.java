@@ -10,6 +10,7 @@ import codes.dimitri.mediminder.api.user.UserManager;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -120,7 +121,11 @@ class EventManagerImpl implements EventManager {
 
 
     private List<EventDTO> findAllUncompletedEventDTOs(LocalDate date, UserDTO user, Collection<UUID> completedScheduleIds) {
-        List<ScheduleEntity> schedules = scheduleRepository.findAllByUserIdWithDateInPeriod(user.id(), date);
+        Specification<ScheduleEntity> query = Specification.allOf(
+            ScheduleSpecifications.userId(user.id()),
+            ScheduleSpecifications.onlyActive(true, date)
+        );
+        List<ScheduleEntity> schedules = scheduleRepository.findAll(query);
         return schedules.stream()
             .filter(schedule -> !completedScheduleIds.contains(schedule.getId()))
             .filter(entity -> entity.isHappeningAt(date))

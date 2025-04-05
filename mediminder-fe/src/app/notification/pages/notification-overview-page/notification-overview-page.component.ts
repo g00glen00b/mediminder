@@ -18,7 +18,7 @@ import {AlertComponent} from '../../../shared/components/alert/alert.component';
 export class NotificationOverviewPageComponent {
   private readonly service = inject(NotificationService);
   private readonly destroyRef = inject(DestroyRef);
-  pageRequest = signal(defaultPageRequest(['title,asc']));
+  pageRequest = signal(defaultPageRequest(['title,asc']))
   notifications = toSignal(toObservable(this.pageRequest).pipe(
     takeUntilDestroyed(this.destroyRef),
     mergeMap(pageRequest => this.service.findAll(pageRequest))
