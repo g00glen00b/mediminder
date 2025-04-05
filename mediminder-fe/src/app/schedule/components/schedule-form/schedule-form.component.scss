@@ -2,15 +2,6 @@ mat-form-field {
   width: 100%;
 }
 
-.actions button {
-  width: 100%;
-  margin-bottom: 1em;
-}
-
-.actions .delete-button {
-  margin-top: 1em;
-}
-
 @media only screen and (min-width: 600px) {
   .grid {
     display: grid;
@@ -25,20 +16,5 @@ mat-form-field {
 
   #description {
     grid-column: 1 / 4;
-  }
-
-  .actions {
-    display: flex;
-    flex-direction: row;
-  }
-
-  .actions button {
-    margin-right: 1em;
-    width: inherit;
-  }
-
-  .actions .delete-button {
-    margin-left: auto;
-    margin-top: 0;
   }
 }

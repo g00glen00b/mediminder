@@ -1,0 +1,45 @@
+.actions {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1em;
+}
+
+.actions primary-actions,
+.actions secondary-actions {
+  display: flex;
+  flex-direction: column;
+}
+
+.actions primary-actions > *,
+.actions secondary-actions > * {
+  margin-bottom: 1em;
+}
+
+.actions secondary-actions {
+  margin-top: 1em;
+}
+
+@media only screen and (min-width: 600px) {
+  .actions {
+    flex-direction: row;
+  }
+
+  .actions primary-actions,
+  .actions secondary-actions {
+    flex-direction: row;
+    margin-top: 0;
+  }
+
+  .actions secondary-actions {
+    margin-left: auto;
+  }
+
+  .actions primary-actions > * {
+    margin-right: 1em;
+    margin-bottom: 0;
+  }
+  .actions secondary-actions > * {
+    margin-left: 1em;
+    margin-bottom: 0;
+  }
+}

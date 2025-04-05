@@ -1,8 +1,12 @@
-<mat-accordion>
-  @for (entry of entries(); track entry.id) {
-    <mediminder-cabinet-entry-list-item
-      [entry]="entry"
-      (delete)="delete.emit(entry)">
-    </mediminder-cabinet-entry-list-item>
-  }
-</mat-accordion>
+<mat-card>
+  <mat-card-content>
+    @for (entry of entries(); track entry.id; let last = $last) {
+      <mediminder-cabinet-entry-list-item
+        [entry]="entry">
+      </mediminder-cabinet-entry-list-item>
+      @if (!last) {
+        <mat-divider></mat-divider>
+      }
+    }
+  </mat-card-content>
+</mat-card>

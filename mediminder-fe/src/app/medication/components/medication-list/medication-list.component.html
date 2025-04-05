@@ -1,19 +1,12 @@
-@for (medication of medications(); track medication.id) {
-  <mat-card (click)="navigateToDetailPage(medication)">
-    <mat-card-content>
-      <mediminder-medication-type-icon
-        [medicationType]="medication.medicationType"
-        [color]="medication.color">
-      </mediminder-medication-type-icon>
-      <div class="name">{{medication.name}}</div>
-      <div class="description">{{medication.administrationType.name}}</div>
-      <div class="actions">
-        <a
-          mat-icon-button
-          [routerLink]="['/medication', medication.id]">
-          <mat-icon fontSet="material-symbols-outlined">chevron_right</mat-icon>
-        </a>
-      </div>
-    </mat-card-content>
-  </mat-card>
-}
+<mat-card>
+  <mat-card-content>
+    @for (medication of medications(); track medication.id; let last = $last) {
+      <mediminder-medication-list-item
+        [medication]="medication">
+      </mediminder-medication-list-item>
+      @if (!last) {
+        <mat-divider></mat-divider>
+      }
+    }
+  </mat-card-content>
+</mat-card>

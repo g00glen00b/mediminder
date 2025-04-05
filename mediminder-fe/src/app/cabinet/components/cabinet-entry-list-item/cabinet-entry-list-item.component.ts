@@ -1,47 +1,51 @@
-import {Component, computed, input, output} from '@angular/core';
-import {ColorIndicatorComponent} from '../../../shared/components/color-indicator/color-indicator.component';
-import {FormatDistanceToNowPurePipeModule, FormatPipeModule, ParseIsoPipeModule} from 'ngx-date-fns';
-import {MatAnchor, MatButton} from '@angular/material/button';
+import {Component, computed, inject, input} from '@angular/core';
 import {
-  MatExpansionPanel,
-  MatExpansionPanelActionRow,
-  MatExpansionPanelDescription,
-  MatExpansionPanelHeader,
-  MatExpansionPanelTitle
-} from '@angular/material/expansion';
-import {MatList, MatListItem, MatListItemLine, MatListItemTitle} from '@angular/material/list';
+  FormatDistanceToNowPurePipeModule,
+  FormatPipeModule,
+  ParseIsoPipeModule,
+  ParsePurePipeModule
+} from 'ngx-date-fns';
 import {CabinetEntry} from '../../models/cabinet-entry';
-import {RouterLink} from '@angular/router';
 import {differenceInDays} from 'date-fns';
+import {DecimalPipe} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
+import {MatIconAnchor} from '@angular/material/button';
+import {Router, RouterLink} from '@angular/router';
+import {ListItemComponent} from '../../../shared/components/list-item/list-item.component';
+import {ListItemTitleDirective} from '../../../shared/components/list-item/list-item-title.directive';
+import {ListItemDescriptionDirective} from '../../../shared/components/list-item/list-item-description.directive';
+import {ListItemActionsDirective} from '../../../shared/components/list-item/list-item-actions.directive';
+import {ListItemIconDirective} from '../../../shared/components/list-item/list-item-icon.directive';
+import {TagComponent} from '../../../shared/components/tag/tag.component';
 
 @Component({
   selector: 'mediminder-cabinet-entry-list-item',
   imports: [
-    ColorIndicatorComponent,
     FormatDistanceToNowPurePipeModule,
     FormatPipeModule,
-    MatAnchor,
-    MatButton,
-    MatExpansionPanel,
-    MatExpansionPanelActionRow,
-    MatExpansionPanelDescription,
-    MatExpansionPanelHeader,
-    MatExpansionPanelTitle,
-    MatList,
-    MatListItem,
-    MatListItemLine,
-    MatListItemTitle,
     ParseIsoPipeModule,
+    DecimalPipe,
+    MatIcon,
+    MatIconAnchor,
+    ParsePurePipeModule,
     RouterLink,
-    MatIcon
+    ListItemComponent,
+    ListItemTitleDirective,
+    ListItemDescriptionDirective,
+    ListItemActionsDirective,
+    ListItemIconDirective,
+    TagComponent,
   ],
   templateUrl: './cabinet-entry-list-item.component.html',
   styleUrl: './cabinet-entry-list-item.component.scss'
 })
 export class CabinetEntryListItemComponent {
+  private readonly router = inject(Router);
   entry = input.required<CabinetEntry>();
-  delete = output<CabinetEntry>();
   expiresSoon = computed(() => differenceInDays(this.entry().expiryDate, new Date()) <= 7);
-  runsOutSoon = computed(() => (this.entry().remainingDoses / this.entry().medication.dosesPerPackage) <= 0.1);
+  expiresSoonColor = computed(() => this.expiresSoon() ? 'warning' : 'default');
+
+  navigateToCabinetEntryEdit() {
+    this.router.navigate(['/medication', this.entry().medication.id, 'cabinet', this.entry().id, 'edit']);
+  }
 }

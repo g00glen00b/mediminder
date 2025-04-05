@@ -1,0 +1,21 @@
+<mediminder-list-item (click)="navigateToDetailPage()">
+  <list-item-icon>
+    <mediminder-medication-type-icon
+      [medicationType]="medication().medicationType"
+      [color]="medication().color">
+    </mediminder-medication-type-icon>
+  </list-item-icon>
+  <list-item-title>
+    {{medication().name}}
+  </list-item-title>
+  <list-item-description>
+    {{medication().administrationType.name}}
+  </list-item-description>
+  <list-item-actions>
+    <a
+      mat-icon-button
+      [routerLink]="['/medication', medication().id]">
+      <mat-icon fontSet="material-symbols-outlined">chevron_right</mat-icon>
+    </a>
+  </list-item-actions>
+</mediminder-list-item>

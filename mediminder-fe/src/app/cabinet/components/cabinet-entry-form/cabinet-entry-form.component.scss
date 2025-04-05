@@ -2,11 +2,6 @@ mat-form-field {
   width: 100%;
 }
 
-.actions button {
-  width: 100%;
-  margin-bottom: 1em;
-}
-
 @media only screen and (min-width: 600px) {
   .grid {
     display: grid;
@@ -26,10 +21,5 @@ mat-form-field {
 
   #expiryDate {
     grid-column: 2;
-  }
-
-  .actions button {
-    margin-right: 1em;
-    width: inherit;
   }
 }

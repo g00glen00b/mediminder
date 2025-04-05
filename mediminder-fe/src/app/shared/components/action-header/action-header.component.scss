@@ -4,10 +4,13 @@
 .action-header {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  margin-bottom: 2em;
 }
 
 h2 {
   @include mat.m2-typography-level(theme.$mediminder-typography, 'headline-5');
+  margin: 0;
 }
 
 .actions {

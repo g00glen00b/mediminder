@@ -22,6 +22,7 @@ import {emptyPage} from '../../../shared/models/page';
 import {Schedule} from '../../../schedule/models/schedule';
 import {CabinetEntry} from '../../../cabinet/models/cabinet-entry';
 import {ScheduleListComponent} from '../../../schedule/components/schedule-list/schedule-list.component';
+import {CabinetEntryListComponent} from '../../../cabinet/components/cabinet-entry-list/cabinet-entry-list.component';
 
 @Component({
   selector: 'mediminder-medication-detail-page',
@@ -36,6 +37,7 @@ import {ScheduleListComponent} from '../../../schedule/components/schedule-list/
     MatIcon,
     RouterLink,
     ScheduleListComponent,
+    CabinetEntryListComponent,
   ],
   templateUrl: './medication-detail-page.component.html',
   styleUrl: './medication-detail-page.component.scss'

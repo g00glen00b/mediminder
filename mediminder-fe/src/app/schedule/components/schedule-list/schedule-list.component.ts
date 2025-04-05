@@ -9,11 +9,8 @@ import {
 import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
 import {Schedule} from '../../models/schedule';
-import {IntervalPipe} from '../../pipes/interval.pipe';
 import {MatCard, MatCardContent} from '@angular/material/card';
-import {MatIcon} from '@angular/material/icon';
-import {DecimalPipe} from '@angular/common';
-import {RouterLink} from '@angular/router';
+import {ScheduleListItemComponent} from '../schedule-list-item/schedule-list-item.component';
 
 @Component({
   selector: 'mediminder-schedule-list',
@@ -24,13 +21,10 @@ import {RouterLink} from '@angular/router';
     ParseIsoPipeModule,
     FormatPipeModule,
     FormatDistanceToNowPurePipeModule,
-    IntervalPipe,
     ParsePurePipeModule,
     MatCard,
     MatCardContent,
-    MatIcon,
-    DecimalPipe,
-    RouterLink,
+    ScheduleListItemComponent,
   ],
   templateUrl: './schedule-list.component.html',
   styleUrl: './schedule-list.component.scss'

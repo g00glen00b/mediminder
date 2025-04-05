@@ -1,52 +1,24 @@
-<mat-expansion-panel>
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      <mediminder-color-indicator [color]="entry().medication.color"></mediminder-color-indicator>
-<!--      <mediminder-medication-type-icon [medicationType]="entry().medication.medicationType"></mediminder-medication-type-icon>-->
-      {{entry().medication.name}}
-    </mat-panel-title>
-    <mat-panel-description>
-      <div class="text">
-        {{entry().remainingDoses}} of {{entry().medication.dosesPerPackage}} {{entry().medication.doseType.name}} left /
-        Expires in {{entry().expiryDate | dfnsParseIso | dfnsFormatDistanceToNowPure}}
-      </div>
-      @if (!expiresSoon() && !runsOutSoon()) {
-        <mat-icon
-          class="success"
-          fontSet="material-symbols-outlined">
-          done
-        </mat-icon>
-      }
-      @if (expiresSoon() || runsOutSoon()) {
-        <mat-icon
-          class="warning"
-          fontSet="material-symbols-outlined">
-          priority_high
-        </mat-icon>
-      }
-    </mat-panel-description>
-  </mat-expansion-panel-header>
-  <mat-list>
-    <mat-list-item>
-      <span matListItemTitle>{{entry().medication.medicationType.name}}</span>
-      <span matListItemLine>Medication type</span>
-    </mat-list-item>
-    <mat-list-item>
-      <span matListItemTitle>{{entry().medication.administrationType.name}}</span>
-      <span matListItemLine>Administration type</span>
-    </mat-list-item>
-    <mat-list-item>
-      <span matListItemTitle>{{entry().remainingDoses}} of {{entry().medication.dosesPerPackage}} {{entry().medication.doseType.name}}</span>
-      <span matListItemLine>Remaining doses</span>
-    </mat-list-item>
-    <mat-list-item>
-      <span matListItemTitle>{{entry().expiryDate | dfnsParseIso | dfnsFormat: 'MMMM do, yyyy'}}</span>
-      <span matListItemLine>Expiry date</span>
-    </mat-list-item>
-  </mat-list>
-  <mat-action-row>
-    <a mat-button [routerLink]="['/cabinet', entry().id, 'duplicate']">Duplicate</a>
-    <a mat-button [routerLink]="['/cabinet', entry().id, 'edit']">Edit</a>
-    <button mat-button color="warn" (click)="delete.emit(entry())">Delete</button>
-  </mat-action-row>
-</mat-expansion-panel>
+<mediminder-list-item (click)="navigateToCabinetEntryEdit()">
+  <list-item-icon>
+    <mat-icon
+      class="icon"
+      fontSet="material-symbols-outlined">
+      tag
+    </mat-icon>
+  </list-item-icon>
+  <list-item-title>
+    {{entry().remainingDoses | number}}/{{entry().medication.dosesPerPackage}} {{entry().medication.doseType.name}} remaining
+  </list-item-title>
+  <list-item-description>
+    <mediminder-tag [color]="expiresSoonColor()">
+      Expires {{entry().expiryDate | dfnsParseIso | dfnsFormat: 'MMMM yyyy'}}
+    </mediminder-tag>
+  </list-item-description>
+  <list-item-actions>
+    <a
+      [routerLink]="['/medication', entry().medication.id, 'cabinet', entry().id, 'edit']"
+      mat-icon-button>
+      <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
+    </a>
+  </list-item-actions>
+</mediminder-list-item>

@@ -8,7 +8,7 @@
       {{error.detail}}
     </mediminder-alert>
   }
-  @if (medication() != null) {
+  @if (medication() != undefined) {
     <mediminder-medication-form
       [medication]="medication()!"
       okLabel="Edit"

@@ -5,8 +5,7 @@
 <mediminder-container>
   @if (medications().page.totalElements > 0) {
     <mediminder-medication-list
-      [medications]="medications().content"
-      (delete)="delete($event)">
+      [medications]="medications().content">
     </mediminder-medication-list>
   }
   @else {

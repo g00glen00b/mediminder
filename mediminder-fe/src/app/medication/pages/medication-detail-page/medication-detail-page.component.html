@@ -8,7 +8,7 @@
   </hero-title>
 </mediminder-hero>
 <mediminder-container>
-  @if (medication() != null) {
+  @if (medication() != undefined) {
     <mediminder-action-header title="Details">
       <a
         mat-flat-button
@@ -39,12 +39,17 @@
   <mediminder-action-header title="Cabinet">
     <a
       mat-flat-button
-      [routerLink]="['/medication', medication()!.id, 'edit']"
+      [routerLink]="['/medication', medication()!.id, 'cabinet', 'create']"
       color="accent">
       <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
       Add entry
     </a>
   </mediminder-action-header>
+  @if (cabinetEntries().content.length > 0) {
+    <mediminder-cabinet-entry-list
+      [entries]="cabinetEntries().content">
+    </mediminder-cabinet-entry-list>
+  }
   <mediminder-action-header title="Documents">
     <a
       mat-flat-button

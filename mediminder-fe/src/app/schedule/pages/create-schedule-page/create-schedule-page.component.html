@@ -11,6 +11,7 @@
   @if (medication() != undefined) {
     <mediminder-schedule-form
       [medication]="medication()!"
+      [schedule]="originalSchedule()"
       okLabel="Add"
       (cancel)="cancel()"
       (confirm)="submit($event)">

@@ -8,11 +8,11 @@
       {{error.detail}}
     </mediminder-alert>
   }
-  @if (schedule() != null) {
+  @if (schedule() != undefined) {
     <mediminder-schedule-form
       [schedule]="schedule()"
       [medication]="schedule()!.medication"
-      [hideDelete]="false"
+      [hideSecondaryActions]="false"
       okLabel="Edit"
       (confirm)="submit($event)"
       (cancel)="cancel()"

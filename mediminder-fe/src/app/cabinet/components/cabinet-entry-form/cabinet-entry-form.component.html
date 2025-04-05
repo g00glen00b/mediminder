@@ -1,41 +1,5 @@
 <form #form="ngForm" (submit)="confirm.emit(request()!)">
   <div class="grid">
-    <mat-form-field appearance="fill" id="medication">
-      <mat-label>Medication</mat-label>
-      <input
-        matInput
-        required
-        type="text"
-        name="medication"
-        #medicationElement
-        #medicationInput="ngModel"
-        [ngModel]="medication()"
-        (ngModelChange)="setMedication($event)"
-        (input)="medicationInputValue.set(medicationElement.value)"
-        [matAutocomplete]="medicationAutocomplete" />
-      @if (!disableBasicFields()) {
-        <a
-          mat-button
-          matSuffix
-          routerLink="/medication/create">
-          Create
-        </a>
-      }
-      <mat-autocomplete
-        requireSelection
-        #medicationAutocomplete="matAutocomplete"
-        [displayWith]="getMedicationLabel">
-        @for (medication of medications().content; track medication.id) {
-          <mat-option [value]="medication">{{medication.name}}</mat-option>
-        }
-      </mat-autocomplete>
-      <mat-hint>Enter the name of the medication</mat-hint>
-      @if (medicationInput.errors?.['required']) {
-        <mat-error>
-          Please enter a valid medication name
-        </mat-error>
-      }
-    </mat-form-field>
     <mat-form-field appearance="fill" id="remainingDoses">
       <mat-label>Remaining doses</mat-label>
       <input
@@ -43,11 +7,11 @@
         matInput
         required
         min="0"
-        [max]="medication()?.dosesPerPackage || 0"
+        [max]="medication().dosesPerPackage"
         #remainingDosesInput="ngModel"
         [(ngModel)]="remainingDoses"
         name="remainingDoses" />
-      <span matTextSuffix>{{medication()?.doseType?.name || 'doses'}}</span>
+      <span matTextSuffix>{{medication().doseType.name}}</span>
       @if (remainingDosesInput.errors?.['required']) {
         <mat-error>
           Please enter an amount of remaining doses
@@ -60,7 +24,7 @@
       }
       @else if (remainingDosesInput.errors?.['max']) {
         <mat-error>
-          Please enter no more doses than initially available for '{{medication()?.name || 'n/a'}}' ({{medication()?.dosesPerPackage || 0}})
+          Please enter no more doses than initially available for '{{medication().name}}' ({{medication().dosesPerPackage}})
         </mat-error>
       }
     </mat-form-field>
@@ -83,15 +47,34 @@
       }
     </mat-form-field>
   </div>
-  <div class="actions">
-    <button
-      mat-flat-button
-      color="accent"
-      [disabled]="form.invalid">
-      {{okLabel()}}
-    </button>
-    <button mat-button type="button" (click)="cancel.emit()">
-      Cancel
-    </button>
-  </div>
+  <mediminder-action-bar>
+    <primary-actions>
+      <button
+        mat-flat-button
+        color="accent"
+        [disabled]="form.invalid">
+        {{okLabel()}}
+      </button>
+      <button mat-button type="button" (click)="cancel.emit()">
+        Cancel
+      </button>
+    </primary-actions>
+    @if (!hideSecondaryActions()) {
+      <secondary-actions>
+        <a
+          mat-button
+          type="button"
+          [routerLink]="['/medication', medication().id, 'cabinet', cabinetEntry()!.id, 'duplicate']">
+          Duplicate entry
+        </a>
+        <button
+          mat-button
+          type="button"
+          color="warn"
+          (click)="delete.emit()">
+          Delete entry
+        </button>
+      </secondary-actions>
+    }
+  </mediminder-action-bar>
 </form>

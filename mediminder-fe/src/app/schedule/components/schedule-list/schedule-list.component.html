@@ -1,32 +1,12 @@
 <mat-card>
   <mat-card-content>
-    <mat-list>
-      @for (schedule of schedules(); track schedule.id) {
-        <mat-list-item>
-          <mat-icon
-            fontSet="material-symbols-outlined"
-            matListItemIcon>
-            schedule
-          </mat-icon>
-          <div matListItemTitle>
-            {{schedule.dose | number}} {{schedule.medication.doseType.name}}
-          </div>
-          <div matListItemLine>
-            At {{schedule.time | dfnsParsePure: 'HH:mm:ss':0 | dfnsFormat: 'HH:mm'}}
-          </div>
-          <div matListItemLine>
-            Every {{schedule.interval | interval}}
-          </div>
-          <div matListItemMeta>
-            <a
-              [routerLink]="['/medication', schedule.medication.id, 'schedule', schedule.id, 'edit']"
-              color="primary"
-              mat-icon-button>
-              <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
-            </a>
-          </div>
-        </mat-list-item>
+    @for (schedule of schedules(); track schedule.id; let last = $last) {
+      <mediminder-schedule-list-item
+        [schedule]="schedule">
+      </mediminder-schedule-list-item>
+      @if (!last) {
+        <mat-divider></mat-divider>
       }
-    </mat-list>
+    }
   </mat-card-content>
 </mat-card>

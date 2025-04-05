@@ -12,7 +12,7 @@ import {ErrorResponse} from '../../../shared/models/error-response';
 import {ScheduleService} from '../../services/schedule.service';
 import {CreateScheduleRequest} from '../../models/create-schedule-request';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {switchMap} from 'rxjs';
+import {filter, switchMap} from 'rxjs';
 import {MedicationService} from '../../../medication/services/medication.service';
 import {NavbarService} from '../../../shared/services/navbar.service';
 
@@ -43,6 +43,11 @@ export class CreateSchedulePageComponent implements OnInit {
   medication = toSignal(toObservable(this.medicationId).pipe(
     takeUntilDestroyed(this.destroyRef),
     switchMap(id => this.medicationService.findById(id))
+  ));
+  originalSchedule = toSignal(toObservable(this.id).pipe(
+    takeUntilDestroyed(this.destroyRef),
+    filter(id => id != null),
+    switchMap(id => this.scheduleService.findById(id))
   ));
 
   ngOnInit() {

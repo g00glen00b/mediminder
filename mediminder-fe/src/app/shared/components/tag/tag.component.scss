@@ -1,0 +1,18 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+strong {
+  font-weight: normal;
+  padding: 0.3em 0.7em;
+  border-radius: 0.3em;
+}
+
+strong.default {
+  background-color: mat.m2-get-color-from-palette(mat.$m2-gray-palette, 300);
+  color: mat.m2-get-contrast-color-from-palette(mat.$m2-gray-palette, 300);
+}
+
+strong.warning {
+  background-color: mat.m2-get-color-from-palette(mat.$m2-red-palette, 300);
+  color: mat.m2-get-contrast-color-from-palette(mat.$m2-red-palette, 300);
+}

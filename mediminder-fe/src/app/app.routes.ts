@@ -10,7 +10,7 @@ export const routes: Routes = [
     loadChildren: () => import('./user/routes'),
   },
   {
-    path: 'cabinet',
+    path: 'medication/:medicationId/cabinet',
     loadChildren: () => import('./cabinet/routes'),
   },
   {

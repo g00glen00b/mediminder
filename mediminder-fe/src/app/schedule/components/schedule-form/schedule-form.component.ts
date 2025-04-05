@@ -13,7 +13,7 @@ import {
 } from '../../models/interval';
 import {Schedule} from '../../models/schedule';
 import {removeTimeFromISODuration} from '../../../shared/utils/date-fns-utils';
-import {MatButton} from '@angular/material/button';
+import {MatAnchor, MatButton} from '@angular/material/button';
 import {
   MatDatepickerToggle,
   MatDateRangeInput,
@@ -26,6 +26,10 @@ import {MatInput} from '@angular/material/input';
 import {MatSelect} from '@angular/material/select';
 import {CreateScheduleRequest} from '../../models/create-schedule-request';
 import {MatIcon} from '@angular/material/icon';
+import {ActionBarComponent} from '../../../shared/components/action-bar/action-bar.component';
+import {PrimaryActionsDirective} from '../../../shared/components/action-bar/primary-actions.directive';
+import {SecondaryActionsDirective} from '../../../shared/components/action-bar/secondary-actions.directive';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'mediminder-schedule-form',
@@ -50,6 +54,11 @@ import {MatIcon} from '@angular/material/icon';
     MatDatepickerToggle,
     MatSuffix,
     MatIcon,
+    ActionBarComponent,
+    PrimaryActionsDirective,
+    SecondaryActionsDirective,
+    MatAnchor,
+    RouterLink,
   ],
   templateUrl: './schedule-form.component.html',
   styleUrl: './schedule-form.component.scss'
@@ -58,7 +67,7 @@ export class ScheduleFormComponent implements OnChanges {
   okLabel = input('Add');
   schedule = input<Schedule>()
   medication = input.required<Medication>();
-  hideDelete = input(true);
+  hideSecondaryActions = input(true);
   cancel = output<void>();
   delete = output<void>();
   confirm = output<CreateScheduleRequest>();
