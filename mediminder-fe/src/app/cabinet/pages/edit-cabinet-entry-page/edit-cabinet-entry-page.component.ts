@@ -89,6 +89,6 @@ export class EditCabinetEntryPageComponent implements OnInit {
         this.router.navigate([`/medication`, this.medicationId()]);
       },
       error: response => this.error = response.error,
-    })
+    });
   }
 }

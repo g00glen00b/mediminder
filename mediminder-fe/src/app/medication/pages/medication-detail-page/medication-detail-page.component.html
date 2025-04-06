@@ -8,6 +8,11 @@
   </hero-title>
 </mediminder-hero>
 <mediminder-container>
+  @if (error != undefined) {
+    <mediminder-alert type="error">
+      {{error.detail}}
+    </mediminder-alert>
+  }
   @if (medication() != undefined) {
     <mediminder-action-header title="Details">
       <a
@@ -59,4 +64,14 @@
       Add document
     </a>
   </mediminder-action-header>
+  <mediminder-action-header title="Danger zone">
+  </mediminder-action-header>
+  <button
+    class="full-width"
+    mat-stroked-button
+    color="warn"
+    (click)="delete()">
+    <mat-icon fontSet="material-symbols-outlined">delete</mat-icon>
+    Delete medication
+  </button>
 </mediminder-container>

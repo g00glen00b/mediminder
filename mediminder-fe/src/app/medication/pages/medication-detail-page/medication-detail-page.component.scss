@@ -10,3 +10,13 @@ mediminder-action-header {
   margin-top: 3em;
   display: block;
 }
+
+.full-width {
+  width: 100%;
+}
+
+@media only screen and (min-width: 600px) {
+  .full-width {
+    width: inherit;
+  }
+}
