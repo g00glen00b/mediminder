@@ -1,4 +1,4 @@
-import {Component, computed, input, output} from '@angular/core';
+import {Component, computed, inject, input, output} from '@angular/core';
 import {Document} from '../../models/document';
 import {differenceInDays} from 'date-fns';
 import {FormatDistanceToNowPurePipeModule, FormatPipeModule, ParseIsoPipeModule} from 'ngx-date-fns';
@@ -10,7 +10,7 @@ import {ListItemTitleDirective} from '../../../shared/components/list-item/list-
 import {ListItemIconDirective} from '../../../shared/components/list-item/list-item-icon.directive';
 import {ListItemActionsDirective} from '../../../shared/components/list-item/list-item-actions.directive';
 import {ListItemDescriptionDirective} from '../../../shared/components/list-item/list-item-description.directive';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'mediminder-document-list-item',
@@ -32,10 +32,15 @@ import {RouterLink} from '@angular/router';
   styleUrl: './document-list-item.component.scss'
 })
 export class DocumentListItemComponent {
+  private readonly router = inject(Router);
   document = input.required<Document>();
   delete = output<Document>();
   download = output<Document>();
   expiresSoon = computed(() => {
     return this.document().expiryDate != null && differenceInDays(this.document().expiryDate!, new Date()) <= 7;
   });
+
+  navigateToDocumentEdit() {
+    this.router.navigate(['/medication', this.document().relatedMedication.id, 'document', this.document().id, 'edit']);
+  }
 }

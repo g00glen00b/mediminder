@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, input} from '@angular/core';
+import {Component, DestroyRef, inject, input, OnInit} from '@angular/core';
 import {AlertComponent} from '../../../shared/components/alert/alert.component';
 import {ContainerComponent} from '../../../shared/components/container/container.component';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
@@ -14,6 +14,7 @@ import {DocumentService} from '../../services/document.service';
 import {DocumentFormComponent} from '../../components/document-form/document-form.component';
 import {CreateDocumentRequestWrapper} from '../../models/create-document-request-wrapper';
 import {MedicationService} from '../../../medication/services/medication.service';
+import {NavbarService} from '../../../shared/services/navbar.service';
 
 @Component({
   selector: 'mediminder-create-document-page',
@@ -28,13 +29,14 @@ import {MedicationService} from '../../../medication/services/medication.service
   templateUrl: './create-document-page.component.html',
   styleUrl: './create-document-page.component.scss'
 })
-export class CreateDocumentPageComponent {
+export class CreateDocumentPageComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
   private readonly toastr = inject(ToastrService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly documentService = inject(DocumentService);
   private readonly medicationService = inject(MedicationService);
+  private readonly navbarService = inject(NavbarService);
   id = input<string>();
   medicationId = input.required<string>();
   medication = toSignal(toObservable(this.medicationId).pipe(
@@ -48,6 +50,11 @@ export class CreateDocumentPageComponent {
     filter(id => id != null),
     switchMap(id => this.documentService.findById(id))
   ));
+
+  ngOnInit() {
+    this.navbarService.setTitle('Upload document');
+    this.navbarService.enableBackButton(['/medication', this.medicationId()]);
+  }
 
   cancel(): void {
     this.confirmationService.show({

@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, input} from '@angular/core';
+import {Component, DestroyRef, inject, input, OnInit} from '@angular/core';
 import {AlertComponent} from '../../../shared/components/alert/alert.component';
 import {ContainerComponent} from '../../../shared/components/container/container.component';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
@@ -14,6 +14,7 @@ import {DocumentService} from '../../services/document.service';
 import {CreateDocumentRequestWrapper} from '../../models/create-document-request-wrapper';
 import {UpdateDocumentRequest} from '../../models/update-document-request';
 import {DocumentFormComponent} from '../../components/document-form/document-form.component';
+import {NavbarService} from '../../../shared/services/navbar.service';
 
 @Component({
   selector: 'mediminder-edit-document-page',
@@ -28,10 +29,11 @@ import {DocumentFormComponent} from '../../components/document-form/document-for
   templateUrl: './edit-document-page.component.html',
   styleUrl: './edit-document-page.component.scss'
 })
-export class EditDocumentPageComponent {
+export class EditDocumentPageComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
   private readonly toastr = inject(ToastrService);
+  private readonly navbarService = inject(NavbarService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly documentService = inject(DocumentService);
 
@@ -43,6 +45,11 @@ export class EditDocumentPageComponent {
     switchMap(id => this.documentService.findById(id))
   ));
   error?: ErrorResponse;
+
+  ngOnInit() {
+    this.navbarService.setTitle('Edit document');
+    this.navbarService.enableBackButton(['/medication', this.medicationId()]);
+  }
 
   submit(originalRequest: CreateDocumentRequestWrapper) {
     const {request: {description, expiryDate, relatedMedicationId}} = originalRequest;

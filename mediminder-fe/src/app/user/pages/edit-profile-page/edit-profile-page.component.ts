@@ -85,4 +85,14 @@ export class EditProfilePageComponent {
         error: response => this.toastr.error(response.error.detail),
       });
   }
+
+  logout() {
+    this.service.logout().subscribe({
+      next: () => {
+        this.toastr.success('You have been logged out.');
+        this.router.navigate(['/user', 'login']);
+      },
+      error: () => this.toastr.error('An error occurred while logging out.')
+    });
+  }
 }
