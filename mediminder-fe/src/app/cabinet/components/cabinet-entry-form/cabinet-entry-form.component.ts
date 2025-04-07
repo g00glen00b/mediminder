@@ -12,6 +12,7 @@ import {ActionBarComponent} from '../../../shared/components/action-bar/action-b
 import {PrimaryActionsDirective} from '../../../shared/components/action-bar/primary-actions.directive';
 import {SecondaryActionsDirective} from '../../../shared/components/action-bar/secondary-actions.directive';
 import {RouterLink} from '@angular/router';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'mediminder-cabinet-entry-form',
@@ -33,6 +34,7 @@ import {RouterLink} from '@angular/router';
     SecondaryActionsDirective,
     MatAnchor,
     RouterLink,
+    MatIcon,
   ],
   templateUrl: './cabinet-entry-form.component.html',
   styleUrl: './cabinet-entry-form.component.scss'

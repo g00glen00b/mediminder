@@ -13,6 +13,7 @@ import {filter, switchMap} from 'rxjs';
 import {DocumentService} from '../../services/document.service';
 import {DocumentFormComponent} from '../../components/document-form/document-form.component';
 import {CreateDocumentRequestWrapper} from '../../models/create-document-request-wrapper';
+import {MedicationService} from '../../../medication/services/medication.service';
 
 @Component({
   selector: 'mediminder-create-document-page',
@@ -33,7 +34,13 @@ export class CreateDocumentPageComponent {
   private readonly toastr = inject(ToastrService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly documentService = inject(DocumentService);
+  private readonly medicationService = inject(MedicationService);
   id = input<string>();
+  medicationId = input.required<string>();
+  medication = toSignal(toObservable(this.medicationId).pipe(
+    takeUntilDestroyed(this.destroyRef),
+    switchMap(id => this.medicationService.findById(id))
+  ));
 
   error?: ErrorResponse;
   originalDocument = toSignal(toObservable(this.id).pipe(
@@ -42,15 +49,14 @@ export class CreateDocumentPageComponent {
     switchMap(id => this.documentService.findById(id))
   ));
 
-
   cancel(): void {
     this.confirmationService.show({
       cancelLabel: 'Cancel',
-      content: 'Are you sure you want to cancel creating this cabinet entry?',
+      content: 'Are you sure you want to cancel creating this document?',
       title: 'Confirm',
       okLabel: 'Confirm',
       type: 'info',
-    }).subscribe(() => this.router.navigate([`/cabinet`]));
+    }).subscribe(() => this.router.navigate([`/medication`, this.medicationId()]));
   }
 
   submit(requestWrapper: CreateDocumentRequestWrapper): void {
@@ -59,7 +65,7 @@ export class CreateDocumentPageComponent {
     this.documentService.create(request, file!).subscribe({
       next: document => {
         this.toastr.success(`Successfully uploaded document '${document.filename}'`);
-        this.router.navigate([`/document`]);
+        this.router.navigate([`/medication`, this.medicationId()]);
       },
       error: response => this.error = response.error,
     })

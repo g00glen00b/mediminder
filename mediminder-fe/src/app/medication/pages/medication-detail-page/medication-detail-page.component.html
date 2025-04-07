@@ -58,17 +58,22 @@
   <mediminder-action-header title="Documents">
     <a
       mat-flat-button
-      [routerLink]="['/medication', medication()!.id, 'edit']"
+      [routerLink]="['/medication', medication()!.id, 'document', 'create']"
       color="accent">
       <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
       Add document
     </a>
   </mediminder-action-header>
+  @if (documents().content.length > 0) {
+    <mediminder-document-list
+      [documents]="documents().content">
+    </mediminder-document-list>
+  }
   <mediminder-action-header title="Danger zone">
   </mediminder-action-header>
   <button
     class="full-width"
-    mat-stroked-button
+    mat-button
     color="warn"
     (click)="delete()">
     <mat-icon fontSet="material-symbols-outlined">delete</mat-icon>

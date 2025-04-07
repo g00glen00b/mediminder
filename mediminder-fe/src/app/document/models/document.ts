@@ -4,6 +4,6 @@ export interface Document {
   id: string;
   filename: string;
   expiryDate?: string;
-  relatedMedication?: Medication;
+  relatedMedication: Medication;
   description?: string;
 }

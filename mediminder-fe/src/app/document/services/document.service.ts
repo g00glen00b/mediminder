@@ -14,8 +14,9 @@ import {Document} from '../models/document';
 export class DocumentService {
   private readonly httpClient = inject(HttpClient);
 
-  findAll(pageRequest: PageRequest): Observable<Page<Document>> {
-    const params = pageRequestToHttpParams(pageRequest);
+  findAll(pageRequest: PageRequest, medicationId?: string): Observable<Page<Document>> {
+    let params = pageRequestToHttpParams(pageRequest);
+    if (medicationId != null) params = params.set('medicationId', medicationId);
     return this.httpClient.get<Page<Document>>(`${environment.apiUrl}/document`, {params});
   }
 

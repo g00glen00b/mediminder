@@ -1,9 +1,13 @@
-<mat-accordion>
-  @for (document of documents(); track document.id) {
-    <mediminder-document-list-item
-      [document]="document"
-      (delete)="delete.emit(document)"
-      (download)="download.emit(document)">
-    </mediminder-document-list-item>
-  }
-</mat-accordion>
+<mat-card>
+  <mat-card-content>
+    @for (document of documents(); track document.id; let last = $last) {
+      <mediminder-document-list-item
+        [document]="document"
+        (download)="download.emit(document)">
+      </mediminder-document-list-item>
+      @if (!last) {
+        <mat-divider></mat-divider>
+      }
+    }
+  </mat-card-content>
+</mat-card>

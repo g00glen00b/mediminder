@@ -11,13 +11,4 @@
   <mediminder-planner-list
     [plans]="plans().content">
   </mediminder-planner-list>
-  @if (plans().page.totalElements > 0) {
-    <mat-paginator
-      [length]="plans().page.totalElements"
-      [pageSize]="plans().page.size"
-      [showFirstLastButtons]="true"
-      [pageSizeOptions]="[5, 10, 20, 50]"
-      (page)="onPageChange($event)">
-    </mat-paginator>
-  }
 </mediminder-container>

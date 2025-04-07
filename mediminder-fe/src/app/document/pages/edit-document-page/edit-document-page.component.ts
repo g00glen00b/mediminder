@@ -36,6 +36,7 @@ export class EditDocumentPageComponent {
   private readonly documentService = inject(DocumentService);
 
   id = input.required<string>();
+  medicationId = input.required<string>();
 
   document = toSignal(toObservable(this.id).pipe(
     takeUntilDestroyed(this.destroyRef),
@@ -49,7 +50,7 @@ export class EditDocumentPageComponent {
     this.documentService.update(this.id(), request).subscribe({
       next: document => {
         this.toastr.success(`Successfully updated document '${document.filename}'`);
-        this.router.navigate([`/document`]);
+        this.router.navigate([`/medication`, this.medicationId()]);
       },
       error: response => this.error = response.error,
     })
@@ -58,10 +59,28 @@ export class EditDocumentPageComponent {
   cancel() {
     this.confirmationService.show({
       cancelLabel: 'Cancel',
-      content: 'Are you sure you want to cancel editing this schedule?',
+      content: 'Are you sure you want to cancel editing this document?',
       title: 'Confirm',
       okLabel: 'Confirm',
       type: 'info',
-    }).subscribe(() => this.router.navigate([`/schedule`]));
+    }).subscribe(() => this.router.navigate([`/medication`, this.medicationId()]));
+  }
+
+  delete() {
+    this.confirmationService.show({
+      cancelLabel: 'Cancel',
+      content: 'Are you sure you want to delete this document?',
+      title: 'Confirm',
+      okLabel: 'Delete',
+      type: 'error',
+    }).pipe(
+      switchMap(() => this.documentService.delete(this.id()))
+    ).subscribe({
+      next: () => {
+        this.toastr.success(`Successfully deleted document '${this.document()!.filename}'`);
+        this.router.navigate([`/medication`, this.medicationId()]);
+      },
+      error: response => this.error = response.error,
+    });
   }
 }

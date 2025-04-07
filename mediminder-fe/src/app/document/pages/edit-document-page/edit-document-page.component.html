@@ -14,11 +14,16 @@
       {{error.detail}}
     </mediminder-alert>
   }
-  <mediminder-document-form
-    [document]="document()"
-    [disableBasicFields]="true"
-    okLabel="Edit"
-    (confirm)="submit($event)"
-    (cancel)="cancel()">
-  </mediminder-document-form>
+  @if (document() != undefined) {
+    <mediminder-document-form
+      [document]="document()"
+      [medication]="document()!.relatedMedication"
+      [disableBasicFields]="true"
+      [hideSecondaryActions]="false"
+      okLabel="Edit"
+      (confirm)="submit($event)"
+      (delete)="delete()"
+      (cancel)="cancel()">
+    </mediminder-document-form>
+  }
 </mediminder-container>

@@ -11,15 +11,11 @@ mat-form-field {
   .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, auto);
+    grid-template-rows: repeat(2, auto);
     grid-gap: 1em;
   }
 
   #file {
-    grid-column: 1 / 3;
-  }
-
-  #medication {
     grid-column: 1;
   }
 

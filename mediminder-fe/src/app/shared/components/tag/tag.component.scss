@@ -13,6 +13,6 @@ strong.default {
 }
 
 strong.warning {
-  background-color: mat.m2-get-color-from-palette(mat.$m2-red-palette, 300);
-  color: mat.m2-get-contrast-color-from-palette(mat.$m2-red-palette, 300);
+  background-color: mat.m2-get-color-from-palette(theme.$mediminder-danger, 200);
+  color: mat.m2-get-contrast-color-from-palette(theme.$mediminder-danger, 200);
 }

@@ -18,12 +18,12 @@ export const routes: Routes = [
     loadChildren: () => import('./schedule/routes'),
   },
   {
-    path: 'medication',
-    loadChildren: () => import('./medication/routes'),
+    path: 'medication/:medicationId/document',
+    loadChildren: () => import('./document/routes'),
   },
   {
-    path: 'document',
-    loadChildren: () => import('./document/routes'),
+    path: 'medication',
+    loadChildren: () => import('./medication/routes'),
   },
   {
     path: 'planner',

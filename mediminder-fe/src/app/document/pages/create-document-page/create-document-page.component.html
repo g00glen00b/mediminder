@@ -8,11 +8,14 @@
       {{error.detail}}
     </mediminder-alert>
   }
-  <mediminder-document-form
-    [document]="originalDocument()"
-    [disableBasicFields]="false"
-    okLabel="Upload"
-    (cancel)="cancel()"
-    (confirm)="submit($event)">
-  </mediminder-document-form>
+  @if (medication() != undefined) {
+    <mediminder-document-form
+      [document]="originalDocument()"
+      [medication]="medication()!"
+      [disableBasicFields]="false"
+      okLabel="Upload"
+      (cancel)="cancel()"
+      (confirm)="submit($event)">
+    </mediminder-document-form>
+  }
 </mediminder-container>

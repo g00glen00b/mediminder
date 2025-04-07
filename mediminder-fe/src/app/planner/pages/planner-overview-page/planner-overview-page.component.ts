@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, model, signal} from '@angular/core';
+import {Component, DestroyRef, inject, signal} from '@angular/core';
 import {ContainerComponent} from '../../../shared/components/container/container.component';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
 import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
@@ -8,10 +8,9 @@ import {PlannerService} from '../../services/planner.service';
 import {defaultPageRequest} from '../../../shared/models/page-request';
 import {emptyPage} from '../../../shared/models/page';
 import {MedicationPlan} from '../../models/medication-plan';
-import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {PlannerListComponent} from '../../components/planner-list/planner-list.component';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {combineLatest, mergeMap} from 'rxjs';
+import {mergeMap} from 'rxjs';
 import {addMonths} from 'date-fns';
 
 @Component({
@@ -23,7 +22,6 @@ import {addMonths} from 'date-fns';
     HeroDescriptionDirective,
     HeroTitleDirective,
     DatePaginatorComponent,
-    MatPaginator,
     PlannerListComponent,
 
   ],
@@ -35,20 +33,8 @@ export class PlannerOverviewPageComponent {
   private readonly destroyRef = inject(DestroyRef);
   date = signal(addMonths(new Date(), 1));
   minDate = new Date();
-  pageRequest = signal(defaultPageRequest(['name,asc']));
-  plans = toSignal(combineLatest([
-    toObservable(this.date),
-    toObservable(this.pageRequest)
-  ]).pipe(
+  plans = toSignal(toObservable(this.date).pipe(
     takeUntilDestroyed(this.destroyRef),
-    mergeMap(([targetDate, pageRequest]) => this.service.findAll(targetDate, pageRequest))
+    mergeMap(targetDate => this.service.findAll(targetDate, defaultPageRequest(['name,asc'])))
   ), {initialValue: emptyPage<MedicationPlan>()});
-
-  onPageChange(event: PageEvent) {
-    this.pageRequest.set({
-      ...this.pageRequest(),
-      page: event.pageIndex,
-      size: event.pageSize,
-    });
-  }
 }

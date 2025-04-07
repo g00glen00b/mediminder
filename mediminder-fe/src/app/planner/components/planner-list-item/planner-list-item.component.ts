@@ -1,37 +1,27 @@
 import {Component, computed, input} from '@angular/core';
 import {MedicationPlan} from '../../models/medication-plan';
-import {ColorIndicatorComponent} from '../../../shared/components/color-indicator/color-indicator.component';
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {
-  MatExpansionPanel,
-  MatExpansionPanelDescription,
-  MatExpansionPanelHeader,
-  MatExpansionPanelTitle
-} from '@angular/material/expansion';
-import {MatList, MatListItem, MatListItemLine, MatListItemTitle} from '@angular/material/list';
-import {MatIcon} from '@angular/material/icon';
+  MedicationTypeIconComponent
+} from '../../../medication/components/medication-type-icon/medication-type-icon.component';
 
 @Component({
   selector: 'mediminder-planner-list-item',
   imports: [
-    ColorIndicatorComponent,
-    MatExpansionPanel,
-    MatExpansionPanelDescription,
-    MatExpansionPanelHeader,
-    MatExpansionPanelTitle,
-    MatList,
-    MatListItem,
-    MatListItemLine,
-    MatListItemTitle,
-    MatIcon,
+    MatCardContent,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MedicationTypeIconComponent,
   ],
   templateUrl: './planner-list-item.component.html',
   styleUrl: './planner-list-item.component.scss'
 })
 export class PlannerListItemComponent {
   plan = input.required<MedicationPlan>();
-  percentageAvailable = computed(() => {
+  missingDoses = computed(() => {
     const {requiredDoses, availableDoses} = this.plan();
-    return requiredDoses == 0 ? 100 : (availableDoses / requiredDoses) * 100;
+    return Math.max(requiredDoses - availableDoses, 0);
   });
   prescriptionsRequired = computed(() => {
     const {requiredDoses, availableDoses, medication: {dosesPerPackage}} = this.plan();

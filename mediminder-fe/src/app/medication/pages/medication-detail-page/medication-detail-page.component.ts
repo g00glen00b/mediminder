@@ -1,6 +1,6 @@
-import {Component, DestroyRef, inject, input, OnInit, signal} from '@angular/core';
+import {Component, DestroyRef, inject, input, OnInit} from '@angular/core';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {combineLatest, switchMap} from 'rxjs';
+import {switchMap} from 'rxjs';
 import {MedicationService} from '../../services/medication.service';
 import {ContainerComponent} from '../../../shared/components/container/container.component';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
@@ -27,6 +27,8 @@ import {ConfirmationService} from '../../../shared/services/confirmation.service
 import {ToastrService} from 'ngx-toastr';
 import {ErrorResponse} from '../../../shared/models/error-response';
 import {AlertComponent} from '../../../shared/components/alert/alert.component';
+import {Document} from '../../../document/models/document';
+import {DocumentListComponent} from '../../../document/components/document-list/document-list.component';
 
 @Component({
   selector: 'mediminder-medication-detail-page',
@@ -44,6 +46,7 @@ import {AlertComponent} from '../../../shared/components/alert/alert.component';
     CabinetEntryListComponent,
     MatButton,
     AlertComponent,
+    DocumentListComponent,
   ],
   templateUrl: './medication-detail-page.component.html',
   styleUrl: './medication-detail-page.component.scss'
@@ -58,28 +61,24 @@ export class MedicationDetailPageComponent implements OnInit {
   private readonly confirmationService = inject(ConfirmationService);
   private readonly toastr = inject(ToastrService);
   private readonly router = inject(Router);
-  private cabinetPageRequest= signal(defaultPageRequest(['id,asc']));
-  private schedulePageRequest= signal(defaultPageRequest(['id,asc']));
 
   id = input.required<string>();
   medication = toSignal(toObservable(this.id).pipe(
     takeUntilDestroyed(this.destroyRef),
     switchMap(id => this.medicationService.findById(id))
   ));
-  schedules = toSignal(combineLatest([
-    toObservable(this.id),
-    toObservable(this.schedulePageRequest),
-  ]).pipe(
+  schedules = toSignal(toObservable(this.id).pipe(
     takeUntilDestroyed(this.destroyRef),
-    switchMap(([id, pageRequest]) => this.scheduleService.findAll(pageRequest, id))
+    switchMap(id => this.scheduleService.findAll(defaultPageRequest(['id,asc']), id))
   ), {initialValue: emptyPage<Schedule>()});
-  cabinetEntries = toSignal(combineLatest([
-    toObservable(this.id),
-    toObservable(this.cabinetPageRequest),
-  ]).pipe(
+  cabinetEntries = toSignal(toObservable(this.id).pipe(
     takeUntilDestroyed(this.destroyRef),
-    switchMap(([id, pageRequest]) => this.cabinetService.findAll(pageRequest, id))
+    switchMap(id => this.cabinetService.findAll(defaultPageRequest(['id,asc']), id))
   ), {initialValue: emptyPage<CabinetEntry>()});
+  documents = toSignal(toObservable(this.id).pipe(
+    takeUntilDestroyed(this.destroyRef),
+    switchMap(id => this.documentService.findAll(defaultPageRequest(['id,asc']), id))
+  ), {initialValue: emptyPage<Document>()});
   error?: ErrorResponse;
 
   ngOnInit() {
