@@ -15,17 +15,7 @@
     }, {
       "matchesJsonPath": {
         "expression": "$.messages[?(@.role == 'user')].content",
-        "contains": "Take 1 capsule(s) every 1 day at 08:00, starting at January 1, 2025"
-      }
-    }, {
-      "matchesJsonPath": {
-        "expression": "$.messages[?(@.role == 'user')].content",
         "contains": "When do I have to take Dafalgan if you had to reason?"
-      }
-    }, {
-      "matchesJsonPath": {
-        "expression": "$.messages[?(@.role == 'user')].content",
-        "contains": "The patient's name is Harry Potter and today's date is March 4, 2025."
       }
     }]
   },
@@ -43,7 +33,7 @@
         "index": 0,
         "message": {
           "role": "assistant",
-          "content": "<think>I have a thinking process</think>\n{\"answer\": \"Hello, how can I assist you today if I reasoned?\"}"
+          "content": "<think>I have a thinking process</think>Hello, how can I assist you today if I reasoned?"
         },
         "finish_reason": "stop"
       }],

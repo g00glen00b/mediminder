@@ -7,7 +7,6 @@ import org.springframework.core.io.Resource;
 @ConfigurationProperties(prefix = "assistant")
 public record AssistantProperties(
     @DefaultValue("classpath:templates/system.st") Resource systemTemplate,
-    @DefaultValue("classpath:templates/user.st") Resource userTemplate,
     @DefaultValue("20") int maxSize
 ) {
 }
