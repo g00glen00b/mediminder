@@ -1,6 +1,5 @@
 package codes.dimitri.mediminder.api.schedule.implementation;
 
-import codes.dimitri.mediminder.api.common.SecurityConfiguration;
 import codes.dimitri.mediminder.api.medication.*;
 import codes.dimitri.mediminder.api.schedule.*;
 import jakarta.validation.ConstraintViolationException;
@@ -8,7 +7,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -26,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(EventController.class)
-@Import(SecurityConfiguration.class)
 class EventControllerTest {
     @Autowired
     private MockMvc mvc;

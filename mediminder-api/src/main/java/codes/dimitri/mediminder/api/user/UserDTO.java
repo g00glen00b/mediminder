@@ -1,13 +1,15 @@
 package codes.dimitri.mediminder.api.user;
 
 import java.time.ZoneId;
-import java.util.UUID;
+import java.util.List;
 
 public record UserDTO(
-    UUID id,
+    String id,
     String name,
     ZoneId timezone,
-    boolean enabled,
-    boolean admin
+    List<String> authorities
 ) {
+    public UserDTO(String id, String name, ZoneId timezone) {
+        this(id, name, timezone, List.of());
+    }
 }

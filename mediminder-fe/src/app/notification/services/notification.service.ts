@@ -14,10 +14,10 @@ export class NotificationService {
 
   findAll(pageRequest: PageRequest): Observable<Page<Notification>> {
     const params = pageRequestToHttpParams(pageRequest);
-    return this.httpClient.get<Page<Notification>>(`${environment.apiUrl}/notification`, {params});
+    return this.httpClient.get<Page<Notification>>(`./api/notification`, {params});
   }
 
   delete(id: string): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.apiUrl}/notification/${id}`);
+    return this.httpClient.delete<void>(`./api/notification/${id}`);
   }
 }

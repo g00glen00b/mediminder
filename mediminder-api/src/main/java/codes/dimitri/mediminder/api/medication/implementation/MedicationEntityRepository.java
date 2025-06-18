@@ -9,8 +9,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 interface MedicationEntityRepository extends JpaRepository<MedicationEntity, UUID> {
-    Optional<MedicationEntity> findByIdAndUserId(UUID id, UUID userId);
-    Page<MedicationEntity> findAllByUserId(UUID userId, Pageable pageable);
-    Page<MedicationEntity> findAllByUserIdAndNameContainingIgnoreCase(UUID userId, String search, Pageable pageable);
-    List<MedicationEntity> findAllByUserId(UUID userId);
+    Optional<MedicationEntity> findByIdAndUserId(UUID id, String userId);
+    Page<MedicationEntity> findAllByUserId(String userId, Pageable pageable);
+    Page<MedicationEntity> findAllByUserIdAndNameContainingIgnoreCase(String userId, String search, Pageable pageable);
+    List<MedicationEntity> findAllByUserId(String userId);
 }

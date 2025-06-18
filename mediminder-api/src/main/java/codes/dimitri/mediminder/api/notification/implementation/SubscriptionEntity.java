@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "subscription")
 @Getter
@@ -18,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SubscriptionEntity {
     @Id
-    private UUID userId;
+    private String userId;
     private String endpoint;
     private String key;
     private String auth;

@@ -2,5 +2,4 @@
 // see nginx.sh
 export const environment = {
   production: true,
-  apiUrl: '${ENV_API_URL}',
 };

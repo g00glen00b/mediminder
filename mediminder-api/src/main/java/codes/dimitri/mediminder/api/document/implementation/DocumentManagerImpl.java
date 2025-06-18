@@ -113,7 +113,7 @@ class DocumentManagerImpl implements DocumentManager {
         }
     }
 
-    private MedicationDTO findMedication(UUID id, UUID userId) {
+    private MedicationDTO findMedication(UUID id, String userId) {
         if (id == null) return null;
         try {
             return medicationManager.findByIdAndUserId(id, userId);
@@ -122,7 +122,7 @@ class DocumentManagerImpl implements DocumentManager {
         }
     }
 
-    private MedicationDTO findMedicationSafe(UUID id, UUID userId) {
+    private MedicationDTO findMedicationSafe(UUID id, String userId) {
         try {
             return findMedication(id, userId);
         } catch (InvalidDocumentException ex) {
@@ -150,7 +150,7 @@ class DocumentManagerImpl implements DocumentManager {
     }
 
     private Page<DocumentEntity> findAllEntities(LocalDate expiresOn, UUID medicationId, @NotNull Pageable pageable) {
-        UUID userId = findCurrentUser().id();
+        String userId = findCurrentUser().id();
         Specification<DocumentEntity> specification = Specification.allOf(
             DocumentSpecifications.userId(userId),
             DocumentSpecifications.relatedMedicationId(medicationId),

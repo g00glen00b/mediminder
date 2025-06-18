@@ -29,6 +29,7 @@ import {ErrorResponse} from '../../../shared/models/error-response';
 import {AlertComponent} from '../../../shared/components/alert/alert.component';
 import {Document} from '../../../document/models/document';
 import {DocumentListComponent} from '../../../document/components/document-list/document-list.component';
+import {UserService} from '../../../user/services/user.service';
 
 @Component({
   selector: 'mediminder-medication-detail-page',
@@ -59,6 +60,7 @@ export class MedicationDetailPageComponent implements OnInit {
   private readonly documentService = inject(DocumentService);
   private readonly navbarService = inject(NavbarService);
   private readonly confirmationService = inject(ConfirmationService);
+  private readonly userService = inject(UserService);
   private readonly toastr = inject(ToastrService);
   private readonly router = inject(Router);
 
@@ -79,6 +81,7 @@ export class MedicationDetailPageComponent implements OnInit {
     takeUntilDestroyed(this.destroyRef),
     switchMap(id => this.documentService.findAll(defaultPageRequest(['id,asc']), id))
   ), {initialValue: emptyPage<Document>()});
+  showDocuments = toSignal(this.userService.hasAuthority('Document'), {initialValue: false});
   error?: ErrorResponse;
 
   ngOnInit() {

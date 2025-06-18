@@ -1,6 +1,5 @@
 package codes.dimitri.mediminder.api.document.implementation;
 
-import codes.dimitri.mediminder.api.common.SecurityConfiguration;
 import codes.dimitri.mediminder.api.document.*;
 import codes.dimitri.mediminder.api.medication.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,13 +9,13 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -26,13 +25,11 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(DocumentController.class)
-@Import(SecurityConfiguration.class)
 class DocumentControllerTest {
     @Autowired
     private MockMvc mvc;
@@ -47,7 +44,7 @@ class DocumentControllerTest {
             LocalDate expiryDate = LocalDate.of(2026, 1, 31);
             var document = new DocumentDTO(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "filename.pdf",
                 expiryDate,
                 new MedicationDTO(
@@ -68,7 +65,7 @@ class DocumentControllerTest {
                     .param("size", "10")
                     .param("sort", "id,asc")
                     .param("expiredOn", "2026-01-31")
-                    .with(user("me@example.org")))
+                    .with(oauth2Login().authorities(new SimpleGrantedAuthority("Document"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("content[0].id").value(document.id().toString()));
         }
@@ -80,7 +77,7 @@ class DocumentControllerTest {
         void returnsResult() throws Exception {
             var document = new DocumentDTO(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "filename.pdf",
                 LocalDate.of(2026, 1, 31),
                 new MedicationDTO(
@@ -97,7 +94,7 @@ class DocumentControllerTest {
             when(manager.findByIdForCurrentUser(document.id())).thenReturn(document);
             mvc
                 .perform(get("/api/document/{id}", document.id())
-                    .with(user("me@example.org")))
+                    .with(oauth2Login().authorities(new SimpleGrantedAuthority("Document"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(document.id().toString()));
         }
@@ -109,7 +106,7 @@ class DocumentControllerTest {
             when(manager.findByIdForCurrentUser(documentId)).thenThrow(exception);
             mvc
                 .perform(get("/api/document/{id}", documentId)
-                    .with(user("me@example.org")))
+                    .with(oauth2Login().authorities(new SimpleGrantedAuthority("Document"))))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("detail").value(exception.getMessage()))
                 .andExpect(jsonPath("title").value("Document not found"))
@@ -128,7 +125,7 @@ class DocumentControllerTest {
             );
             var result = new DocumentDTO(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "filename.pdf",
                 LocalDate.of(2026, 1, 31),
                 new MedicationDTO(
@@ -156,7 +153,7 @@ class DocumentControllerTest {
                     .file(file)
                     .file(jsonPart("request", json))
                     .contentType("multipart/form-data")
-                    .with(user("me@example.org"))
+                    .with(oauth2Login().authorities(new SimpleGrantedAuthority("Document")))
                     .with(csrf()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").value(result.id().toString()));
@@ -184,7 +181,7 @@ class DocumentControllerTest {
                     .file(file)
                     .file(jsonPart("request", json))
                     .contentType("multipart/form-data")
-                    .with(user("me@example.org"))
+                    .with(oauth2Login().authorities(new SimpleGrantedAuthority("Document")))
                     .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("detail").value(exception.getMessage()))
@@ -214,7 +211,7 @@ class DocumentControllerTest {
                     .file(file)
                     .file(jsonPart("request", json))
                     .contentType("multipart/form-data")
-                    .with(user("me@example.org"))
+                    .with(oauth2Login().authorities(new SimpleGrantedAuthority("Document")))
                     .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("detail").value(exception.getMessage()))
@@ -234,7 +231,7 @@ class DocumentControllerTest {
             );
             var document = new DocumentDTO(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "filename.pdf",
                 LocalDate.of(2026, 1, 31),
                 new MedicationDTO(
@@ -260,7 +257,7 @@ class DocumentControllerTest {
                 .perform(put("/api/document/{id}", document.id())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(json)
-                    .with(user("me@example.org"))
+                    .with(oauth2Login().authorities(new SimpleGrantedAuthority("Document")))
                     .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(document.id().toString()));
@@ -286,7 +283,7 @@ class DocumentControllerTest {
                             "description": "Package insert Dafalgan"
                         }
                         """)
-                    .with(user("me@example.org"))
+                    .with(oauth2Login().authorities(new SimpleGrantedAuthority("Document")))
                     .with(csrf()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("detail").value(exception.getMessage()))
@@ -314,7 +311,7 @@ class DocumentControllerTest {
                             "description": "Package insert Dafalgan"
                         }
                         """)
-                    .with(user("me@example.org"))
+                    .with(oauth2Login().authorities(new SimpleGrantedAuthority("Document")))
                     .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("detail").value(exception.getMessage()))
@@ -342,7 +339,7 @@ class DocumentControllerTest {
                             "description": "Package insert Dafalgan"
                         }
                         """)
-                    .with(user("me@example.org"))
+                    .with(oauth2Login().authorities(new SimpleGrantedAuthority("Document")))
                     .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("detail").value(exception.getMessage()))
@@ -364,7 +361,7 @@ class DocumentControllerTest {
             when(manager.downloadDocumentForCurrentUser(id)).thenReturn(resource);
             mvc
                 .perform(get("/api/document/{id}/download", id)
-                    .with(user("me@example.org")))
+                    .with(oauth2Login().authorities(new SimpleGrantedAuthority("Document"))))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Disposition", "attachment; filename=\"file.pdf\""))
                 .andExpect(content().contentType(MediaType.APPLICATION_PDF))
@@ -378,7 +375,7 @@ class DocumentControllerTest {
             when(manager.downloadDocumentForCurrentUser(id)).thenThrow(exception);
             mvc
                 .perform(get("/api/document/{id}/download", id)
-                    .with(user("me@example.org")))
+                    .with(oauth2Login().authorities(new SimpleGrantedAuthority("Document"))))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("detail").value(exception.getMessage()))
                 .andExpect(jsonPath("title").value("Document not found"))
@@ -393,7 +390,7 @@ class DocumentControllerTest {
             var id = UUID.randomUUID();
             mvc
                 .perform(delete("/api/document/{id}", id)
-                    .with(user("me@example.org"))
+                    .with(oauth2Login().authorities(new SimpleGrantedAuthority("Document")))
                     .with(csrf()))
                 .andExpect(status().isNoContent());
             verify(manager).deleteForCurrentUser(id);
@@ -406,7 +403,7 @@ class DocumentControllerTest {
             doThrow(exception).when(manager).deleteForCurrentUser(id);
             mvc
                 .perform(delete("/api/document/{id}", id)
-                    .with(user("me@example.org"))
+                    .with(oauth2Login().authorities(new SimpleGrantedAuthority("Document")))
                     .with(csrf()))
                 .andExpect(status().isNotFound());
         }

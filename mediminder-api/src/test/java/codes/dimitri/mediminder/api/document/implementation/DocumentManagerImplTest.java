@@ -75,11 +75,9 @@ class DocumentManagerImplTest {
             );
             var file = new MockMultipartFile("file", "file.pdf", "application/pdf", "content".getBytes());
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 request.relatedMedicationId(),
@@ -112,11 +110,9 @@ class DocumentManagerImplTest {
             );
             var file = new MockMultipartFile("file", "file.pdf", "application/pdf", "content".getBytes());
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 request.relatedMedicationId(),
@@ -153,11 +149,9 @@ class DocumentManagerImplTest {
             );
             var file = new MockMultipartFile("file", "file.pdf", "application/pdf", "content".getBytes());
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             when(medicationManager.findByIdAndUserId(request.relatedMedicationId(), user.id())).thenThrow(new MedicationNotFoundException(request.relatedMedicationId()));
@@ -175,11 +169,9 @@ class DocumentManagerImplTest {
             );
             var file = new MockMultipartFile("file", "file.pdf", "application/pdf", "content".getBytes());
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             manager.createForCurrentUser(request, file);
@@ -194,22 +186,6 @@ class DocumentManagerImplTest {
                 "Package insert Dafalgan"
             );
             var file = new MockMultipartFile("file", "file.pdf", "application/pdf", "content".getBytes());
-            var user = new UserDTO(
-                UUID.randomUUID(),
-                "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
-            );
-            var medication = new MedicationDTO(
-                request.relatedMedicationId(),
-                "Dafalgan",
-                new MedicationTypeDTO("TABLET", "Tablet"),
-                new AdministrationTypeDTO("ORAL", "Oral"),
-                new DoseTypeDTO("TABLET", "tablet(s)"),
-                new BigDecimal("100"),
-                Color.RED
-            );
             when(userManager.findCurrentUser()).thenThrow(new CurrentUserNotFoundException());
             assertThatExceptionOfType(InvalidDocumentException.class)
                 .isThrownBy(() -> manager.createForCurrentUser(request, file))
@@ -285,11 +261,9 @@ class DocumentManagerImplTest {
                 "Package insert Dafalgan"
             );
             var user = new UserDTO(
-                UUID.fromString("c00385bb-3551-4cd9-b786-8a71f1c1b9d8"),
+                "auth|c00385bb35514cd9b786",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 request.relatedMedicationId(),
@@ -322,11 +296,9 @@ class DocumentManagerImplTest {
                 "Package insert Dafalgan"
             );
             var user = new UserDTO(
-                UUID.fromString("c00385bb-3551-4cd9-b786-8a71f1c1b9d8"),
+                "auth|c00385bb35514cd9b786",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 request.relatedMedicationId(),
@@ -363,11 +335,9 @@ class DocumentManagerImplTest {
                 "Package insert Dafalgan"
             );
             var user = new UserDTO(
-                UUID.fromString("c00385bb-3551-4cd9-b786-8a71f1c1b9d8"),
+                "auth|c00385bb35514cd9b786",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             when(medicationManager.findByIdAndUserId(request.relatedMedicationId(), user.id())).thenThrow(new MedicationNotFoundException(request.relatedMedicationId()));
@@ -385,11 +355,9 @@ class DocumentManagerImplTest {
                 "Package insert Dafalgan"
             );
             var user = new UserDTO(
-                UUID.fromString("c00385bb-3551-4cd9-b786-8a71f1c1b9d8"),
+                "auth|c00385bb35514cd9b786",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             manager.updateForCurrentUser(id, request);
@@ -405,11 +373,9 @@ class DocumentManagerImplTest {
                 "Package insert Dafalgan"
             );
             var user = new UserDTO(
-                UUID.fromString("00000000-0000-0000-0000-000000000000"),
+                "auth|000000000000000000",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(DocumentNotFoundException.class)
@@ -454,11 +420,9 @@ class DocumentManagerImplTest {
         @Test
         void returnsResults() {
             var user = new UserDTO(
-                UUID.fromString("c00385bb-3551-4cd9-b786-8a71f1c1b9d8"),
+                "auth|c00385bb35514cd9b786",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var pageRequest = PageRequest.of(0, 10);
             var medication = new MedicationDTO(
@@ -486,11 +450,9 @@ class DocumentManagerImplTest {
         @Test
         void returnsResultsWithMedicationId() {
             var user = new UserDTO(
-                UUID.fromString("c00385bb-3551-4cd9-b786-8a71f1c1b9d8"),
+                "auth|c00385bb35514cd9b786",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var pageRequest = PageRequest.of(0, 10);
             var medication = new MedicationDTO(
@@ -522,11 +484,9 @@ class DocumentManagerImplTest {
         })
         void returnsResultsWithExpiryDate(LocalDate expiresOn, int expectedResults) {
             var user = new UserDTO(
-                UUID.fromString("c00385bb-3551-4cd9-b786-8a71f1c1b9d8"),
+                "auth|c00385bb35514cd9b786",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var pageRequest = PageRequest.of(0, 10);
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -552,11 +512,9 @@ class DocumentManagerImplTest {
         @Test
         void returnsResultEvenIfMedicationNotFound() {
             var user = new UserDTO(
-                UUID.fromString("c00385bb-3551-4cd9-b786-8a71f1c1b9d8"),
+                "auth|c00385bb35514cd9b786",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var pageRequest = PageRequest.of(0, 10);
             UUID medicationId = UUID.fromString("dcb33d3c-5e8e-4f54-b965-64dc17e0a285");
@@ -579,11 +537,9 @@ class DocumentManagerImplTest {
         @Test
         void returnsResult() {
             var user = new UserDTO(
-                UUID.fromString("c00385bb-3551-4cd9-b786-8a71f1c1b9d8"),
+                "auth|c00385bb35514cd9b786",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("dcb33d3c-5e8e-4f54-b965-64dc17e0a285"),
@@ -610,11 +566,9 @@ class DocumentManagerImplTest {
         @Test
         void returnsResultWithoutMedication() {
             var user = new UserDTO(
-                UUID.fromString("c00385bb-3551-4cd9-b786-8a71f1c1b9d8"),
+                "auth|c00385bb35514cd9b786",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             UUID medicationId = UUID.fromString("dcb33d3c-5e8e-4f54-b965-64dc17e0a285");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -633,11 +587,9 @@ class DocumentManagerImplTest {
         @Test
         void failsIfEntityNotFound() {
             var user = new UserDTO(
-                UUID.fromString("00000000-0000-0000-0000-000000000000"),
+                "auth|000000000000000000",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(DocumentNotFoundException.class)
@@ -660,11 +612,9 @@ class DocumentManagerImplTest {
             DocumentEntity entity = repository.findById(id).orElseThrow();
             var file = new MockMultipartFile("file", entity.getFilename(), entity.getContentType(), "content".getBytes());
             var user = new UserDTO(
-                UUID.fromString("c00385bb-3551-4cd9-b786-8a71f1c1b9d8"),
+                "auth|c00385bb35514cd9b786",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             storageService.upload(entity, file);
@@ -677,11 +627,9 @@ class DocumentManagerImplTest {
         @Test
         void failsIfEntityNotFound() {
             var user = new UserDTO(
-                UUID.fromString("00000000-0000-0000-0000-000000000000"),
+                "auth|000000000000000000",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(DocumentNotFoundException.class)
@@ -709,11 +657,9 @@ class DocumentManagerImplTest {
         @Test
         void deletesEntity() {
             var user = new UserDTO(
-                UUID.fromString("c00385bb-3551-4cd9-b786-8a71f1c1b9d8"),
+                "auth|c00385bb35514cd9b786",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             UUID id = UUID.fromString("af3edd34-a8e2-4356-9877-2481eae06dfb");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -724,11 +670,9 @@ class DocumentManagerImplTest {
         @Test
         void failsIfEntityNotFound() {
             var user = new UserDTO(
-                UUID.fromString("00000000-0000-0000-0000-000000000000"),
+                "auth|000000000000000000",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(DocumentNotFoundException.class)

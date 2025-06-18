@@ -12,6 +12,6 @@ export class AssistantService {
   private readonly httpClient = inject(HttpClient);
 
   ask(request: AssistantRequest): Observable<AssistantResponse> {
-    return this.httpClient.post<AssistantResponse>(`${environment.apiUrl}/assistant`, request);
+    return this.httpClient.post<AssistantResponse>(`./api/assistant`, request);
   }
 }

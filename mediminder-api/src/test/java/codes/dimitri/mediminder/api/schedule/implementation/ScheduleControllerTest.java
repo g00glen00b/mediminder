@@ -1,6 +1,5 @@
 package codes.dimitri.mediminder.api.schedule.implementation;
 
-import codes.dimitri.mediminder.api.common.SecurityConfiguration;
 import codes.dimitri.mediminder.api.medication.*;
 import codes.dimitri.mediminder.api.schedule.*;
 import jakarta.validation.ConstraintViolationException;
@@ -8,7 +7,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -31,7 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ScheduleController.class)
-@Import(SecurityConfiguration.class)
 class ScheduleControllerTest {
     @Autowired
     private MockMvc mvc;
@@ -44,7 +41,7 @@ class ScheduleControllerTest {
         void returnsResults() throws Exception {
             var schedule = new ScheduleDTO(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 new MedicationDTO(
                     UUID.randomUUID(),
                     "Dafalgan",
@@ -83,7 +80,7 @@ class ScheduleControllerTest {
         void returnsResult() throws Exception {
             var schedule = new ScheduleDTO(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 new MedicationDTO(
                     UUID.fromString("a0eebc4b-1f3d-4b8e-9f2c-5d6f7a8b9c0d"),
                     "Dafalgan",
@@ -221,7 +218,7 @@ class ScheduleControllerTest {
         void returnsResult() throws Exception {
             var schedule = new ScheduleDTO(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 new MedicationDTO(
                     UUID.fromString("a0eebc4b-1f3d-4b8e-9f2c-5d6f7a8b9c0d"),
                     "Dafalgan",
@@ -423,7 +420,7 @@ class ScheduleControllerTest {
         void returnsResult() throws Exception {
             var schedule = new ScheduleDTO(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 new MedicationDTO(
                     UUID.fromString("a0eebc4b-1f3d-4b8e-9f2c-5d6f7a8b9c0d"),
                     "Dafalgan",

@@ -7,17 +7,16 @@ import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-des
 import {HeroTitleDirective} from '../../../shared/components/hero/hero-title.directive';
 import {ErrorResponse} from '../../../shared/models/error-response';
 import {ProfileFormComponent} from '../../components/profile-form/profile-form.component';
-import {PasswordFormComponent} from '../../components/password-form/password-form.component';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {UpdateUserRequest} from '../../models/update-user-request';
 import {ToastrService} from 'ngx-toastr';
-import {UpdateCredentialsRequest} from '../../models/update-credentials-request';
 import {MatButton} from '@angular/material/button';
 import {SubscriptionService} from '../../services/subscription.service';
 import {ConfirmationService} from '../../../shared/services/confirmation.service';
 import {ConfirmationDialogData} from '../../../shared/models/confirmation-dialog-data';
 import {mergeMap} from 'rxjs';
 import {Router} from '@angular/router';
+import {environment} from '../../../../environment/environment';
 
 @Component({
   selector: 'mediminder-edit-profile-page',
@@ -28,7 +27,6 @@ import {Router} from '@angular/router';
     HeroDescriptionDirective,
     HeroTitleDirective,
     ProfileFormComponent,
-    PasswordFormComponent,
     MatButton
   ],
   templateUrl: './edit-profile-page.component.html',
@@ -47,14 +45,6 @@ export class EditProfilePageComponent {
     this.error = undefined;
     this.service.update(request).subscribe({
       next: () => this.toastr.success('Successfully updated profile'),
-      error: response => this.error = response.error,
-    });
-  }
-
-  submitCredentialsForm(request: UpdateCredentialsRequest) {
-    this.error = undefined;
-    this.service.updateCredentials(request).subscribe({
-      next: () => this.toastr.success('Successfully updated credentials'),
       error: response => this.error = response.error,
     });
   }
@@ -88,11 +78,7 @@ export class EditProfilePageComponent {
 
   logout() {
     this.service.logout().subscribe({
-      next: () => {
-        this.toastr.success('You have been logged out.');
-        this.router.navigate(['/user', 'login']);
-      },
-      error: () => this.toastr.error('An error occurred while logging out.')
+      error: () => window.location.href = environment.logoutHandler
     });
   }
 }

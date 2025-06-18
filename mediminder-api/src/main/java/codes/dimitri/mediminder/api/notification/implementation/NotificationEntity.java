@@ -6,10 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.JdbcType;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -26,7 +23,7 @@ import java.util.UUID;
 public class NotificationEntity {
     @Id
     private UUID id;
-    private UUID userId;
+    private String userId;
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
     private NotificationType type;
@@ -36,7 +33,7 @@ public class NotificationEntity {
     private Instant deleteAt;
     private boolean active;
 
-    public NotificationEntity(UUID userId, NotificationType type, UUID initiatorId, String title, String message, Instant deleteAt) {
+    public NotificationEntity(String userId, NotificationType type, UUID initiatorId, String title, String message, Instant deleteAt) {
         this.id = UUID.randomUUID();
         this.userId = userId;
         this.type = type;

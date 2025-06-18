@@ -1,25 +1,22 @@
-import {CanActivateFn, Router} from '@angular/router';
+import {CanActivateFn} from '@angular/router';
 import {inject} from '@angular/core';
 import {UserService} from './services/user.service';
 import {map} from 'rxjs';
+import {environment} from '../../environment/environment';
 
 export const IsLoggedIn: CanActivateFn = () => {
-  const router = inject(Router);
   const userService = inject(UserService);
   return userService.isLoggedIn()
     .pipe(map(isLoggedIn => {
       if (isLoggedIn) return true;
-      return router.createUrlTree(['/user/login']);
+      window.location.href = environment.loginHandler;
+      return false;
     }));
 }
 
-export const IsNotLoggedIn: CanActivateFn = () => {
-  const router = inject(Router);
-  const userService = inject(UserService);
-  return userService
-    .isLoggedIn()
-    .pipe(map(isLoggedIn => {
-      if (!isLoggedIn) return true;
-      return router.createUrlTree(['/home']);
-    }));
+export function HasAuthority(authority: string): CanActivateFn {
+  return () => {
+    const userService = inject(UserService);
+    return userService.hasAuthority(authority);
+  };
 }

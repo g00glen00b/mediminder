@@ -70,11 +70,9 @@ class NotificationManagerImplTest {
         @Test
         void createsSubscription() {
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var request = new CreateSubscriptionRequestDTO(
                 "https://example.org/3",
@@ -100,11 +98,9 @@ class NotificationManagerImplTest {
         @Test
         void updatesSubscriptionIfExisting() {
             var user = new UserDTO(
-                UUID.fromString("3743a8f7-3e0d-4c06-baa4-cc86096dce40"),
+                "auth|3743a8f73e0d4c06baa4",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var request = new CreateSubscriptionRequestDTO(
                 "https://example.org/3",
@@ -249,11 +245,9 @@ class NotificationManagerImplTest {
         @Test
         void deletesEntity() {
             var user = new UserDTO(
-                UUID.fromString("3743a8f7-3e0d-4c06-baa4-cc86096dce40"),
+                "auth|3743a8f73e0d4c06baa4",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             notificationManager.unsubscribe();
@@ -263,11 +257,9 @@ class NotificationManagerImplTest {
         @Test
         void doesNothingIfNoSubscriptionFound() {
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             notificationManager.unsubscribe();
@@ -288,11 +280,9 @@ class NotificationManagerImplTest {
         @Test
         void returnsResults() {
             var user = new UserDTO(
-                UUID.fromString("3743a8f7-3e0d-4c06-baa4-cc86096dce40"),
+                "auth|3743a8f73e0d4c06baa4",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var pageRequest = PageRequest.of(0, 10);
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -335,11 +325,9 @@ class NotificationManagerImplTest {
         void setsDeleted() {
             UUID id = UUID.fromString("db1a169c-376d-4d77-8d3d-17962911d468");
             var user = new UserDTO(
-                UUID.fromString("3743a8f7-3e0d-4c06-baa4-cc86096dce40"),
+                "auth|3743a8f73e0d4c06baa4",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             notificationManager.delete(id);
@@ -351,11 +339,9 @@ class NotificationManagerImplTest {
         void failsIfNotificationNotFound() {
             UUID id = UUID.fromString("bf844a6a-7d75-44a6-ab06-67757304f124");
             var user = new UserDTO(
-                UUID.fromString("3743a8f7-3e0d-4c06-baa4-cc86096dce40"),
+                "auth|3743a8f73e0d4c06baa4",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(NotificationNotFoundException.class)

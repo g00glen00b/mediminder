@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public record EventUncompletedEvent(
     UUID id,
-    UUID userId,
+    String userId,
     UUID scheduleId,
     UUID medicationId,
     LocalDateTime targetDate,

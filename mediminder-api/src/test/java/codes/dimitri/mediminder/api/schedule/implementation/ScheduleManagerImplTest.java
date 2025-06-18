@@ -53,11 +53,9 @@ class ScheduleManagerImplTest {
         @Test
         void returnsResults() {
             var user = new UserDTO(
-                UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                "auth|b47e0b6fbe524e388301",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("fb384363-0446-4fdc-a62d-098c20ddf286"),
@@ -93,11 +91,9 @@ class ScheduleManagerImplTest {
         @Test
         void returnsResultsForActive() {
             var user = new UserDTO(
-                UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                "auth|b47e0b6fbe524e388301",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("fb384363-0446-4fdc-a62d-098c20ddf286"),
@@ -133,11 +129,9 @@ class ScheduleManagerImplTest {
         @Test
         void returnsResultsForMedicationId() {
             var user = new UserDTO(
-                UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                "auth|b47e0b6fbe524e388301",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("fb384363-0446-4fdc-a62d-098c20ddf286"),
@@ -182,11 +176,9 @@ class ScheduleManagerImplTest {
         @Test
         void usesEmptyMedicationIfNotFound() {
             var user = new UserDTO(
-                UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                "auth|b47e0b6fbe524e388301",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             var pageRequest = PageRequest.of(0, 10);
             var todayForUser = LocalDateTime.of(2024, 7, 1, 10, 0);
@@ -240,11 +232,9 @@ class ScheduleManagerImplTest {
                 new BigDecimal("1")
             );
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(medication);
@@ -287,11 +277,9 @@ class ScheduleManagerImplTest {
                 new BigDecimal("1")
             );
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             when(medicationManager.findByIdAndUserId(medication.id(), user.id())).thenReturn(medication);
@@ -325,11 +313,9 @@ class ScheduleManagerImplTest {
                 new BigDecimal("1")
             );
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             when(medicationManager.findByIdAndUserId(request.medicationId(), user.id())).thenThrow(new MedicationNotFoundException(request.medicationId()));
@@ -556,11 +542,9 @@ class ScheduleManagerImplTest {
                 Color.RED
             );
             var user = new UserDTO(
-                UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                "auth|b47e0b6fbe524e388301",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             var request = new UpdateScheduleRequestDTO(
                 Period.ofDays(2),
@@ -603,11 +587,9 @@ class ScheduleManagerImplTest {
                 Color.RED
             );
             var user = new UserDTO(
-                UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                "auth|b47e0b6fbe524e388301",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             var request = new UpdateScheduleRequestDTO(
                 Period.ofDays(2),
@@ -671,11 +653,9 @@ class ScheduleManagerImplTest {
                 new BigDecimal("2")
             );
             var user = new UserDTO(
-                UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                "auth|b47e0b6fbe524e388301",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             when(medicationManager.findByIdAndUserId(medicationId, user.id())).thenThrow(new MedicationNotFoundException(medicationId));
@@ -698,11 +678,9 @@ class ScheduleManagerImplTest {
                 new BigDecimal("2")
             );
             var user = new UserDTO(
-                UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                "auth|b47e0b6fbe524e388301",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(ScheduleNotFoundException.class)
@@ -899,11 +877,9 @@ class ScheduleManagerImplTest {
         void deletesEntity() {
             UUID id = UUID.fromString("945b1bea-b447-4701-a137-3e447c35ffa3");
             var user = new UserDTO(
-                UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                "auth|b47e0b6fbe524e388301",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             manager.deleteForCurrentUser(id);
@@ -923,11 +899,9 @@ class ScheduleManagerImplTest {
         void failsIfEntityNotFound() {
             UUID id = UUID.fromString("08a6aa16-8449-418e-93ff-c7975731066d");
             var user = new UserDTO(
-                UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                "auth|b47e0b6fbe524e388301",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(ScheduleNotFoundException.class)
@@ -982,7 +956,7 @@ class ScheduleManagerImplTest {
         @Test
         void deletesEntities() {
             UUID medicationId = UUID.fromString("0b845403-3b16-436f-b84a-925b01421ad9");
-            UUID userId = UUID.fromString("9133c9d2-0b6c-4915-9752-512d2dca9330");
+            String userId = "auth|9133c9d20b6c49159752";
             var pageRequest = PageRequest.of(0, 10);
             manager.deleteAllByMedicationId(medicationId);
             assertThat(repository.findAll(ScheduleSpecifications.userId(userId), pageRequest)).hasSize(1);
@@ -1001,11 +975,9 @@ class ScheduleManagerImplTest {
         void returnsResult() {
             UUID id = UUID.fromString("945b1bea-b447-4701-a137-3e447c35ffa3");
             var user = new UserDTO(
-                UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                "auth|b47e0b6fbe524e388301",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("fb384363-0446-4fdc-a62d-098c20ddf286"),
@@ -1038,11 +1010,9 @@ class ScheduleManagerImplTest {
         void usesMedicationNullIfNotFound() {
             UUID id = UUID.fromString("945b1bea-b447-4701-a137-3e447c35ffa3");
             var user = new UserDTO(
-                UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                "auth|b47e0b6fbe524e388301",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             var schedule = manager.findByIdForCurrentUser(id);
@@ -1074,11 +1044,9 @@ class ScheduleManagerImplTest {
         void failsIfEntityNotFound() {
             UUID id = UUID.fromString("08a6aa16-8449-418e-93ff-c7975731066d");
             var user = new UserDTO(
-                UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                "auth|b47e0b6fbe524e388301",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(ScheduleNotFoundException.class)
@@ -1114,13 +1082,13 @@ class ScheduleManagerImplTest {
             Page<UserScheduledMedicationDTO> results = manager.findAllUserScheduledMedicationOnDate(targetDate, pageRequest);
             assertThat(results).containsOnlyOnce(
                 new UserScheduledMedicationDTO(
-                    UUID.fromString("9133c9d2-0b6c-4915-9752-512d2dca9330"),
+                    "auth|9133c9d20b6c49159752",
                     UUID.fromString("0b845403-3b16-436f-b84a-925b01421ad9")),
                 new UserScheduledMedicationDTO(
-                    UUID.fromString("9133c9d2-0b6c-4915-9752-512d2dca9330"),
+                    "auth|9133c9d20b6c49159752",
                     UUID.fromString("a9356fca-da82-48ab-af04-a7169b91ea4f")),
                 new UserScheduledMedicationDTO(
-                    UUID.fromString("b47e0b6f-be52-4e38-8301-fe60d08cbfbe"),
+                    "auth|b47e0b6fbe524e388301",
                     UUID.fromString("fb384363-0446-4fdc-a62d-098c20ddf286"))
             );
         }
@@ -1157,7 +1125,7 @@ class ScheduleManagerImplTest {
                 new BigDecimal("50"),
                 Color.RED
             );
-            var userId = UUID.fromString("9133c9d2-0b6c-4915-9752-512d2dca9330");
+            var userId = "auth|9133c9d20b6c49159752";
             var pageRequest = PageRequest.of(0, 10);
             when(medicationManager.findByIdAndUserId(medication.id(), userId)).thenReturn(medication);
             Page<ScheduleDTO> results = manager.findAllWithinPeriod(period, pageRequest);

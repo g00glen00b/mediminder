@@ -71,7 +71,7 @@ class MedicationManagerImpl implements MedicationManager {
     }
 
     @Override
-    public MedicationDTO findByIdAndUserId(@NotNull UUID id, @NotNull UUID userId) {
+    public MedicationDTO findByIdAndUserId(@NotNull UUID id, @NotNull String userId) {
         return medicationEntityRepository
             .findByIdAndUserId(id, userId)
             .map(mapper::toDTO)
@@ -103,7 +103,7 @@ class MedicationManagerImpl implements MedicationManager {
     }
 
     @Override
-    public void deleteAllByUserId(UUID userId) {
+    public void deleteAllByUserId(String userId) {
         List<MedicationEntity> entities = medicationEntityRepository.findAllByUserId(userId);
         if (entities.isEmpty()) return;
         medicationEntityRepository.deleteAll(entities);

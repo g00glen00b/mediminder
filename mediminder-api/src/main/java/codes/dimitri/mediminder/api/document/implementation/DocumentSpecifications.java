@@ -8,7 +8,7 @@ import java.util.UUID;
 final class DocumentSpecifications {
     private DocumentSpecifications() {}
 
-    public static Specification<DocumentEntity> userId(UUID userId) {
+    public static Specification<DocumentEntity> userId(String userId) {
         if (userId == null) return null;
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("userId"), userId);
     }

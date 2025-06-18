@@ -7,10 +7,12 @@
     <mat-icon fontSet="material-symbols-outlined">pill</mat-icon>
     Medication
   </a>
-  <a routerLink="/assistant" routerLinkActive="active">
-    <mat-icon fontSet="material-symbols-outlined">smart_toy</mat-icon>
-    Assistant
-  </a>
+  @if (showAssistant()) {
+    <a routerLink="/assistant" routerLinkActive="active">
+      <mat-icon fontSet="material-symbols-outlined">smart_toy</mat-icon>
+      Assistant
+    </a>
+  }
   <a routerLink="/planner" routerLinkActive="active">
     <mat-icon fontSet="material-symbols-outlined">event_upcoming</mat-icon>
     Planner

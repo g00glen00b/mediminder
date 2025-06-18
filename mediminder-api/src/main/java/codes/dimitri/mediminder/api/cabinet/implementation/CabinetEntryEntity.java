@@ -21,12 +21,12 @@ import java.util.UUID;
 public class CabinetEntryEntity {
     @Id
     private UUID id;
-    private UUID userId;
+    private String userId;
     private UUID medicationId;
     private BigDecimal remainingDoses;
     private LocalDate expiryDate;
 
-    public CabinetEntryEntity(UUID userId, UUID medicationId, BigDecimal remainingDoses, LocalDate expiryDate) {
+    public CabinetEntryEntity(String userId, UUID medicationId, BigDecimal remainingDoses, LocalDate expiryDate) {
         this.id = UUID.randomUUID();
         this.userId = userId;
         this.medicationId = medicationId;

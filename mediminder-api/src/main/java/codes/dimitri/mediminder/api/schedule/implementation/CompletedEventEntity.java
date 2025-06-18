@@ -19,7 +19,7 @@ import java.util.UUID;
 class CompletedEventEntity {
     @Id
     private UUID id;
-    private UUID userId;
+    private String userId;
     @ManyToOne
     @JoinColumn(name = "schedule_id")
     private ScheduleEntity schedule;
@@ -27,7 +27,7 @@ class CompletedEventEntity {
     private LocalDateTime completedDate;
     private BigDecimal dose;
 
-    public CompletedEventEntity(UUID userId, ScheduleEntity schedule, LocalDateTime targetDate, LocalDateTime completedDate, BigDecimal dose) {
+    public CompletedEventEntity(String userId, ScheduleEntity schedule, LocalDateTime targetDate, LocalDateTime completedDate, BigDecimal dose) {
         this.id = UUID.randomUUID();
         this.userId = userId;
         this.schedule = schedule;

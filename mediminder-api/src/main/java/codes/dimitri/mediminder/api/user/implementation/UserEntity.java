@@ -13,7 +13,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.UUID;
 
 @Entity
 @Table(name = "\"user\"")
@@ -24,26 +23,13 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 public class UserEntity {
     @Id
-    private UUID id;
-    private String email;
-    private String password;
+    private String id;
     private String name;
     private ZoneId timezone;
-    private boolean enabled;
-    private boolean admin;
-    private String verificationCode;
-    private String passwordResetCode;
     @LastModifiedDate
     private Instant lastModifiedDate;
 
-    public UserEntity(String email, String password, String name, ZoneId timezone, String verificationCode) {
-        this.id = UUID.randomUUID();
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.timezone = timezone;
-        this.enabled = false;
-        this.admin = false;
-        this.verificationCode = verificationCode;
+    public UserEntity(String id) {
+        this.id = id;
     }
 }

@@ -24,7 +24,7 @@ import java.util.UUID;
 public class ScheduleEntity {
     @Id
     private UUID id;
-    private UUID userId;
+    private String userId;
     private UUID medicationId;
     @Embedded
     private SchedulePeriodEntity period;
@@ -35,11 +35,11 @@ public class ScheduleEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "schedule")
     private List<CompletedEventEntity> completedEvents;
 
-    public ScheduleEntity(UUID userId, UUID medicationId, SchedulePeriodEntity period, Period interval, LocalTime time, String description, BigDecimal dose) {
+    public ScheduleEntity(String userId, UUID medicationId, SchedulePeriodEntity period, Period interval, LocalTime time, String description, BigDecimal dose) {
         this(UUID.randomUUID(), userId, medicationId, period, interval, time, description, dose);
     }
 
-    public ScheduleEntity(UUID id, UUID userId, UUID medicationId, SchedulePeriodEntity period, Period interval, LocalTime time, String description, BigDecimal dose) {
+    public ScheduleEntity(UUID id, String userId, UUID medicationId, SchedulePeriodEntity period, Period interval, LocalTime time, String description, BigDecimal dose) {
         this(id, userId, medicationId, period, interval, time, description, dose, new ArrayList<>());
     }
 

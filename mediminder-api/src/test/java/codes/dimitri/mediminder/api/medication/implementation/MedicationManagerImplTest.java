@@ -65,11 +65,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             MedicationDTO result = manager.createForCurrentUser(request);
@@ -95,11 +93,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             MedicationDTO result = manager.createForCurrentUser(request);
@@ -145,11 +141,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(MedicationTypeNotFoundException.class)
@@ -168,11 +162,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(AdministrationTypeNotFoundException.class)
@@ -191,11 +183,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(DoseTypeNotFoundException.class)
@@ -335,11 +325,9 @@ class MedicationManagerImplTest {
         @Test
         void returnsAllMedication() {
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var pageRequest = PageRequest.of(0, 10);
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -351,11 +339,9 @@ class MedicationManagerImplTest {
         @Test
         void returnsMedicationMatchingSearchTerm() {
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var pageRequest = PageRequest.of(0, 10);
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -386,11 +372,9 @@ class MedicationManagerImplTest {
         void returnsMedication() {
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             MedicationDTO result = manager.findByIdForCurrentUser(id);
@@ -401,11 +385,9 @@ class MedicationManagerImplTest {
         void returnsNothingIfNotFound() {
             var id = UUID.fromString("4579fa76-1edc-4113-b521-2167713a3636");
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(MedicationNotFoundException.class)
@@ -434,7 +416,7 @@ class MedicationManagerImplTest {
         @Test
         void returnsMedication() {
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
-            var userId = UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124");
+            var userId = "auth|2e4aadf46d7e4bd1ad9f";
             MedicationDTO result = manager.findByIdAndUserId(id, userId);
             assertThat(result.name()).isEqualTo("Dafalgan 1g (100)");
         }
@@ -442,7 +424,7 @@ class MedicationManagerImplTest {
         @Test
         void returnsNothingIfNotFound() {
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
-            var userId = UUID.fromString("00000000-0000-0000-0000-000000000000");
+            var userId = "auth|00000000000000000000";
             assertThatExceptionOfType(MedicationNotFoundException.class)
                 .isThrownBy(() -> manager.findByIdAndUserId(id, userId))
                 .withMessage("Medication with ID '3257ee2d-b6c6-4a12-990e-826a80c43f17' does not exist");
@@ -450,7 +432,7 @@ class MedicationManagerImplTest {
 
         @Test
         void failsIfNoIdGiven() {
-            var userId = UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124");
+            var userId = "auth|2e4aadf46d7e4bd1ad9f";
             assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> manager.findByIdAndUserId(null, userId));
         }
@@ -469,11 +451,9 @@ class MedicationManagerImplTest {
         void deletes() {
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             manager.deleteByIdForCurrentUser(id);
@@ -493,11 +473,9 @@ class MedicationManagerImplTest {
         void failsIfNotFound() {
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             var user = new UserDTO(
-                UUID.fromString("00000000-0000-0000-0000-000000000000"),
+                "auth|00000000000000000000",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             assertThatExceptionOfType(MedicationNotFoundException.class)
@@ -509,11 +487,9 @@ class MedicationManagerImplTest {
         void publishesAnEvent() {
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             manager.deleteByIdForCurrentUser(id);
@@ -540,11 +516,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -570,11 +544,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -603,11 +575,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -626,11 +596,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -665,11 +633,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("4579fa76-1edc-4113-b521-2167713a3636");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -708,11 +674,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -731,11 +695,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -754,11 +716,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -777,11 +737,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -800,11 +758,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -823,11 +779,9 @@ class MedicationManagerImplTest {
                 Color.YELLOW
             );
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -846,11 +800,9 @@ class MedicationManagerImplTest {
                 null
             );
             var user = new UserDTO(
-                UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124"),
+                "auth|2e4aadf46d7e4bd1ad9f",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("3257ee2d-b6c6-4a12-990e-826a80c43f17");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -864,21 +816,21 @@ class MedicationManagerImplTest {
     class deleteAllByUserId {
         @Test
         void deletesMedication() {
-            UUID id = UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124");
+            String id = "auth|2e4aadf46d7e4bd1ad9f";
             manager.deleteAllByUserId(id);
             assertThat(repository.count()).isEqualTo(3);
         }
 
         @Test
         void deletesNothingIfNoMedicationFound() {
-            UUID id = UUID.fromString("00000000-0000-0000-0000-000000000000");
+            String id = "auth|0000000000000000000";
             manager.deleteAllByUserId(id);
             assertThat(repository.count()).isEqualTo(6);
         }
 
         @Test
         void publishesEvents() {
-            UUID id = UUID.fromString("2e4aadf4-6d7e-4bd1-ad9f-87b26eb64124");
+            String id = "auth|2e4aadf46d7e4bd1ad9f";
             manager.deleteAllByUserId(id);
             Stream<MedicationDeletedEvent> results = events.stream(MedicationDeletedEvent.class);
             assertThat(results).containsOnly(

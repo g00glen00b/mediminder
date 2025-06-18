@@ -13,15 +13,15 @@ export class IntakeEventService {
 
   findAll(targetDate: Date) {
     const targetDateString = format(targetDate, 'yyyy-MM-dd');
-    return this.httpClient.get<IntakeEvent[]>(`${environment.apiUrl}/event/${targetDateString}`);
+    return this.httpClient.get<IntakeEvent[]>(`./api/event/${targetDateString}`);
   }
 
   complete(scheduleId: string, targetDate: Date): Observable<IntakeEvent> {
     const targetDateString = format(targetDate, 'yyyy-MM-dd');
-    return this.httpClient.post<IntakeEvent>(`${environment.apiUrl}/schedule/${scheduleId}/event/${targetDateString}`, null);
+    return this.httpClient.post<IntakeEvent>(`./api/schedule/${scheduleId}/event/${targetDateString}`, null);
   }
 
   delete(id: string) {
-    return this.httpClient.delete<void>(`${environment.apiUrl}/event/${id}`);
+    return this.httpClient.delete<void>(`./api/event/${id}`);
   }
 }

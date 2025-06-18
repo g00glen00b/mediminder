@@ -1,6 +1,5 @@
 package codes.dimitri.mediminder.api.planner.implementation;
 
-import codes.dimitri.mediminder.api.common.SecurityConfiguration;
 import codes.dimitri.mediminder.api.medication.*;
 import codes.dimitri.mediminder.api.planner.MedicationPlannerDTO;
 import codes.dimitri.mediminder.api.planner.PlannerManager;
@@ -8,7 +7,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -27,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = PlannerController.class)
-@Import(SecurityConfiguration.class)
 class PlannerControllerTest {
     @Autowired
     private MockMvc mvc;

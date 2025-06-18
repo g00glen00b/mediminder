@@ -56,7 +56,7 @@ public class NotificationController {
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("/batch/start")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('Admin')")
     public CompletableFuture<Void> launchJob() {
         return CompletableFuture.runAsync(task);
     }

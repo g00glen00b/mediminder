@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public record DocumentDTO(
     UUID id,
-    UUID userId,
+    String userId,
     String filename,
     LocalDate expiryDate,
     MedicationDTO relatedMedication,

@@ -1,14 +1,12 @@
 package codes.dimitri.mediminder.api.cabinet.implementation;
 
 import codes.dimitri.mediminder.api.cabinet.*;
-import codes.dimitri.mediminder.api.common.SecurityConfiguration;
 import codes.dimitri.mediminder.api.medication.*;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -28,7 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CabinetEntryController.class)
-@Import(SecurityConfiguration.class)
 class CabinetEntryControllerTest {
     @Autowired
     private MockMvc mvc;
@@ -41,7 +38,7 @@ class CabinetEntryControllerTest {
         void returnsResults() throws Exception {
             var entry = new CabinetEntryDTO(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 new MedicationDTO(
                     UUID.randomUUID(),
                     "Dafalgan",
@@ -74,7 +71,7 @@ class CabinetEntryControllerTest {
         void returnsResult() throws Exception {
             var entry = new CabinetEntryDTO(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 new MedicationDTO(
                     UUID.randomUUID(),
                     "Dafalgan",
@@ -116,7 +113,7 @@ class CabinetEntryControllerTest {
         void returnsResult() throws Exception {
             var entry = new CabinetEntryDTO(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 new MedicationDTO(
                     UUID.fromString("20cf421d-d78c-4e64-8bc4-6c614ae74053"),
                     "Dafalgan",
@@ -215,7 +212,7 @@ class CabinetEntryControllerTest {
         void returnsResult() throws Exception {
             var entry = new CabinetEntryDTO(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 new MedicationDTO(
                     UUID.fromString("20cf421d-d78c-4e64-8bc4-6c614ae74053"),
                     "Dafalgan",

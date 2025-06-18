@@ -1,0 +1,11 @@
+**/target
+**/dist
+**/node_modules
+**/npm-debug.log
+**/.env
+**/.vscode
+**/.angular
+**/.idea
+mediminder-api/documents
+mediminder-fe/node
+.git

@@ -26,7 +26,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,11 +56,9 @@ class PlannerManagerImplTest {
         @Test
         void returnsResults() {
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var today = LocalDateTime.of(2024, 6, 30, 10, 0);
             var targetDate = LocalDate.of(2024, 7, 10);

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public record CabinetEntryDTO(
     UUID id,
-    UUID userId,
+    String userId,
     MedicationDTO medication,
     BigDecimal remainingDoses,
     LocalDate expiryDate

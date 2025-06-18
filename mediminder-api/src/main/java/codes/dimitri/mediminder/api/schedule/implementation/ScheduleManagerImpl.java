@@ -111,7 +111,7 @@ class ScheduleManagerImpl implements ScheduleManager {
         }
     }
 
-    private MedicationDTO findMedication(UUID medicationId, UUID userId) {
+    private MedicationDTO findMedication(UUID medicationId, String userId) {
         try {
             return medicationManager.findByIdAndUserId(medicationId, userId);
         } catch (MedicationNotFoundException ex) {
@@ -155,7 +155,7 @@ class ScheduleManagerImpl implements ScheduleManager {
         return mapper.toDTO(entity, medication);
     }
 
-    private MedicationDTO findMedicationOrEmpty(UUID medicationId, UUID userId) {
+    private MedicationDTO findMedicationOrEmpty(UUID medicationId, String userId) {
         try {
             return medicationManager.findByIdAndUserId(medicationId, userId);
         } catch (MedicationNotFoundException ex) {

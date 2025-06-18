@@ -15,23 +15,23 @@ export class MedicationService {
   private readonly httpClient = inject(HttpClient);
 
   create(request: CreateMedicationRequest): Observable<Medication> {
-    return this.httpClient.post<Medication>(`${environment.apiUrl}/medication`, request);
+    return this.httpClient.post<Medication>(`./api/medication`, request);
   }
 
   findAll(search: string = '', pageRequest: PageRequest): Observable<Page<Medication>> {
     const params = pageRequestToHttpParams(pageRequest).set('search', search);
-    return this.httpClient.get<Page<Medication>>(`${environment.apiUrl}/medication`, {params});
+    return this.httpClient.get<Page<Medication>>(`./api/medication`, {params});
   }
 
   delete(id: string): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.apiUrl}/medication/${id}`);
+    return this.httpClient.delete<void>(`./api/medication/${id}`);
   }
 
   update(id: string, request: UpdateMedicationRequest): Observable<Medication> {
-    return this.httpClient.put<Medication>(`${environment.apiUrl}/medication/${id}`, request);
+    return this.httpClient.put<Medication>(`./api/medication/${id}`, request);
   }
 
   findById(id: string): Observable<Medication> {
-    return this.httpClient.get<Medication>(`${environment.apiUrl}/medication/${id}`);
+    return this.httpClient.get<Medication>(`./api/medication/${id}`);
   }
 }

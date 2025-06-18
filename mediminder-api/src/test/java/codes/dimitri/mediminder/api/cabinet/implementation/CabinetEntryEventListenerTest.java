@@ -61,7 +61,7 @@ class CabinetEntryEventListenerTest {
         void subtractsDoses() {
             var event = new EventCompletedEvent(
                 UUID.randomUUID(),
-                UUID.fromString("eaf1d029-d072-4554-8734-914bc4d7cb07"),
+                "auth|eaf1d029d07245548734",
                 UUID.randomUUID(),
                 UUID.fromString("bdeb432c-c1d7-4482-ae55-19c2750b7796"),
                 LocalDateTime.of(2025, 3, 10, 10, 0, 0),
@@ -83,7 +83,7 @@ class CabinetEntryEventListenerTest {
         void addsDoses() {
             var event = new EventUncompletedEvent(
                 UUID.randomUUID(),
-                UUID.fromString("eaf1d029-d072-4554-8734-914bc4d7cb07"),
+                "auth|eaf1d029d07245548734",
                 UUID.randomUUID(),
                 UUID.fromString("bdeb432c-c1d7-4482-ae55-19c2750b7796"),
                 LocalDateTime.of(2025, 3, 10, 10, 0, 0),

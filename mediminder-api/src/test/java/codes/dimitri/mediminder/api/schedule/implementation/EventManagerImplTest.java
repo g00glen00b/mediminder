@@ -57,11 +57,9 @@ class EventManagerImplTest {
         @Test
         void returnsResults() {
             var user = new UserDTO(
-                UUID.fromString("9133c9d2-0b6c-4915-9752-512d2dca9330"),
+                "auth|9133c9d20b6c49159752",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             var medication1 = new MedicationDTO(
                 UUID.fromString("0b845403-3b16-436f-b84a-925b01421ad9"),
@@ -119,11 +117,9 @@ class EventManagerImplTest {
         @Test
         void returnsEmptyMedicationIfNotFound() {
             var user = new UserDTO(
-                UUID.fromString("9133c9d2-0b6c-4915-9752-512d2dca9330"),
+                "auth|9133c9d20b6c49159752",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             var medication1 = new MedicationDTO(
                 UUID.fromString("0b845403-3b16-436f-b84a-925b01421ad9"),
@@ -188,11 +184,9 @@ class EventManagerImplTest {
         @Test
         void returnsResult() {
             var user = new UserDTO(
-                UUID.fromString("9133c9d2-0b6c-4915-9752-512d2dca9330"),
+                "auth|9133c9d20b6c49159752",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("0b845403-3b16-436f-b84a-925b01421ad9"),
@@ -225,11 +219,9 @@ class EventManagerImplTest {
         @Test
         void savesEntity() {
             var user = new UserDTO(
-                UUID.fromString("9133c9d2-0b6c-4915-9752-512d2dca9330"),
+                "auth|9133c9d20b6c49159752",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("0b845403-3b16-436f-b84a-925b01421ad9"),
@@ -262,11 +254,9 @@ class EventManagerImplTest {
         @Test
         void failsIfAlreadyCompleted() {
             var user = new UserDTO(
-                UUID.fromString("9133c9d2-0b6c-4915-9752-512d2dca9330"),
+                "auth|9133c9d20b6c49159752",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("0b845403-3b16-436f-b84a-925b01421ad9"),
@@ -293,11 +283,9 @@ class EventManagerImplTest {
         @Test
         void deletesEvent() {
             var user = new UserDTO(
-                UUID.fromString("9133c9d2-0b6c-4915-9752-512d2dca9330"),
+                "auth|9133c9d20b6c49159752",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             UUID eventId = UUID.fromString("ebb5c232-2f2c-4c08-a2b6-d5ccc81ac08d");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -309,11 +297,9 @@ class EventManagerImplTest {
         @Test
         void emitsUnpublishEvent() {
             var user = new UserDTO(
-                UUID.fromString("9133c9d2-0b6c-4915-9752-512d2dca9330"),
+                "auth|9133c9d20b6c49159752",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             UUID eventId = UUID.fromString("ebb5c232-2f2c-4c08-a2b6-d5ccc81ac08d");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -342,11 +328,9 @@ class EventManagerImplTest {
         @Test
         void failsIfEventNotFound() {
             var user = new UserDTO(
-                UUID.fromString("9133c9d2-0b6c-4915-9752-512d2dca9330"),
+                "auth|9133c9d20b6c49159752",
                 "Harry Potter",
-                ZoneId.of("UTC"),
-                true,
-                false
+                ZoneId.of("UTC")
             );
             UUID eventId = UUID.fromString("8cb03ee4-b6e4-4339-a186-7946612d5655");
             when(userManager.findCurrentUser()).thenReturn(user);

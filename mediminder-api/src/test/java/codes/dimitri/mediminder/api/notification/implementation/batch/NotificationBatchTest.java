@@ -26,9 +26,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JsonContentAssert;
 import org.springframework.context.annotation.Import;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -42,7 +40,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBatchTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(properties = {
     "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder",
     "spring.datasource.hikari.maximum-pool-size=2",
@@ -65,7 +63,7 @@ import static org.mockito.Mockito.*;
     "classpath:test-data/cleanup-documents.sql"
 }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class NotificationBatchTest {
-    private static final UUID USER_ID = UUID.fromString("03479cd3-7e9a-4b79-8958-522cb1a16b1d");
+    private static final String USER_ID = "auth|ff9d85fcc3c505949092c";
     @Autowired
     private JobRepository jobRepository;
     @Autowired
@@ -81,8 +79,6 @@ class NotificationBatchTest {
     private NotificationEntityRepository repository;
     @Autowired
     private SubscriptionEntityRepository subscriptionRepository;
-    @MockitoBean
-    private JavaMailSender mailSender;
     @MockitoSpyBean
     private PushService pushService;
     @Captor

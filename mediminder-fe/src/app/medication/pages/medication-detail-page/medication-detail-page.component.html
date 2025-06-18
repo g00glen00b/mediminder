@@ -55,19 +55,21 @@
       [entries]="cabinetEntries().content">
     </mediminder-cabinet-entry-list>
   }
-  <mediminder-action-header title="Documents">
-    <a
-      mat-flat-button
-      [routerLink]="['/medication', medication()!.id, 'document', 'create']"
-      color="accent">
-      <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
-      Add document
-    </a>
-  </mediminder-action-header>
-  @if (documents().content.length > 0) {
-    <mediminder-document-list
-      [documents]="documents().content">
-    </mediminder-document-list>
+  @if (showDocuments()) {
+    <mediminder-action-header title="Documents">
+      <a
+        mat-flat-button
+        [routerLink]="['/medication', medication()!.id, 'document', 'create']"
+        color="accent">
+        <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+        Add document
+      </a>
+    </mediminder-action-header>
+    @if (documents().content.length > 0) {
+      <mediminder-document-list
+        [documents]="documents().content">
+      </mediminder-document-list>
+    }
   }
   <mediminder-action-header title="Danger zone">
   </mediminder-action-header>

@@ -20,14 +20,14 @@ import java.util.UUID;
 class DocumentEntity {
     @Id
     private UUID id;
-    private UUID userId;
+    private String userId;
     private String filename;
     private String contentType;
     private LocalDate expiryDate;
     private UUID relatedMedicationId;
     private String description;
 
-    public DocumentEntity(UUID userId, String filename, String contentType, LocalDate expiryDate, UUID relatedMedicationId, String description) {
+    public DocumentEntity(String userId, String filename, String contentType, LocalDate expiryDate, UUID relatedMedicationId, String description) {
         this.id = UUID.randomUUID();
         this.userId = userId;
         this.filename = filename;

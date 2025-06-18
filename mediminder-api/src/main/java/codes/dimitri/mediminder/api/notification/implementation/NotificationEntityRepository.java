@@ -12,14 +12,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface NotificationEntityRepository extends JpaRepository<NotificationEntity, UUID> {
-    boolean existsByUserIdAndTypeAndInitiatorId(UUID userId, NotificationType type, UUID initiatorId);
+    boolean existsByUserIdAndTypeAndInitiatorId(String userId, NotificationType type, UUID initiatorId);
     @Query("""
     select n from NotificationEntity n
     where n.active = true
     and n.userId = ?1
     """)
-    Page<NotificationEntity> findAllActiveByUserId(UUID userId, Pageable pageable);
-    Optional<NotificationEntity> findByIdAndUserId(UUID id, UUID userId);
+    Page<NotificationEntity> findAllActiveByUserId(String userId, Pageable pageable);
+    Optional<NotificationEntity> findByIdAndUserId(UUID id, String userId);
 
     @Modifying
     @Query("""

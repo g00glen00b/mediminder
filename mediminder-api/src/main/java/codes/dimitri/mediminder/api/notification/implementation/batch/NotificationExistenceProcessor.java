@@ -18,7 +18,7 @@ public class NotificationExistenceProcessor implements ItemProcessor<Notificatio
     public NotificationEntity process(NotificationEntity item) {
         NotificationType type = item.getType();
         UUID initiatorId = item.getInitiatorId();
-        UUID userId = item.getUserId();
+        String userId = item.getUserId();
         if (repository.existsByUserIdAndTypeAndInitiatorId(userId, type, initiatorId)) return null;
         else return item;
     }

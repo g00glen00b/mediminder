@@ -17,22 +17,22 @@ export class CabinetService {
   findAll(pageRequest: PageRequest, medicationId?: string): Observable<Page<CabinetEntry>> {
     let params = pageRequestToHttpParams(pageRequest);
     if (medicationId != null) params = params.set('medicationId', medicationId);
-    return this.httpClient.get<Page<CabinetEntry>>(`${environment.apiUrl}/cabinet`, {params});
+    return this.httpClient.get<Page<CabinetEntry>>(`./api/cabinet`, {params});
   }
 
   findById(id: string): Observable<CabinetEntry> {
-    return this.httpClient.get<CabinetEntry>(`${environment.apiUrl}/cabinet/${id}`);
+    return this.httpClient.get<CabinetEntry>(`./api/cabinet/${id}`);
   }
 
   create(request: CreateCabinetEntryRequest): Observable<CabinetEntry> {
-    return this.httpClient.post<CabinetEntry>(`${environment.apiUrl}/cabinet`, request);
+    return this.httpClient.post<CabinetEntry>(`./api/cabinet`, request);
   }
 
   delete(id: string): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.apiUrl}/cabinet/${id}`);
+    return this.httpClient.delete<void>(`./api/cabinet/${id}`);
   }
 
   update(id: string, request: UpdateCabinetEntryRequest): Observable<CabinetEntry> {
-    return this.httpClient.put<CabinetEntry>(`${environment.apiUrl}/cabinet/${id}`, request);
+    return this.httpClient.put<CabinetEntry>(`./api/cabinet/${id}`, request);
   }
 }

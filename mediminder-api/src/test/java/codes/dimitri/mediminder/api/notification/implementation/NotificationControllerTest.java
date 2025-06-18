@@ -1,6 +1,5 @@
 package codes.dimitri.mediminder.api.notification.implementation;
 
-import codes.dimitri.mediminder.api.common.SecurityConfiguration;
 import codes.dimitri.mediminder.api.notification.*;
 import codes.dimitri.mediminder.api.notification.implementation.batch.NotificationBatchTask;
 import jakarta.validation.ConstraintViolationException;
@@ -8,12 +7,10 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,15 +19,12 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(NotificationController.class)
-@EnableMethodSecurity
-@Import(SecurityConfiguration.class)
 class NotificationControllerTest {
     @Autowired
     private MockMvc mvc;
@@ -236,7 +230,7 @@ class NotificationControllerTest {
             mvc
                 .perform(post("/api/notification/batch/start")
                     .with(user("me@example.org")
-                        .authorities(new SimpleGrantedAuthority("ADMIN")))
+                        .authorities(new SimpleGrantedAuthority("Admin")))
                     .with(csrf()))
                 .andExpect(status().isAccepted());
             verify(task).run();
@@ -246,7 +240,7 @@ class NotificationControllerTest {
         void failsIfNotAdmin() throws Exception {
             mvc
                 .perform(post("/api/notification/batch/start")
-                    .with(user("me@example.org"))
+                    .with(oidcLogin())
                     .with(csrf()))
                 .andExpect(status().isForbidden());
             verifyNoInteractions(task);

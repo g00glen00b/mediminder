@@ -62,11 +62,9 @@ class AssistantManagerImplTest {
         void returnsAnswer() {
             var request = new AssistantRequestDTO("When do I have to take Dafalgan?");
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             when(userManager.findCurrentUser()).thenReturn(user);
             AssistantResponseDTO answer = assistantManager.answer(request);
@@ -80,11 +78,9 @@ class AssistantManagerImplTest {
             var today = LocalDateTime.of(2025, 3, 4, 10, 0);
             var pageRequest = PageRequest.of(0, 20);
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication1 = new MedicationDTO(
                 UUID.randomUUID(),

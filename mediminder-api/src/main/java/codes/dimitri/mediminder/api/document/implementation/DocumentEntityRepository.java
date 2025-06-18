@@ -10,6 +10,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 interface DocumentEntityRepository extends JpaRepository<DocumentEntity, UUID>, JpaSpecificationExecutor<DocumentEntity> {
-    Optional<DocumentEntity> findByIdAndUserId(UUID id, UUID userId);
+    Optional<DocumentEntity> findByIdAndUserId(UUID id, String userId);
     Page<DocumentEntity> findAllByExpiryDateLessThanEqual(LocalDate expiryDate, Pageable pageable);
 }

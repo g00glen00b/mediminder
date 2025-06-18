@@ -18,22 +18,22 @@ export class ScheduleService {
     let params = pageRequestToHttpParams(pageRequest);
     if (medicationId != null) params = params.set('medicationId', medicationId);
     if (onlyActive) params = params.set('onlyActive', onlyActive);
-    return this.httpClient.get<Page<Schedule>>(`${environment.apiUrl}/schedule`, {params});
+    return this.httpClient.get<Page<Schedule>>(`./api/schedule`, {params});
   }
 
   findById(id: string): Observable<Schedule> {
-    return this.httpClient.get<Schedule>(`${environment.apiUrl}/schedule/${id}`);
+    return this.httpClient.get<Schedule>(`./api/schedule/${id}`);
   }
 
   create(request: CreateScheduleRequest): Observable<Schedule> {
-    return this.httpClient.post<Schedule>(`${environment.apiUrl}/schedule`, request);
+    return this.httpClient.post<Schedule>(`./api/schedule`, request);
   }
 
   update(id: string, request: UpdateScheduleRequest): Observable<Schedule> {
-    return this.httpClient.put<Schedule>(`${environment.apiUrl}/schedule/${id}`, request);
+    return this.httpClient.put<Schedule>(`./api/schedule/${id}`, request);
   }
 
   delete(id: string): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.apiUrl}/schedule/${id}`);
+    return this.httpClient.delete<void>(`./api/schedule/${id}`);
   }
 }

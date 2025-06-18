@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 interface ScheduleEntityRepository extends JpaRepository<ScheduleEntity, UUID>, JpaSpecificationExecutor<ScheduleEntity> {
-    Optional<ScheduleEntity> findByIdAndUserId(UUID id, UUID userId);
+    Optional<ScheduleEntity> findByIdAndUserId(UUID id, String userId);
 
     @Query("""
         select distinct new codes.dimitri.mediminder.api.schedule.UserScheduledMedicationDTO(s.userId, s.medicationId)

@@ -63,11 +63,9 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var request = new CreateCabinetEntryRequestDTO(
                 medication.id(),
@@ -98,11 +96,9 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var request = new CreateCabinetEntryRequestDTO(
                 medication.id(),
@@ -136,11 +132,9 @@ class CabinetEntryManagerImplTest {
                 Color.RED
             );
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var request = new CreateCabinetEntryRequestDTO(
                 medication.id(),
@@ -180,11 +174,9 @@ class CabinetEntryManagerImplTest {
         @Test
         void failsIfMedicationDoesNotExist() {
             var user = new UserDTO(
-                UUID.randomUUID(),
+                "auth|ff9d85fcc3c505949092c",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var request = new CreateCabinetEntryRequestDTO(
                 UUID.randomUUID(),
@@ -258,11 +250,9 @@ class CabinetEntryManagerImplTest {
         @Test
         void returnsResults() {
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("ec544543-9aff-4172-989d-ebd5d08a0dea"),
@@ -280,7 +270,7 @@ class CabinetEntryManagerImplTest {
             assertThat(results).containsExactly(
                 new CabinetEntryDTO(
                     UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c"),
-                    UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                    "auth|ed9e7a22ebe14627929d",
                     medication,
                     new BigDecimal("80"),
                     LocalDate.of(2024, 6, 30)
@@ -292,11 +282,9 @@ class CabinetEntryManagerImplTest {
         @Test
         void returnsResultsWithMedicationId() {
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("ec544543-9aff-4172-989d-ebd5d08a0dea"),
@@ -314,7 +302,7 @@ class CabinetEntryManagerImplTest {
             assertThat(results).containsExactly(
                 new CabinetEntryDTO(
                     UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c"),
-                    UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                    "auth|ed9e7a22ebe14627929d",
                     medication,
                     new BigDecimal("80"),
                     LocalDate.of(2024, 6, 30)
@@ -335,11 +323,9 @@ class CabinetEntryManagerImplTest {
         @Test
         void setsEmptyMedicationIfNotFound() {
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var pageRequest = PageRequest.of(0, 10);
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -347,7 +333,7 @@ class CabinetEntryManagerImplTest {
             assertThat(results).containsExactly(
                 new CabinetEntryDTO(
                     UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c"),
-                    UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                    "auth|ed9e7a22ebe14627929d",
                     null,
                     new BigDecimal("80"),
                     LocalDate.of(2024, 6, 30)
@@ -367,11 +353,9 @@ class CabinetEntryManagerImplTest {
         @Test
         void returnsResult() {
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("ec544543-9aff-4172-989d-ebd5d08a0dea"),
@@ -407,11 +391,9 @@ class CabinetEntryManagerImplTest {
         @Test
         void returnsNoMedicationIfNotFound() {
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             UUID id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -428,11 +410,9 @@ class CabinetEntryManagerImplTest {
         @Test
         void failsIfNotFound() {
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             UUID id = UUID.fromString("1571fd59-d40d-4db1-8739-8830bc67516f");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -457,11 +437,9 @@ class CabinetEntryManagerImplTest {
                 LocalDate.of(2025, 6, 30)
             );
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("ec544543-9aff-4172-989d-ebd5d08a0dea"),
@@ -492,11 +470,9 @@ class CabinetEntryManagerImplTest {
                 LocalDate.of(2025, 6, 30)
             );
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("ec544543-9aff-4172-989d-ebd5d08a0dea"),
@@ -522,11 +498,9 @@ class CabinetEntryManagerImplTest {
                 LocalDate.of(2025, 6, 30)
             );
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
             var medicationid = UUID.fromString("ec544543-9aff-4172-989d-ebd5d08a0dea");
@@ -544,11 +518,9 @@ class CabinetEntryManagerImplTest {
                 LocalDate.of(2025, 6, 30)
             );
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("ec544543-9aff-4172-989d-ebd5d08a0dea"),
@@ -605,11 +577,9 @@ class CabinetEntryManagerImplTest {
                 LocalDate.of(2025, 6, 30)
             );
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("ec544543-9aff-4172-989d-ebd5d08a0dea"),
@@ -652,11 +622,9 @@ class CabinetEntryManagerImplTest {
                 LocalDate.of(2025, 6, 30)
             );
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("ec544543-9aff-4172-989d-ebd5d08a0dea"),
@@ -682,11 +650,9 @@ class CabinetEntryManagerImplTest {
                 LocalDate.of(2025, 6, 30)
             );
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("ec544543-9aff-4172-989d-ebd5d08a0dea"),
@@ -712,11 +678,9 @@ class CabinetEntryManagerImplTest {
                 null
             );
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var medication = new MedicationDTO(
                 UUID.fromString("ec544543-9aff-4172-989d-ebd5d08a0dea"),
@@ -741,11 +705,9 @@ class CabinetEntryManagerImplTest {
         @Test
         void deletesEntity() {
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("b7cfa15e-1fe5-44b1-913b-98a7a0018d6c");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -765,11 +727,9 @@ class CabinetEntryManagerImplTest {
         @Test
         void failsIfEntityDoesNotExist() {
             var user = new UserDTO(
-                UUID.fromString("ed9e7a22-ebe1-4627-929d-e63f174cf6af"),
+                "auth|ed9e7a22ebe14627929d",
                 "Harry Potter",
-                ZoneId.of("Europe/Brussels"),
-                true,
-                false
+                ZoneId.of("Europe/Brussels")
             );
             var id = UUID.fromString("1571fd59-d40d-4db1-8739-8830bc67516f");
             when(userManager.findCurrentUser()).thenReturn(user);
@@ -810,11 +770,11 @@ class CabinetEntryManagerImplTest {
     class deleteAllByMedicationId {
         @ParameterizedTest
         @CsvSource({
-            "bdeb432c-c1d7-4482-ae55-19c2750b7796,eaf1d029-d072-4554-8734-914bc4d7cb07,2",
-            "ec544543-9aff-4172-989d-ebd5d08a0dea,ed9e7a22-ebe1-4627-929d-e63f174cf6af,0",
-            "00000000-0000-0000-0000-000000000000,eaf1d029-d072-4554-8734-914bc4d7cb07,4"
+            "bdeb432c-c1d7-4482-ae55-19c2750b7796,auth|eaf1d029d07245548734,2",
+            "ec544543-9aff-4172-989d-ebd5d08a0dea,auth|ed9e7a22ebe14627929d,0",
+            "00000000-0000-0000-0000-000000000000,auth|eaf1d029d07245548734,4"
         })
-        void deletesEntities(UUID medicationId, UUID userId, int expectedSize) {
+        void deletesEntities(UUID medicationId, String userId, int expectedSize) {
             var pageRequest = PageRequest.of(0, 10);
             manager.deleteAllByMedicationId(medicationId);
             assertThat(repository.findAllByUserId(userId, pageRequest)).hasSize(expectedSize);

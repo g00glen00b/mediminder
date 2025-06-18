@@ -21,7 +21,7 @@ import java.util.UUID;
 class MedicationEntity {
     @Id
     private UUID id;
-    private UUID userId;
+    private String userId;
     private String name;
     @ManyToOne
     @JoinColumn(name = "medication_type_id")
@@ -37,7 +37,7 @@ class MedicationEntity {
     @JdbcType(PostgreSQLEnumJdbcType.class)
     private Color color;
 
-    public MedicationEntity(UUID userId, String name, MedicationTypeEntity medicationType, AdministrationTypeEntity administrationType, DoseTypeEntity doseType, BigDecimal dosesPerPackage, Color color) {
+    public MedicationEntity(String userId, String name, MedicationTypeEntity medicationType, AdministrationTypeEntity administrationType, DoseTypeEntity doseType, BigDecimal dosesPerPackage, Color color) {
         this.id = UUID.randomUUID();
         this.userId = userId;
         this.name = name;

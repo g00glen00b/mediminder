@@ -1,2 +1,2 @@
 insert into document (id, user_id, related_medication_id, content_type, expiry_date, filename, description)
-values ('af3edd34-a8e2-4356-9877-2481eae06dfb', 'c00385bb-3551-4cd9-b786-8a71f1c1b9d8', 'dcb33d3c-5e8e-4f54-b965-64dc17e0a285', 'application/pdf', '2026-01-31', 'file.pdf', 'Medical attest for Hydrocortisone');
+values ('af3edd34-a8e2-4356-9877-2481eae06dfb', 'auth|c00385bb35514cd9b786', 'dcb33d3c-5e8e-4f54-b965-64dc17e0a285', 'application/pdf', '2026-01-31', 'file.pdf', 'Medical attest for Hydrocortisone');

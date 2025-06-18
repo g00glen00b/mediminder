@@ -9,8 +9,3 @@ services:
       POSTGRES_PASSWORD: dbpass
     ports:
       - "5432:5432"
-  mailpit:
-    image: axllent/mailpit:latest
-    ports:
-      - "1025:1025"
-      - "8025:8025"

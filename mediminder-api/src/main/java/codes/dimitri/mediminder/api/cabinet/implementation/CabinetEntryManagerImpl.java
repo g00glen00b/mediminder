@@ -72,7 +72,7 @@ class CabinetEntryManagerImpl implements CabinetEntryManager {
         return mapper.toDTO(entity, medication);
     }
 
-    private MedicationDTO findMedicationOrEmtpy(UUID medicationId, UUID userId) {
+    private MedicationDTO findMedicationOrEmtpy(UUID medicationId, String userId) {
         try {
             return medicationManager.findByIdAndUserId(medicationId, userId);
         } catch (MedicationNotFoundException ex) {

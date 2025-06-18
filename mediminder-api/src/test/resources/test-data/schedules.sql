@@ -1,5 +1,5 @@
 insert into schedule (id, user_id, medication_id, starting_at, ending_at_inclusive, interval, time, description, dose) values
-    ('6ba61df2-ab46-4909-b9e6-233ea47dd701', '9133c9d2-0b6c-4915-9752-512d2dca9330', '0b845403-3b16-436f-b84a-925b01421ad9', '2024-06-30', '2024-07-31', 'P1D', '10:00', 'Before breakfast', 1),
-    ('f2f2de45-3000-45fc-af12-fa8cfce5c2ff', '9133c9d2-0b6c-4915-9752-512d2dca9330', '0b845403-3b16-436f-b84a-925b01421ad9', '2024-05-31', '2024-07-31', 'P1D', '18:00', 'After dinner', 1),
-    ('08a6aa16-8449-418e-93ff-c7975731066d', '9133c9d2-0b6c-4915-9752-512d2dca9330', 'a9356fca-da82-48ab-af04-a7169b91ea4f', '2024-06-30', null, 'P1D', '10:00', 'Before breakfast', 1),
-    ('945b1bea-b447-4701-a137-3e447c35ffa3', 'b47e0b6f-be52-4e38-8301-fe60d08cbfbe', 'fb384363-0446-4fdc-a62d-098c20ddf286', '2024-06-30', null, 'P1D', '10:00', 'Before breakfast', 1);
+    ('6ba61df2-ab46-4909-b9e6-233ea47dd701', 'auth|9133c9d20b6c49159752', '0b845403-3b16-436f-b84a-925b01421ad9', '2024-06-30', '2024-07-31', 'P1D', '10:00', 'Before breakfast', 1),
+    ('f2f2de45-3000-45fc-af12-fa8cfce5c2ff', 'auth|9133c9d20b6c49159752', '0b845403-3b16-436f-b84a-925b01421ad9', '2024-05-31', '2024-07-31', 'P1D', '18:00', 'After dinner', 1),
+    ('08a6aa16-8449-418e-93ff-c7975731066d', 'auth|9133c9d20b6c49159752', 'a9356fca-da82-48ab-af04-a7169b91ea4f', '2024-06-30', null, 'P1D', '10:00', 'Before breakfast', 1),
+    ('945b1bea-b447-4701-a137-3e447c35ffa3', 'auth|b47e0b6fbe524e388301', 'fb384363-0446-4fdc-a62d-098c20ddf286', '2024-06-30', null, 'P1D', '10:00', 'Before breakfast', 1);

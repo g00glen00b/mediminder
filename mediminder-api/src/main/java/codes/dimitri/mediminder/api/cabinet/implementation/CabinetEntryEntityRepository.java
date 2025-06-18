@@ -12,9 +12,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface CabinetEntryEntityRepository extends JpaRepository<CabinetEntryEntity, UUID> {
-    Page<CabinetEntryEntity> findAllByUserId(UUID userId, Pageable pageable);
-    Page<CabinetEntryEntity> findAllByMedicationIdAndUserId(UUID medicationId, UUID userId, Pageable pageable);
-    Optional<CabinetEntryEntity> findByIdAndUserId(UUID id, UUID userId);
+    Page<CabinetEntryEntity> findAllByUserId(String userId, Pageable pageable);
+    Page<CabinetEntryEntity> findAllByMedicationIdAndUserId(UUID medicationId, String userId, Pageable pageable);
+    Optional<CabinetEntryEntity> findByIdAndUserId(UUID id, String userId);
     @Query("select e from CabinetEntryEntity e where e.remainingDoses > 0 and e.expiryDate <= ?1")
     Page<CabinetEntryEntity> findAllWithRemainingDosesWithExpiryDateBefore(LocalDate expiryDate, Pageable pageable);
 

@@ -13,7 +13,7 @@ final class ScheduleSpecifications {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("medicationId"), medicationId);
     }
 
-    public static Specification<ScheduleEntity> userId(UUID userId) {
+    public static Specification<ScheduleEntity> userId(String userId) {
         if (userId == null) return null;
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("userId"), userId);
     }
