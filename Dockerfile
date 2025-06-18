@@ -36,7 +36,7 @@ RUN adduser -D app
 RUN apk add --no-cache binutils
 WORKDIR /app
 # Copy JAR + dependencies
-COPY --from=optimizer /app/dependencies/ .
+COPY --from=optimizer /app/mediminder/dependencies/ .
 COPY --from=optimizer /app/mediminder.jar .
 # Set user
 RUN chown -R app .
@@ -67,10 +67,10 @@ ENV JAVA_HOME=/app/jre
 ENV PATH "${JAVA_HOME}/bin:${PATH}"
 # Copy the extracted JAR file contents
 COPY --from=jre-builder /app/jre ./jre
-COPY --from=optimizer /app/dependencies/ .
-COPY --from=optimizer /app/spring-boot-loader/ .
-COPY --from=optimizer /app/snapshot-dependencies/ .
-COPY --from=optimizer /app/application/ .
+COPY --from=optimizer /app/mediminder/dependencies/ .
+COPY --from=optimizer /app/mediminder/spring-boot-loader/ .
+COPY --from=optimizer /app/mediminder/snapshot-dependencies/ .
+COPY --from=optimizer /app/mediminder/application/ .
 # Set user
 RUN chown app .
 USER app
