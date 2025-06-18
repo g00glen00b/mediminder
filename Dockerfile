@@ -28,7 +28,7 @@ COPY --from=build /app/mediminder-api/target/*.jar mediminder.jar
 RUN chown -R app .
 USER app
 # Extract
-RUN java -Djarmode=layertools -jar mediminder.jar extract
+RUN java -Djarmode=tools -jar mediminder.jar extract --layers --launcher
 
 # JRE build layer
 FROM amazoncorretto:21.0.7-alpine3.21 AS jre-builder
