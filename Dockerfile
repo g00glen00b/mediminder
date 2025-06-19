@@ -50,8 +50,9 @@ RUN jdeps \
     --print-module-deps \
     --class-path 'BOOT-INF/lib/*' \
     mediminder.jar > deps.info
+RUN cat deps.info
 RUN jlink \
-    --add-modules $(cat deps.info) \
+    --add-modules $(cat deps.info),jdk.crypto.ec \
     --strip-debug \
     --no-man-pages \
     --no-header-files \
