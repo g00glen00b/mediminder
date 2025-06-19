@@ -1,6 +1,5 @@
 import {Component, inject, input} from '@angular/core';
 import {MedicationType} from '../../models/medication-type';
-import {NgSwitch, NgSwitchCase, NgSwitchDefault} from '@angular/common';
 import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Color} from '../../../shared/models/color';
@@ -8,10 +7,8 @@ import {Color} from '../../../shared/models/color';
 @Component({
   selector: 'mediminder-medication-type-icon',
   imports: [
-    NgSwitch,
     MatIconModule,
-    NgSwitchCase,
-    NgSwitchDefault,
+
   ],
   templateUrl: './medication-type-icon.component.html',
   standalone: true,
@@ -31,6 +28,7 @@ export class MedicationTypeIconComponent {
     const inhalerIcon = this.domSanitizer.bypassSecurityTrustResourceUrl('healthicons/devices/asthma_inhaler.svg');
     const syringeIcon = this.domSanitizer.bypassSecurityTrustResourceUrl('healthicons/devices/syringe.svg');
     const dropIcon = this.domSanitizer.bypassSecurityTrustResourceUrl('healthicons/body/blood_drop.svg');
+    const sugarIcon = this.domSanitizer.bypassSecurityTrustResourceUrl('healthicons/nutrition/sugar_alt.svg');
     this.iconRegistry.addSvgIcon('medications-pills-2', pillsIcon);
     this.iconRegistry.addSvgIcon('contraceptives-contraceptive-patch', patchIcon);
     this.iconRegistry.addSvgIcon('contraceptives-implant', implantIcon);
@@ -38,5 +36,6 @@ export class MedicationTypeIconComponent {
     this.iconRegistry.addSvgIcon('devices-asthma-inhaler', inhalerIcon);
     this.iconRegistry.addSvgIcon('devices-syringe', syringeIcon);
     this.iconRegistry.addSvgIcon('body-blood-drop', dropIcon);
+    this.iconRegistry.addSvgIcon('nutrition-sugar', sugarIcon);
   }
 }

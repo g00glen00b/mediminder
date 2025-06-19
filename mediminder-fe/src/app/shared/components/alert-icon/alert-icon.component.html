@@ -1,25 +1,30 @@
 <span
   class="icon-circle"
-  [class]="type()"
-  [ngSwitch]="type()">
+  [class]="type()">
+  @switch (type()) {
+    @case ('error') {
       <mat-icon
-        fontSet="material-symbols-outlined"
-        *ngSwitchCase="'error'">
+        fontSet="material-symbols-outlined">
         priority_high
       </mat-icon>
+    }
+    @case ('warning') {
       <mat-icon
-        fontSet="material-symbols-outlined"
-        *ngSwitchCase="'warning'">
+        fontSet="material-symbols-outlined">
         priority_high
       </mat-icon>
+    }
+    @case ('success') {
       <mat-icon
-        fontSet="material-symbols-outlined"
-        *ngSwitchCase="'success'">
+        fontSet="material-symbols-outlined">
         check
       </mat-icon>
+    }
+    @case ('info') {
       <mat-icon
-        fontSet="material-symbols-outlined"
-        *ngSwitchCase="'info'">
+        fontSet="material-symbols-outlined">
         info
       </mat-icon>
-    </span>
+    }
+  }
+</span>

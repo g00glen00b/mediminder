@@ -1,9 +1,25 @@
-<span [ngSwitch]="medicationType().id" [class]="color()" class="cubicle">
-  <mat-icon svgIcon="contraceptives-implant" *ngSwitchCase="'IMPLANT'" />
-  <mat-icon svgIcon="medications-pills-2" *ngSwitchCase="'TABLET'" />
-  <mat-icon svgIcon="contraceptives-contraceptive-patch" *ngSwitchCase="'PATCH'" />
-  <mat-icon svgIcon="devices-syringe" *ngSwitchCase="'INJECTION'" />
-  <mat-icon svgIcon="devices-asthma-inhaler" *ngSwitchCase="'INHALER'" />
-  <mat-icon svgIcon="body-blood-drop" *ngSwitchCase="'DROP'" />
-  <mat-icon svgIcon="devices-medicine-bottle" *ngSwitchDefault />
+<span [class]="color()" class="cubicle">
+  @switch (medicationType().id) {
+    @case ('IMPLANT') {
+      <mat-icon svgIcon="contraceptives-implant" />
+    }
+    @case ('PATCH') {
+      <mat-icon svgIcon="contraceptives-contraceptive-patch" />
+    }
+    @case ('INJECTION') {
+      <mat-icon svgIcon="devices-syringe" />
+    }
+    @case ('INHALER') {
+      <mat-icon svgIcon="devices-asthma-inhaler" />
+    }
+    @case ('DROP') {
+      <mat-icon svgIcon="body-blood-drop" />
+    }
+    @case ('POWDER') {
+      <mat-icon svgIcon="nutrition-sugar" />
+    }
+    @default {
+      <mat-icon svgIcon="devices-medicine-bottle" />
+    }
+  }
 </span>
