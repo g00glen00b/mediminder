@@ -22,7 +22,7 @@ class NotFoundIndexFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (isHtmlRequest(request) && !isAPI(request) && !isActuator(request) && !isSwaggerUI(request)) {
+        if (isHtmlRequest(request) && isApp(request)) {
             HttpServletRequest mutatedRequest = mutateRequestToIndexPage(request);
             filterChain.doFilter(mutatedRequest, response);
         } else {
@@ -34,21 +34,13 @@ class NotFoundIndexFilter extends OncePerRequestFilter {
         return new HttpServletRequestWrapper(request) {
             @Override
             public String getRequestURI() {
-                return contextPath + "/index.html";
+                return contextPath + "/app/index.html";
             }
         };
     }
 
-    private boolean isAPI(HttpServletRequest request) {
-        return request.getRequestURI().startsWith(contextPath + "/api");
-    }
-
-    private boolean isActuator(HttpServletRequest request) {
-        return request.getRequestURI().startsWith(contextPath + "/actuator");
-    }
-
-    private boolean isSwaggerUI(HttpServletRequest request) {
-        return request.getRequestURI().startsWith(contextPath + "/swagger-ui");
+    private boolean isApp(HttpServletRequest request) {
+        return request.getRequestURI().startsWith(contextPath + "/app");
     }
 
     private boolean isHtmlRequest(HttpServletRequest request) {
