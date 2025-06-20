@@ -78,7 +78,7 @@ export class EditProfilePageComponent {
 
   logout() {
     this.service.logout().subscribe({
-      error: () => window.location.href = environment.logoutHandler
+      error: () => window.location.href = `${environment.logoutHandler}&returnTo=${window.location.href}`
     });
   }
 }
