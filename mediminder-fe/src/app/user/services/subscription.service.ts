@@ -22,11 +22,11 @@ export class SubscriptionService {
   }
 
   private findConfiguration(): Observable<SubscriptionConfiguration> {
-    return this.httpClient.get<SubscriptionConfiguration>(`./api/notification/subscription/configuration`);
+    return this.httpClient.get<SubscriptionConfiguration>(`${environment.apiUrl}/notification/subscription/configuration`);
   }
 
   private subscribeCall(request: PushSubscription): Observable<void> {
     const body = request.toJSON();
-    return this.httpClient.post<void>(`./api/notification/subscription`, body);
+    return this.httpClient.post<void>(`${environment.apiUrl}/notification/subscription`, body);
   }
 }

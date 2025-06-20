@@ -16,6 +16,6 @@ export class PlannerService {
   findAll(targetDate: Date, pageRequest: PageRequest): Observable<Page<MedicationPlan>> {
     const formattedDate = format(targetDate, 'yyyy-MM-dd');
     const params = pageRequestToHttpParams(pageRequest);
-    return this.httpClient.get<Page<MedicationPlan>>(`./api/planner/${formattedDate}`, {params});
+    return this.httpClient.get<Page<MedicationPlan>>(`${environment.apiUrl}/planner/${formattedDate}`, {params});
   }
 }

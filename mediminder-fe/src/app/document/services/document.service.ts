@@ -17,31 +17,31 @@ export class DocumentService {
   findAll(pageRequest: PageRequest, medicationId?: string): Observable<Page<Document>> {
     let params = pageRequestToHttpParams(pageRequest);
     if (medicationId != null) params = params.set('medicationId', medicationId);
-    return this.httpClient.get<Page<Document>>(`./api/document`, {params});
+    return this.httpClient.get<Page<Document>>(`${environment.apiUrl}/document`, {params});
   }
 
   findById(id: string): Observable<Document> {
-    return this.httpClient.get<Document>(`./api/document/${id}`);
+    return this.httpClient.get<Document>(`${environment.apiUrl}/document/${id}`);
   }
 
   create(request: CreateDocumentRequest, file: File): Observable<Document> {
     const data: FormData = new FormData();
     data.append('file', file);
     data.append('request', new Blob([JSON.stringify(request)], {type: 'application/json'}));
-    return this.httpClient.post<Document>(`./api/document`, data);
+    return this.httpClient.post<Document>(`${environment.apiUrl}/document`, data);
   }
 
   update(id: string, request: UpdateDocumentRequest): Observable<Document> {
-    return this.httpClient.put<Document>(`./api/document/${id}`, request);
+    return this.httpClient.put<Document>(`${environment.apiUrl}/document/${id}`, request);
   }
 
   delete(id: string): Observable<void> {
-    return this.httpClient.delete<void>(`./api/document/${id}`);
+    return this.httpClient.delete<void>(`${environment.apiUrl}/document/${id}`);
   }
 
   download(doc: Document): void {
     this.httpClient
-      .get<Blob>(`./api/document/${doc.id}/download`, {responseType: 'blob' as 'json'})
+      .get<Blob>(`${environment.apiUrl}/document/${doc.id}/download`, {responseType: 'blob' as 'json'})
       .subscribe(blob => {
         const dataType = blob.type;
         let binaryData = [];

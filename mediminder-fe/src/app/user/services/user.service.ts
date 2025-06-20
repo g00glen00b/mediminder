@@ -15,7 +15,7 @@ export class UserService {
 
   constructor() {
     this.httpClient
-      .get<User>(`./api/user/current`)
+      .get<User>(`${environment.apiUrl}/user/current`)
       .pipe(this.updateState())
       .subscribe();
   }
@@ -42,7 +42,7 @@ export class UserService {
 
   findAvailableTimezones(search: string | undefined = ''): Observable<string[]> {
     const params = new HttpParams().set('search', search);
-    return this.httpClient.get<string[]>(`./api/user/timezone`, {params});
+    return this.httpClient.get<string[]>(`${environment.apiUrl}/user/timezone`, {params});
   }
 
   private updateState(logoutOnError: boolean = true) {
@@ -55,14 +55,14 @@ export class UserService {
   }
 
   update(request: UpdateUserRequest): Observable<User> {
-    return this.httpClient.put<User>(`./api/user`, request).pipe(
+    return this.httpClient.put<User>(`${environment.apiUrl}/user`, request).pipe(
       tap(user => this.authenticationState$$.next({initialized: true, user}))
     );
   }
 
   delete(): Observable<void> {
     return this.httpClient
-      .delete<void>(`./api/user`, {withCredentials: true})
+      .delete<void>(`${environment.apiUrl}/user`, {withCredentials: true})
       .pipe(tap(() => this.authenticationState$$.next({initialized: true})));
   }
 
