@@ -33,6 +33,7 @@ import static org.mockito.Mockito.when;
 @TestPropertySource(properties = {
     "spring.datasource.url=jdbc:tc:postgresql:latest:///mediminder",
     "spring.ai.openai.api-key=dummy",
+    "spring.ai.model.chat=openai",
     "spring.datasource.hikari.maximum-pool-size=2",
     "spring.datasource.hikari.minimum-idle=2"
 })

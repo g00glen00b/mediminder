@@ -47,7 +47,9 @@ import static org.mockito.Mockito.*;
     "spring.datasource.hikari.minimum-idle=2",
     "notification.public-key=BIyq6YYFYOCttqL-N22xS84_EfO2CFYhn86ZW4gkzIK_uTht7rofUlIrXpu_r4-BT-qmf2TZFAq92jKhcBFIF-w",
     "notification.private-key=CX5aOzJFXYQszpj__Trqa9GOIupZMLRrubTxsc3zNg0",
-    "spring.batch.job.enabled=false"
+    "spring.batch.job.enabled=false",
+    "spring.ai.model.chat=openai",
+    "spring.ai.openai.api-key=dummy"
 })
 @Import({
     TestClockConfiguration.class
