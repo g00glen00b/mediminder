@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, input, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, input, OnInit, signal} from '@angular/core';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {switchMap} from 'rxjs';
 import {MedicationService} from '../../services/medication.service';

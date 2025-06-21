@@ -17,6 +17,7 @@ import {ConfirmationDialogData} from '../../../shared/models/confirmation-dialog
 import {mergeMap} from 'rxjs';
 import {Router} from '@angular/router';
 import {environment} from '../../../../environment/environment';
+import {AuthService} from '@auth0/auth0-angular';
 
 @Component({
   selector: 'mediminder-edit-profile-page',
@@ -33,6 +34,7 @@ import {environment} from '../../../../environment/environment';
   styleUrl: './edit-profile-page.component.scss'
 })
 export class EditProfilePageComponent {
+  private readonly authService = inject(AuthService);
   private readonly service = inject(UserService);
   private readonly subscriptionService = inject(SubscriptionService);
   private readonly router = inject(Router);
@@ -77,8 +79,6 @@ export class EditProfilePageComponent {
   }
 
   logout() {
-    this.service.logout().subscribe({
-      error: () => window.location.href = `${environment.logoutHandler}&returnTo=${window.location.href}`
-    });
+    this.authService.logout();
   }
 }

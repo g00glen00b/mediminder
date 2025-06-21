@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -35,38 +35,37 @@ class UserManagerImpl implements UserManager {
     @Override
     @Transactional
     public UserDTO findCurrentUser() {
-        UserEntitySecurityInfo tuple = findOrCreateCurrentUserEntity();
-        return mapper.toDTO(tuple.entity(), tuple.securityInfo().authentication().getAuthorities());
+        UserEntity entity = findOrCreateCurrentUserEntity();
+        return mapper.toDTO(entity);
     }
 
-    private UserEntitySecurityInfo findOrCreateCurrentUserEntity() {
-        return findOAuth2SecurityInfo()
+    private UserEntity findOrCreateCurrentUserEntity() {
+        return findCurrentUserId()
             .map(this::findOrCreate)
             .orElseThrow(CurrentUserNotFoundException::new);
     }
 
-    private UserEntitySecurityInfo findOrCreate(OAuth2SecurityInfo securityInfo) {
-        UserEntity entity = repository
-            .findById(securityInfo.userId())
-            .orElseGet(() -> createEmptyUser(securityInfo.userId()));
-        return new UserEntitySecurityInfo(entity, securityInfo);
+    private UserEntity findOrCreate(String userId) {
+        return repository
+            .findById(userId)
+            .orElseGet(() -> createEmptyUser(userId));
     }
 
     private UserEntity createEmptyUser(String id) {
         return repository.save(new UserEntity(id));
     }
 
-    private Optional<OAuth2SecurityInfo> findOAuth2SecurityInfo() {
+    private Optional<String> findCurrentUserId() {
         return Optional
             .ofNullable(SecurityContextHolder.getContext())
             .map(SecurityContext::getAuthentication)
-            .flatMap(this::mapToOAuth2SecurityInfo);
+            .flatMap(this::mapToUserid);
     }
 
-    private Optional<OAuth2SecurityInfo> mapToOAuth2SecurityInfo(Authentication authentication) {
+    private Optional<String> mapToUserid(Authentication authentication) {
         Object principal = authentication.getPrincipal();
-        if (principal instanceof OAuth2User oAuth2User) {
-            return Optional.of(new OAuth2SecurityInfo(oAuth2User.getName(), authentication, oAuth2User));
+        if (principal instanceof Jwt jwt) {
+            return Optional.of(jwt.getSubject());
         } else {
             return Optional.empty();
         }
@@ -102,24 +101,18 @@ class UserManagerImpl implements UserManager {
     @Override
     @Transactional
     public UserDTO update(@Valid @NotNull UpdateUserRequestDTO request) {
-        UserEntitySecurityInfo tuple = findOrCreateCurrentUserEntity();
-        tuple.entity().setName(request.name());
-        tuple.entity().setTimezone(request.timezone());
-        return mapper.toDTO(tuple.entity(), tuple.securityInfo().authentication().getAuthorities());
+        UserEntity entity = findOrCreateCurrentUserEntity();
+        entity.setName(request.name());
+        entity.setTimezone(request.timezone());
+        return mapper.toDTO(entity);
     }
 
     @Override
     @Transactional
     public void deleteCurrentUser() {
-        String userId = findCurrentUserId();
+        String userId = findCurrentUserId().orElseThrow(CurrentUserNotFoundException::new);
         repository.deleteById(userId);
         eventPublisher.publishEvent(new UserDeletedEvent(userId));
         SecurityContextHolder.clearContext();
-    }
-
-    private String findCurrentUserId() {
-        return findOAuth2SecurityInfo()
-            .map(OAuth2SecurityInfo::userId)
-            .orElseThrow(CurrentUserNotFoundException::new);
     }
 }

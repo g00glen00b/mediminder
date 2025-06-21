@@ -17,15 +17,9 @@ import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import java.util.concurrent.ScheduledFuture;
-
 @Configuration
-@EnableScheduling
 @RequiredArgsConstructor
 class NotificationBatchConfiguration {
     private final JobRepository jobRepository;
@@ -155,11 +149,5 @@ class NotificationBatchConfiguration {
             .processor(compositeIntakeProcessor)
             .writer(writer)
             .build();
-    }
-
-    @Bean
-    public ScheduledFuture<?> notificationBatchScheduler(NotificationBatchTask task, TaskScheduler scheduler) {
-        CronTrigger trigger = new CronTrigger(properties.schedule());
-        return scheduler.schedule(task, trigger);
     }
 }

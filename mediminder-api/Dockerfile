@@ -10,8 +10,7 @@ RUN mkdir -p /app/.npm
 ADD .mvn ./.mvn/
 ADD mvnw .
 ADD pom.xml .
-ADD mediminder-api/ ./mediminder-api/
-ADD mediminder-fe/ ./mediminder-fe/
+ADD src/ src/
 # Set user
 RUN chown -R app .
 USER app
@@ -23,7 +22,7 @@ FROM amazoncorretto:21.0.7-alpine3.21 AS optimizer
 RUN adduser -D app
 WORKDIR /app
 # Copy JAR
-COPY --from=build /app/mediminder-api/target/*.jar mediminder.jar
+COPY --from=build /app/target/*.jar mediminder.jar
 # Set user
 RUN chown -R app .
 USER app

@@ -11,7 +11,6 @@ public record NotificationProperties(
     // Can be generated through https://www.attheminute.com/vapid-key-generator
     String publicKey,
     String privateKey,
-    @DefaultValue("@hourly") String schedule,
     @DefaultValue("50") int chunkSize,
     @DefaultValue ExpiryProperties expiry,
     @DefaultValue DoseProperties dose,

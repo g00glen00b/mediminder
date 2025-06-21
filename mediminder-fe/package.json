@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^20.0.3",
     "@angular/router": "^20.0.3",
     "@angular/service-worker": "^20.0.3",
+    "@auth0/auth0-angular": "^2.2.3",
     "date-fns": "^4.1.0",
     "healthicons": "^1.0.1",
     "material-symbols": "^0.16.0",

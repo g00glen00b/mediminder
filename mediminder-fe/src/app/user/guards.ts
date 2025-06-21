@@ -1,17 +1,21 @@
 import {CanActivateFn} from '@angular/router';
 import {inject} from '@angular/core';
 import {UserService} from './services/user.service';
-import {map} from 'rxjs';
+import {AuthService} from '@auth0/auth0-angular';
+import {map, tap} from 'rxjs';
 import {environment} from '../../environment/environment';
 
-export const IsLoggedIn: CanActivateFn = () => {
-  const userService = inject(UserService);
-  return userService.isLoggedIn()
-    .pipe(map(isLoggedIn => {
-      if (isLoggedIn) return true;
-      window.location.href = environment.loginHandler;
-      return false;
-    }));
+export function IsAuthenticated(): CanActivateFn {
+  return () => {
+    const authService = inject(AuthService);
+    return authService.isAuthenticated$.pipe(
+      tap(isAuthenticated => {
+        if (!isAuthenticated) {
+          authService.loginWithRedirect();
+        }
+      })
+    );
+  }
 }
 
 export function HasAuthority(authority: string): CanActivateFn {

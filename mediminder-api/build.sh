@@ -1,0 +1,1 @@
+docker build --platform linux/amd64 -t mediminder:2.0.0 .

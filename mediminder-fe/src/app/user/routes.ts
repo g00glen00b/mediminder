@@ -1,11 +1,11 @@
 import {Route} from '@angular/router';
-import {IsLoggedIn} from './guards';
 import {EditProfilePageComponent} from './pages/edit-profile-page/edit-profile-page.component';
+import {IsAuthenticated} from './guards';
 
 export default [
   {
     path: 'profile',
     component: EditProfilePageComponent,
-    canActivate: [IsLoggedIn],
+    canActivate: [IsAuthenticated()],
   }
 ] as Route[];

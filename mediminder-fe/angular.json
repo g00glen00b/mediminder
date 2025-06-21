@@ -58,7 +58,6 @@
           },
           "configurations": {
             "production": {
-              "baseHref": "/app/",
               "budgets": [
                 {
                   "type": "initial",
@@ -92,12 +91,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "mediminder-fe:build:production",
-              "proxyConfig": "src/proxy.conf.json"
+              "buildTarget": "mediminder-fe:build:production"
             },
             "development": {
-              "buildTarget": "mediminder-fe:build:development",
-              "proxyConfig": "src/proxy.conf.json"
+              "buildTarget": "mediminder-fe:build:development"
             }
           },
           "defaultConfiguration": "development"
