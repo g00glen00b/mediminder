@@ -9,7 +9,6 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +24,7 @@ import static codes.dimitri.mediminder.api.common.ValidationUtilities.getAnyCons
 public class NotificationController {
     private final NotificationManager manager;
     private final NotificationBatchTask task;
+    private final NotificationProperties properties;
 
     @GetMapping
     public Page<NotificationDTO> findAll(@ParameterObject Pageable pageable) {
@@ -56,8 +56,8 @@ public class NotificationController {
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("/batch/start")
-    @PreAuthorize("hasAuthority('Admin')")
-    public CompletableFuture<Void> launchJob() {
+    public CompletableFuture<Void> launchJob(@RequestParam String apiKey) {
+        validateBatchApiKey(apiKey);
         return CompletableFuture.runAsync(task);
     }
 
@@ -89,5 +89,11 @@ public class NotificationController {
             .title("Invalid notification")
             .type(URI.create("https://mediminder/notification/invalid"))
             .build();
+    }
+
+    private void validateBatchApiKey(String apiKey) {
+        if (!properties.batchApiKey().equals(apiKey)) {
+            throw new InvalidNotificationException("Invalid API key");
+        }
     }
 }

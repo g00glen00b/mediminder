@@ -14,7 +14,8 @@ public record NotificationProperties(
     @DefaultValue("50") int chunkSize,
     @DefaultValue ExpiryProperties expiry,
     @DefaultValue DoseProperties dose,
-    @DefaultValue IntakeProperties intake
+    @DefaultValue IntakeProperties intake,
+    String batchApiKey
     ) {
 
     public record ExpiryProperties(
