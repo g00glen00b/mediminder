@@ -4,7 +4,7 @@ import {defaultPageRequest} from '../../../shared/models/page-request';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {mergeMap} from 'rxjs';
 import {emptyPage} from '../../../shared/models/page';
-import {Notification} from '../../models/notification';
+import {Notification, NotificationType} from '../../models/notification';
 import {AlertComponent} from '../../../shared/components/alert/alert.component';
 
 @Component({
@@ -18,6 +18,8 @@ import {AlertComponent} from '../../../shared/components/alert/alert.component';
 export class NotificationOverviewPageComponent {
   private readonly service = inject(NotificationService);
   private readonly destroyRef = inject(DestroyRef);
+  infoNotificationTypes: NotificationType[] = ['CABINET_ENTRY_ALMOST_EXPIRED', 'DOCUMENT_ALMOST_EXPIRED', 'DOCUMENT_ALMOST_EXPIRED', 'INTAKE_EVENT', 'SCHEDULE_ALMOST_OUT_OF_DOSES'];
+  warningNotificationTypes: NotificationType[] = ['CABINET_ENTRY_EXPIRED', 'DOCUMENT_EXPIRED', 'SCHEDULE_OUT_OF_DOSES'];
   pageRequest = signal(defaultPageRequest(['title,asc']))
   notifications = toSignal(toObservable(this.pageRequest).pipe(
     takeUntilDestroyed(this.destroyRef),

@@ -11,11 +11,18 @@
           @for (event of group.events; track event.scheduleId) {
             <li>
               <mediminder-medication-type-icon
+                (click)="viewDetailPage(event)"
                 [medicationType]="event.medication.medicationType"
                 [color]="event.medication.color">
               </mediminder-medication-type-icon>
-              <div class="name">{{event.medication.name}}</div>
-              <div class="description">
+              <div
+                (click)="viewDetailPage(event)"
+                class="name">
+                {{event.medication.name}}
+              </div>
+              <div
+                (click)="viewDetailPage(event)"
+                class="description">
                 <span>{{event.dose}} {{event.medication.doseType.name}}</span>
                 <span>{{event.medication.administrationType.name}}</span>
                 @if (event.description != null && event.description.length > 0) {

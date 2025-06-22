@@ -29,6 +29,6 @@ public record NotificationProperties(
     public record IntakeProperties(
         @DefaultValue("2h") Duration lifetime,
         @DefaultValue("1d") Period bufferWindow,
-        @DefaultValue("1h") Duration warnPeriod) {
+        @DefaultValue("10m") Duration warnPeriod) {
     }
 }
