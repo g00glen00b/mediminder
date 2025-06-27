@@ -13,4 +13,5 @@ import {MatIconModule} from '@angular/material/icon';
 export class EmptyStateComponent {
   icon = input('');
   title = input('');
+  spin = input(false);
 }

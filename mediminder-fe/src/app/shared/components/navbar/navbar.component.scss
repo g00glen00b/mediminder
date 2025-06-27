@@ -14,3 +14,12 @@ mat-toolbar a img {
   width: 1.3em;
   height: 1.3em;
 }
+
+.sticky-progressbar-wrapper {
+  position: sticky;
+  height: 0;
+  overflow: visible;
+  top: 0;
+  z-index: 100;
+}
+

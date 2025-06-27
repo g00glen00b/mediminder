@@ -1,7 +1,7 @@
 import {Component, DestroyRef, inject, model, signal} from '@angular/core';
 import {IntakeEventService} from '../../services/intake-event.service';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {combineLatest, mergeMap} from 'rxjs';
+import {combineLatest, mergeMap, tap} from 'rxjs';
 import {DatePaginatorComponent} from '../../../shared/components/date-paginator/date-paginator.component';
 import {IntakeEventListComponent} from '../../components/intake-event-list/intake-event-list.component';
 import {SwipeGestureDirective} from '../../../shared/directives/swipe-gesture.directive';
@@ -26,15 +26,18 @@ export class IntakeEventOverviewComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly toastr = inject(ToastrService);
   private readonly service = inject(IntakeEventService);
+  loading = signal(true);
   targetDate = model(new Date());
   refreshDate = signal(new Date());
   events = toSignal(combineLatest([
     toObservable(this.targetDate),
     toObservable(this.refreshDate)
   ]).pipe(
-      takeUntilDestroyed(this.destroyRef),
-      mergeMap(([targetDate]) => this.service.findAll(targetDate))
-    ), {initialValue: []});
+    takeUntilDestroyed(this.destroyRef),
+    tap(() => this.loading.set(true)),
+    mergeMap(([targetDate]) => this.service.findAll(targetDate)),
+    tap(() => this.loading.set(false)),
+  ), {initialValue: []});
 
   onSwipeLeft() {
     this.targetDate.set(subDays(this.targetDate(), 1));

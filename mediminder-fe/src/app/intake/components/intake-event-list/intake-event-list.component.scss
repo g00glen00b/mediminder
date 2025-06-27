@@ -56,3 +56,16 @@ mat-card {
   grid-column: 3;
   align-self: center;
 }
+
+.spin {
+  animation: spin 1s infinite steps(16);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}

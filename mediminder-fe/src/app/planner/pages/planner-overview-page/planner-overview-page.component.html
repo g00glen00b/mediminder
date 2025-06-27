@@ -3,12 +3,21 @@
   <hero-description>Plan how much medication you require until certain date.</hero-description>
 </mediminder-hero>
 <mediminder-container>
-  <mediminder-date-paginator
-    [date]="date()"
-    (dateChange)="date.set($event)"
-    [minDate]="minDate">
-  </mediminder-date-paginator>
-  <mediminder-planner-list
-    [plans]="plans().content">
-  </mediminder-planner-list>
+  @if (!loading()) {
+    <mediminder-date-paginator
+      [date]="date()"
+      (dateChange)="date.set($event)"
+      [minDate]="minDate">
+    </mediminder-date-paginator>
+    <mediminder-planner-list
+      [plans]="plans().content">
+    </mediminder-planner-list>
+  }
+  @else {
+    <mediminder-empty-state
+      icon="progress_activity"
+      [spin]="true"
+      title="Loading...">
+    </mediminder-empty-state>
+  }
 </mediminder-container>

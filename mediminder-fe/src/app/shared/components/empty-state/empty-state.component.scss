@@ -10,7 +10,7 @@ section {
   height: 500px;
 }
 
-section mat-icon {
+section .icon-wrapper {
   transform: scale(3);
   color: mat.m2-get-color-from-palette(theme.$mediminder-accent, 500);
   height: 40px;
@@ -19,4 +19,17 @@ section mat-icon {
 
 section h3 {
   @include mat.m2-typography-level(theme.$mediminder-typography, 'headline-5');
+}
+
+.spin {
+  animation: spin 1s infinite steps(16);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
 }

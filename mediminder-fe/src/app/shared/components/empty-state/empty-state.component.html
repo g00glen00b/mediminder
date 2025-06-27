@@ -1,4 +1,10 @@
 <section>
-  <mat-icon fontSet="material-symbols-outlined">{{icon()}}</mat-icon>
+  <div class="icon-wrapper">
+    <mat-icon
+      [class.spin]="spin()"
+      fontSet="material-symbols-outlined">
+      {{icon()}}
+    </mat-icon>
+  </div>
   <h3>{{title()}}</h3>
 </section>

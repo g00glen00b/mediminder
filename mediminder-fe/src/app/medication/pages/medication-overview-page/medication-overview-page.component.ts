@@ -4,14 +4,14 @@ import {EmptyStateComponent} from '../../../shared/components/empty-state/empty-
 import {MedicationListComponent} from '../../components/medication-list/medication-list.component';
 import {defaultPageRequest} from '../../../shared/models/page-request';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {mergeMap} from 'rxjs';
+import {mergeMap, tap} from 'rxjs';
 import {emptyPage} from '../../../shared/models/page';
 import {MedicationService} from '../../services/medication.service';
 import {Medication} from '../../models/medication';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
 import {HeroTitleDirective} from '../../../shared/components/hero/hero-title.directive';
 import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
-import {MatFabAnchor} from '@angular/material/button';
+import {MatFabAnchor, MatFabButton} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
 import {MatIcon} from '@angular/material/icon';
 
@@ -27,6 +27,7 @@ import {MatIcon} from '@angular/material/icon';
     MatFabAnchor,
     MatIcon,
     RouterLink,
+    MatFabButton,
   ],
   templateUrl: './medication-overview-page.component.html',
   styleUrl: './medication-overview-page.component.scss'
@@ -34,9 +35,12 @@ import {MatIcon} from '@angular/material/icon';
 export class MedicationOverviewPageComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly service = inject(MedicationService);
+  loading = signal(true);
   pageRequest = signal(defaultPageRequest(['name,asc']));
   medications = toSignal(toObservable(this.pageRequest).pipe(
     takeUntilDestroyed(this.destroyRef),
-    mergeMap(pageRequest => this.service.findAll('', pageRequest))
+    tap(() => this.loading.set(true)),
+    mergeMap(pageRequest => this.service.findAll('', pageRequest)),
+    tap(() => this.loading.set(false))
   ), {initialValue: emptyPage<Medication>()});
 }

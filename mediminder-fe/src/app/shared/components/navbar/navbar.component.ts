@@ -7,6 +7,7 @@ import {NgOptimizedImage} from '@angular/common';
 import {NavbarService} from '../../services/navbar.service';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {NavbarState} from '../../models/navbar-state';
+import {HttpProgressbarComponent} from '../http-progressbar/http-progressbar.component';
 
 @Component({
   selector: 'mediminder-navbar',
@@ -18,6 +19,7 @@ import {NavbarState} from '../../models/navbar-state';
     MatIconModule,
     RouterLink,
     NgOptimizedImage,
+    HttpProgressbarComponent,
   ]
 })
 export class NavbarComponent {

@@ -4,13 +4,14 @@ import {provideRouter, withComponentInputBinding, withRouterConfig} from '@angul
 import {routes} from './app.routes';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {provideToastr} from 'ngx-toastr';
-import {provideHttpClient, withInterceptors, withInterceptorsFromDi, withXsrfConfiguration} from '@angular/common/http';
+import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {provideDateFnsAdapter} from '@angular/material-date-fns-adapter';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 import {enUS} from 'date-fns/locale';
 import {provideServiceWorker} from '@angular/service-worker';
 import {authHttpInterceptorFn, provideAuth0} from '@auth0/auth0-angular';
 import {environment} from '../environment/environment';
+import {progressInterceptor} from './shared/interceptor/progress-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -44,7 +45,7 @@ export const appConfig: ApplicationConfig = {
       preventDuplicates: true,
     }),
     provideDateFnsAdapter(),
-    provideHttpClient(withInterceptors([authHttpInterceptorFn])),
+    provideHttpClient(withInterceptors([progressInterceptor, authHttpInterceptorFn])),
     {
       provide: MAT_DATE_LOCALE,
       useValue: enUS,
