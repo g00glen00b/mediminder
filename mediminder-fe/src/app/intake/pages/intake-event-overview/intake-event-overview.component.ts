@@ -40,11 +40,11 @@ export class IntakeEventOverviewComponent {
   ), {initialValue: []});
 
   onSwipeLeft() {
-    this.targetDate.set(subDays(this.targetDate(), 1));
+    this.targetDate.set(addDays(this.targetDate(), 1));
   }
 
   onSwipeRight() {
-    this.targetDate.set(addDays(this.targetDate(), 1));
+    this.targetDate.set(subDays(this.targetDate(), 1));
   }
 
   complete(event: IntakeEvent) {
