@@ -26,6 +26,10 @@
     <mediminder-medication-details-card
       [medication]="medication()!">
     </mediminder-medication-details-card>
+    <mediminder-dose-picker
+      [doses]="doseSubtractions()"
+      (select)="subtractDoses($event)">
+    </mediminder-dose-picker>
   }
   <mediminder-action-header title="Schedules">
     <a

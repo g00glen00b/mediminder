@@ -1,0 +1,11 @@
+@if (doses().length > 0) {
+  <div class="picker">
+    @for (dose of doses(); track dose) {
+      <button
+        type="button"
+        (click)="select.emit(dose)">
+        Take {{dose}}
+      </button>
+    }
+  </div>
+}

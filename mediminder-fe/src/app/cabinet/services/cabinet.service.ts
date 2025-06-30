@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {CreateCabinetEntryRequest} from '../models/create-cabinet-entry-request';
 import {Observable} from 'rxjs';
 import {CabinetEntry} from '../models/cabinet-entry';
@@ -34,5 +34,12 @@ export class CabinetService {
 
   update(id: string, request: UpdateCabinetEntryRequest): Observable<CabinetEntry> {
     return this.httpClient.put<CabinetEntry>(`${environment.apiUrl}/cabinet/${id}`, request);
+  }
+
+  subtractDoses(medicationId: string, doses: number): Observable<void> {
+    const params = new HttpParams()
+      .set('medicationId', medicationId)
+      .set('doses', doses);
+    return this.httpClient.put<void>(`${environment.apiUrl}/cabinet/dose/subtract`, null, {params});
   }
 }

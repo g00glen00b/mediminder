@@ -1,6 +1,6 @@
-import {Component, DestroyRef, inject, input, OnInit, signal} from '@angular/core';
+import {Component, computed, DestroyRef, inject, input, OnInit} from '@angular/core';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {switchMap} from 'rxjs';
+import {BehaviorSubject, combineLatest, switchMap} from 'rxjs';
 import {MedicationService} from '../../services/medication.service';
 import {ContainerComponent} from '../../../shared/components/container/container.component';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
@@ -30,6 +30,7 @@ import {AlertComponent} from '../../../shared/components/alert/alert.component';
 import {Document} from '../../../document/models/document';
 import {DocumentListComponent} from '../../../document/components/document-list/document-list.component';
 import {UserService} from '../../../user/services/user.service';
+import {DosePickerComponent} from '../../components/dose-picker/dose-picker.component';
 
 @Component({
   selector: 'mediminder-medication-detail-page',
@@ -48,6 +49,7 @@ import {UserService} from '../../../user/services/user.service';
     MatButton,
     AlertComponent,
     DocumentListComponent,
+    DosePickerComponent,
   ],
   templateUrl: './medication-detail-page.component.html',
   styleUrl: './medication-detail-page.component.scss'
@@ -73,15 +75,31 @@ export class MedicationDetailPageComponent implements OnInit {
     takeUntilDestroyed(this.destroyRef),
     switchMap(id => this.scheduleService.findAll(defaultPageRequest(['id,asc']), id))
   ), {initialValue: emptyPage<Schedule>()});
-  cabinetEntries = toSignal(toObservable(this.id).pipe(
+  refreshCabinetEntries = new BehaviorSubject<void>(undefined);
+  cabinetEntries = toSignal(combineLatest([
+    toObservable(this.id),
+    this.refreshCabinetEntries
+  ]).pipe(
     takeUntilDestroyed(this.destroyRef),
-    switchMap(id => this.cabinetService.findAll(defaultPageRequest(['id,asc']), id))
+    switchMap(([id]) => this.cabinetService.findAll(defaultPageRequest(['id,asc']), id))
   ), {initialValue: emptyPage<CabinetEntry>()});
   documents = toSignal(toObservable(this.id).pipe(
     takeUntilDestroyed(this.destroyRef),
     switchMap(id => this.documentService.findAll(defaultPageRequest(['id,asc']), id))
   ), {initialValue: emptyPage<Document>()});
   showDocuments = toSignal(this.userService.hasAuthority('Document'), {initialValue: false});
+  countableMedicationTypeIds = ['TABLET', 'CAPSULE', 'DOSE', 'SUPPOSITORY', 'DROP', 'SPRAY', 'INHALE', 'INJECTION', 'IMPLANT', 'PATCH', 'SACHET'];
+  countableMedicationType = computed(() => {
+    const medication = this.medication();
+    if (medication == null) return false;
+    return this.countableMedicationTypeIds.includes(medication.doseType.id);
+  })
+  doseSubtractions = computed(() => {
+    const subtractions: number[] = [];
+    if (this.countableMedicationType()) subtractions.push(1);
+    this.schedules().content.forEach(schedule => subtractions.push(schedule.dose));
+    return [...new Set(subtractions)];
+  })
   error?: ErrorResponse;
 
   ngOnInit() {
@@ -104,6 +122,16 @@ export class MedicationDetailPageComponent implements OnInit {
         this.router.navigate([`/medication`]);
       },
       error: response => this.error = response.error,
+    });
+  }
+
+  subtractDoses(doses: number) {
+    this.cabinetService.subtractDoses(this.id(), doses).subscribe({
+       next: () => {
+         this.toastr.success(`Successfully taken ${doses} ${this.medication()?.doseType.name}`);
+         this.refreshCabinetEntries.next();
+       },
+      error: response => this.error = response.error
     });
   }
 }

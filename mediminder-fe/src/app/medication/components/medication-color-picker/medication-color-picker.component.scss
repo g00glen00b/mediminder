@@ -8,7 +8,6 @@
   margin-bottom: 2em;
 }
 
-
 .picker button {
   display: flex;
   flex-direction: column;
@@ -17,6 +16,7 @@
   border-radius: 0.5em;
   transition: background-color .3s;
   border: none;
+  cursor: pointer;
   @include mat.m2-typography-level(theme.$mediminder-typography, 'button');
 }
 
