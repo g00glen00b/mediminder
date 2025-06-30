@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.UUID;
 
@@ -41,6 +42,11 @@ class CabinetEntryController {
     @PutMapping("/{id}")
     public CabinetEntryDTO update(@PathVariable UUID id, @RequestBody UpdateCabinetEntryRequestDTO request) {
         return manager.updateForCurrentUser(id, request);
+    }
+
+    @PutMapping("/dose/subtract")
+    public void subtractDoses(@RequestParam UUID medicationId, @RequestParam BigDecimal doses) {
+        manager.subtractDosesByMedicationId(medicationId, doses);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
