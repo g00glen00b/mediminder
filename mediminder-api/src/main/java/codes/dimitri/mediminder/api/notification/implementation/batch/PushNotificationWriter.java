@@ -1,6 +1,7 @@
 package codes.dimitri.mediminder.api.notification.implementation.batch;
 
 import codes.dimitri.mediminder.api.notification.implementation.NotificationEntity;
+import codes.dimitri.mediminder.api.notification.implementation.NotificationProperties;
 import codes.dimitri.mediminder.api.notification.implementation.SubscriptionEntity;
 import codes.dimitri.mediminder.api.notification.implementation.SubscriptionEntityRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 @Component
 @RequiredArgsConstructor
 public class PushNotificationWriter implements ItemWriter<NotificationEntity> {
+    private final NotificationProperties properties;
     private final PushService pushService;
     private final SubscriptionEntityRepository repository;
     private final ObjectMapper objectMapper;
@@ -39,7 +41,11 @@ public class PushNotificationWriter implements ItemWriter<NotificationEntity> {
         Subscription.Keys keys = new Subscription.Keys(subscriptionEntity.getKey(), subscriptionEntity.getAuth());
         Subscription subscription = new Subscription(subscriptionEntity.getEndpoint(), keys);
         try {
-            PushNotificationPayloadWrapper pushNotification = PushNotificationPayload.simple(entity.getTitle(), entity.getMessage());
+            PushNotificationPayloadWrapper pushNotification = PushNotificationPayload.simple(
+                entity.getTitle(),
+                entity.getMessage(),
+                properties.applicationIconUrl()
+            );
             String jsonPayload = objectMapper.writeValueAsString(pushNotification);
             Notification notification = new Notification(subscription, jsonPayload);
             pushService.send(notification);

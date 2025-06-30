@@ -4,6 +4,7 @@ import codes.dimitri.mediminder.api.cabinet.CabinetEntryManager;
 import codes.dimitri.mediminder.api.document.DocumentManager;
 import codes.dimitri.mediminder.api.medication.MedicationManager;
 import codes.dimitri.mediminder.api.notification.*;
+import codes.dimitri.mediminder.api.schedule.EventManager;
 import codes.dimitri.mediminder.api.schedule.ScheduleManager;
 import codes.dimitri.mediminder.api.shared.TestClockConfiguration;
 import codes.dimitri.mediminder.api.user.CurrentUserNotFoundException;
@@ -60,6 +61,8 @@ class NotificationManagerImplTest {
     private CabinetEntryManager cabinetEntryManager;
     @MockitoBean
     private DocumentManager documentManager;
+    @MockitoBean
+    private EventManager eventManager;
     @Autowired
     private SubscriptionEntityRepository subscriptionRepository;
     @Autowired

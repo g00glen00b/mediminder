@@ -15,7 +15,8 @@ public record NotificationProperties(
     @DefaultValue ExpiryProperties expiry,
     @DefaultValue DoseProperties dose,
     @DefaultValue IntakeProperties intake,
-    String batchApiKey
+    String batchApiKey,
+    String applicationIconUrl
     ) {
 
     public record ExpiryProperties(
@@ -28,7 +29,6 @@ public record NotificationProperties(
 
     public record IntakeProperties(
         @DefaultValue("2h") Duration lifetime,
-        @DefaultValue("1d") Period bufferWindow,
         @DefaultValue("10m") Duration warnPeriod) {
     }
 }

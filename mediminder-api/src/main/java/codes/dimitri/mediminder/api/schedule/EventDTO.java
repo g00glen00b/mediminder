@@ -15,4 +15,7 @@ public record EventDTO(
     BigDecimal dose,
     String description
 ) {
+    public boolean isCompleted() {
+        return completedDate != null;
+    }
 }

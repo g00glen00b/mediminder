@@ -79,8 +79,8 @@ class EventManagerImplTest {
                 new BigDecimal("1"),
                 Color.YELLOW
             );
-            when(medicationManager.findByIdForCurrentUser(medication1.id())).thenReturn(medication1);
-            when(medicationManager.findByIdForCurrentUser(medication2.id())).thenReturn(medication2);
+            when(medicationManager.findByIdAndUserId(medication1.id(), user.id())).thenReturn(medication1);
+            when(medicationManager.findByIdAndUserId(medication2.id(), user.id())).thenReturn(medication2);
             when(userManager.findCurrentUser()).thenReturn(user);
             var events = eventManager.findAll(LocalDate.of(2024, 6, 30));
             assertThat(events).containsExactly(
@@ -130,7 +130,7 @@ class EventManagerImplTest {
                 new BigDecimal("1"),
                 Color.RED
             );
-            when(medicationManager.findByIdForCurrentUser(medication1.id())).thenReturn(medication1);
+            when(medicationManager.findByIdAndUserId(medication1.id(), user.id())).thenReturn(medication1);
             when(userManager.findCurrentUser()).thenReturn(user);
             var events = eventManager.findAll(LocalDate.of(2024, 6, 30));
             assertThat(events).containsExactly(

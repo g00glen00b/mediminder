@@ -10,6 +10,8 @@ import java.util.UUID;
 public interface EventManager {
     List<EventDTO> findAll(@NotNull LocalDate targetDate);
 
+    List<EventDTO> findAll(@NotNull LocalDate targetDate, @NotNull String userId);
+
     @Transactional
     EventDTO complete(@NotNull UUID scheduleId, @NotNull LocalDate targetDate);
 

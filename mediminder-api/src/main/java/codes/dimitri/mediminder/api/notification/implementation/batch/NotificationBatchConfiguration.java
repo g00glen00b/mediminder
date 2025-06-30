@@ -4,20 +4,23 @@ import codes.dimitri.mediminder.api.cabinet.CabinetEntryDTO;
 import codes.dimitri.mediminder.api.document.DocumentDTO;
 import codes.dimitri.mediminder.api.notification.implementation.NotificationEntity;
 import codes.dimitri.mediminder.api.notification.implementation.NotificationProperties;
-import codes.dimitri.mediminder.api.schedule.ScheduleDTO;
 import codes.dimitri.mediminder.api.schedule.UserScheduledMedicationDTO;
+import codes.dimitri.mediminder.api.user.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.support.CompositeItemProcessor;
 import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -74,11 +77,11 @@ class NotificationBatchConfiguration {
     }
 
     @Bean
-    public CompositeItemProcessor<ScheduleDTO, NotificationEntity> compositeIntakeProcessor(
-        ActiveScheduleNotificationProcessor processor,
+    public CompositeItemProcessor<UserDTO, List<NotificationEntity>> compositeIntakeProcessor(
+        UserIncompleteIntakeEventProcessor processor,
         NotificationExistenceProcessor existenceProcessor
     ) {
-        return new CompositeItemProcessor<>(processor, existenceProcessor);
+        return new CompositeItemProcessor<>(processor, new FlatteningItemProcessor<>(existenceProcessor));
     }
 
     @Bean
@@ -87,6 +90,13 @@ class NotificationBatchConfiguration {
         PushNotificationWriter pushNotificationWriter
     ) {
         return new CompositeItemWriter<>(persistenceWriter, pushNotificationWriter);
+    }
+
+    @Bean
+    public ItemWriter<List<NotificationEntity>> flatteningCompositeNotificationWriter(
+        @Qualifier("compositeNotificationWriter") CompositeItemWriter<NotificationEntity> writer
+    ) {
+        return new FlatteningItemWriter<>(writer);
     }
 
     @Bean
@@ -139,12 +149,12 @@ class NotificationBatchConfiguration {
 
     @Bean
     public Step intakeStep(
-        ActiveScheduleReader reader,
-        @Qualifier("compositeIntakeProcessor") CompositeItemProcessor<ScheduleDTO, NotificationEntity> compositeIntakeProcessor,
-        @Qualifier("compositeNotificationWriter") CompositeItemWriter<NotificationEntity> writer
+        UserReader reader,
+        @Qualifier("compositeIntakeProcessor") CompositeItemProcessor<UserDTO, List<NotificationEntity>> compositeIntakeProcessor,
+        @Qualifier("flatteningCompositeNotificationWriter") ItemWriter<List<NotificationEntity>> writer
     ) {
         return new StepBuilder("intakeStep", jobRepository)
-            .<ScheduleDTO, NotificationEntity>chunk(properties.chunkSize(), transactionManager)
+            .<UserDTO, List<NotificationEntity>>chunk(properties.chunkSize(), transactionManager)
             .reader(reader)
             .processor(compositeIntakeProcessor)
             .writer(writer)

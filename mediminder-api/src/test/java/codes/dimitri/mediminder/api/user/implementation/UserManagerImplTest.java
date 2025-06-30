@@ -2,8 +2,7 @@ package codes.dimitri.mediminder.api.user.implementation;
 
 import codes.dimitri.mediminder.api.shared.TestClockConfiguration;
 import codes.dimitri.mediminder.api.user.*;
-import com.c4_soft.springaddons.security.oauth2.test.annotations.OpenIdClaims;
-import com.c4_soft.springaddons.security.oauth2.test.annotations.WithOAuth2Login;
+import com.c4_soft.springaddons.security.oauth2.test.annotations.WithJwt;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,12 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
     "user.verification-url=http://example.org/user/verify?code=%s",
     "user.password-reset-url=http://example.org/user/confirm-password-reset?code=%s",
     "spring.datasource.hikari.maximum-pool-size=2",
-    "spring.datasource.hikari.minimum-idle=2"
+    "spring.datasource.hikari.minimum-idle=2",
+    "spring.security.oauth2.client.provider.auth0.issuer-uri=https://example.org",
+    "spring.security.oauth2.resourceserver.jwt.issuer-uri=https://example.org",
+    "com.c4-soft.springaddons.oidc.ops[0].iss=https://example.org",
+    "com.c4-soft.springaddons.oidc.ops[0].username-claim=sub",
+    "com.c4-soft.springaddons.oidc.ops[0].authorities[0].path=$['https://mediminder.app/roles']"
 })
 @Import({
     TestClockConfiguration.class
@@ -53,7 +57,12 @@ class UserManagerImplTest {
     @Nested
     class findCurrentUser {
         @Test
-        @WithOAuth2Login(claims = @OpenIdClaims(sub = "auth|03479cd37e9a4b798958"))
+        @WithJwt(json = """
+        {
+            "sub": "auth|03479cd37e9a4b798958",
+            "iss": "https://example.org"
+        }
+        """)
         void returnsResult() {
             UserDTO result = manager.findCurrentUser();
             assertThat(result).isEqualTo(new UserDTO(
@@ -110,7 +119,12 @@ class UserManagerImplTest {
     @Nested
     class update {
         @Test
-        @WithOAuth2Login(claims = @OpenIdClaims(sub = "auth|03479cd37e9a4b798958"))
+        @WithJwt(json = """
+        {
+            "sub": "auth|03479cd37e9a4b798958",
+            "iss": "https://example.org"
+        }
+        """)
         void returnsResult() {
             var request = new UpdateUserRequestDTO(
                 "New name",
@@ -125,7 +139,12 @@ class UserManagerImplTest {
         }
 
         @Test
-        @WithOAuth2Login(claims = @OpenIdClaims(sub = "auth|03479cd37e9a4b798958"))
+        @WithJwt(json = """
+        {
+            "sub": "auth|03479cd37e9a4b798958",
+            "iss": "https://example.org"
+        }
+        """)
         void savesEntity() {
             String id = "auth|03479cd37e9a4b798958";
             var request = new UpdateUserRequestDTO(
@@ -177,7 +196,12 @@ class UserManagerImplTest {
     @Nested
     class delete {
         @Test
-        @WithOAuth2Login(claims = @OpenIdClaims(sub = "auth|03479cd37e9a4b798958"))
+        @WithJwt(json = """
+        {
+            "sub": "auth|03479cd37e9a4b798958",
+            "iss": "https://example.org"
+        }
+        """)
         void deletesEntity() {
             manager.deleteCurrentUser();
             String userId = "auth|03479cd37e9a4b798958";
@@ -185,7 +209,12 @@ class UserManagerImplTest {
         }
 
         @Test
-        @WithOAuth2Login(claims = @OpenIdClaims(sub = "auth|03479cd37e9a4b798958"))
+        @WithJwt(json = """
+        {
+            "sub": "auth|03479cd37e9a4b798958",
+            "iss": "https://example.org"
+        }
+        """)
         void publishesDeleteEvent() {
             manager.deleteCurrentUser();
             String userId = "auth|03479cd37e9a4b798958";

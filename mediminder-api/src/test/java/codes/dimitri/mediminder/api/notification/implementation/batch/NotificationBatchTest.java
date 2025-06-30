@@ -104,7 +104,7 @@ class NotificationBatchTest {
             .toJobParameters();
         var jobExecution = jobLauncherTestUtils.launchJob(parameters);
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
-        assertThat(repository.count()).isEqualTo(8);
+        assertThat(repository.count()).isEqualTo(7);
     }
 
     @Test

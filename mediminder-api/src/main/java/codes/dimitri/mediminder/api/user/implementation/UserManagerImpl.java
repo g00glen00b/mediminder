@@ -5,6 +5,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +39,11 @@ class UserManagerImpl implements UserManager {
     public UserDTO findCurrentUser() {
         UserEntity entity = findOrCreateCurrentUserEntity();
         return mapper.toDTO(entity);
+    }
+
+    @Override
+    public Page<UserDTO> findAll(Pageable pageable) {
+        return repository.findAll(pageable).map(mapper::toDTO);
     }
 
     private UserEntity findOrCreateCurrentUserEntity() {

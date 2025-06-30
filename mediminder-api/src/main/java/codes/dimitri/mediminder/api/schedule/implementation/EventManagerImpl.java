@@ -39,9 +39,14 @@ class EventManagerImpl implements EventManager {
     @Override
     public List<EventDTO> findAll(@NotNull LocalDate targetDate) {
         UserDTO user = findCurrentUser();
-        List<EventDTO> completedEvents = findAllCompletedEventDTOs(targetDate, user);
+        return findAll(targetDate, user.id());
+    }
+
+    @Override
+    public List<EventDTO> findAll(LocalDate targetDate, String userId) {
+        List<EventDTO> completedEvents = findAllCompletedEventDTOs(targetDate, userId);
         List<UUID> completedScheduleIds = findCompletedScheduleIds(completedEvents);
-        List<EventDTO> uncompletedEvents = findAllUncompletedEventDTOs(targetDate, user, completedScheduleIds);
+        List<EventDTO> uncompletedEvents = findAllUncompletedEventDTOs(targetDate, userId, completedScheduleIds);
         return combineAndSortEvents(completedEvents, uncompletedEvents);
     }
 
@@ -93,14 +98,14 @@ class EventManagerImpl implements EventManager {
         }
     }
 
-    private List<EventDTO> findAllCompletedEventDTOs(LocalDate date, UserDTO user) {
+    private List<EventDTO> findAllCompletedEventDTOs(LocalDate date, String userId) {
         LocalDateTime start = date.atStartOfDay();
         LocalDateTime end = date.plusDays(1).atStartOfDay();
         return repository
-            .findByUserIdAndTargetDate(user.id(), start, end)
+            .findByUserIdAndTargetDate(userId, start, end)
             .stream()
             .map(event -> {
-                MedicationDTO medication = findMedication(event.getSchedule().getMedicationId());
+                MedicationDTO medication = findMedication(event.getSchedule().getMedicationId(), userId);
                 return mapper.toDTOFromCompletedEvent(event, medication);
             })
             .toList();
@@ -120,9 +125,9 @@ class EventManagerImpl implements EventManager {
     }
 
 
-    private List<EventDTO> findAllUncompletedEventDTOs(LocalDate date, UserDTO user, Collection<UUID> completedScheduleIds) {
+    private List<EventDTO> findAllUncompletedEventDTOs(LocalDate date, String userId, Collection<UUID> completedScheduleIds) {
         Specification<ScheduleEntity> query = Specification.allOf(
-            ScheduleSpecifications.userId(user.id()),
+            ScheduleSpecifications.userId(userId),
             ScheduleSpecifications.onlyActive(true, date)
         );
         List<ScheduleEntity> schedules = scheduleRepository.findAll(query);
@@ -130,7 +135,7 @@ class EventManagerImpl implements EventManager {
             .filter(schedule -> !completedScheduleIds.contains(schedule.getId()))
             .filter(entity -> entity.isHappeningAt(date))
             .map(entity -> {
-                MedicationDTO medication = findMedication(entity.getMedicationId());
+                MedicationDTO medication = findMedication(entity.getMedicationId(), userId);
                 return mapper.toDTOFromUncompletedSchedule(entity, LocalDateTime.of(date, entity.getTime()), medication);
             })
             .toList();
@@ -146,9 +151,9 @@ class EventManagerImpl implements EventManager {
             .orElseThrow(() -> new ScheduleNotFoundException(id));
     }
 
-    private MedicationDTO findMedication(UUID medicationid) {
+    private MedicationDTO findMedication(UUID medicationId, String userId) {
         try {
-            return medicationManager.findByIdForCurrentUser(medicationid);
+            return medicationManager.findByIdAndUserId(medicationId, userId);
         } catch (MedicationNotFoundException ex) {
             return null;
         }
