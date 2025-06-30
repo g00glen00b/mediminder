@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, signal} from '@angular/core';
+import {Component, computed, DestroyRef, inject, signal} from '@angular/core';
 import {NotificationService} from '../../services/notification.service';
 import {defaultPageRequest} from '../../../shared/models/page-request';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
@@ -25,6 +25,8 @@ export class NotificationOverviewPageComponent {
     takeUntilDestroyed(this.destroyRef),
     mergeMap(pageRequest => this.service.findAll(pageRequest))
   ), {initialValue: emptyPage<Notification>()});
+  filteredNotifications = computed(() => this.notifications().content
+    .filter(notification => notification.type !== 'INTAKE_EVENT'));
 
   delete(notification: Notification) {
     this.service.delete(notification.id).subscribe(() => this.pageRequest.set({...this.pageRequest()}));
