@@ -28,4 +28,14 @@ public interface NotificationEntityRepository extends JpaRepository<Notification
     """)
     void deleteAllByDeleteAtBefore(Instant date);
 
+    @Modifying
+    @Query("""
+    update NotificationEntity n
+    set n.active = false
+    where n.userId = ?1
+    and n.type = ?2
+    and n.initiatorId = ?3
+    """)
+    void deactivateAllByUserIdTypeAndInitiatorId(String userId, NotificationType type, UUID initiatorId);
+
 }

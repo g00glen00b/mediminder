@@ -75,6 +75,15 @@ class NotificationManagerImpl implements NotificationManager {
         entity.setActive(false);
     }
 
+    @Transactional
+    @Override
+    public void deleteAllByUserIdTypeAndInitiatorId(
+        @NotNull String userId,
+        @NotNull NotificationType type,
+        @NotNull UUID initiatorId) {
+        repository.deactivateAllByUserIdTypeAndInitiatorId(userId, type, initiatorId);
+    }
+
     private UserDTO findCurrentUser() {
         try {
             return userManager.findCurrentUser();

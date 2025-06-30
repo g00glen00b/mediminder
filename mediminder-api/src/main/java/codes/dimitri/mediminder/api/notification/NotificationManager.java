@@ -20,5 +20,11 @@ public interface NotificationManager {
     @Transactional
     void delete(@NotNull UUID id);
 
+    @Transactional
+    void deleteAllByUserIdTypeAndInitiatorId(
+        @NotNull String userId,
+        @NotNull NotificationType type,
+        @NotNull UUID initiatorId);
+
     SubscriptionConfigurationDTO findConfiguration();
 }
