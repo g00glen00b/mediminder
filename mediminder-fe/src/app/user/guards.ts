@@ -1,17 +1,20 @@
-import {CanActivateFn} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot} from '@angular/router';
 import {inject} from '@angular/core';
 import {UserService} from './services/user.service';
 import {AuthService} from '@auth0/auth0-angular';
-import {map, tap} from 'rxjs';
-import {environment} from '../../environment/environment';
+import {tap} from 'rxjs';
 
 export function IsAuthenticated(): CanActivateFn {
-  return () => {
+  return (_: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
     const authService = inject(AuthService);
     return authService.isAuthenticated$.pipe(
       tap(isAuthenticated => {
         if (!isAuthenticated) {
-          authService.loginWithRedirect();
+          authService.loginWithRedirect({
+            appState: {
+              target: state.url
+            }
+          });
         }
       })
     );
