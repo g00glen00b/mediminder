@@ -1,7 +1,6 @@
 import {Component, DestroyRef, inject, model, signal} from '@angular/core';
-import {IntakeEventService} from '../../services/intake-event.service';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {combineLatest, mergeMap, tap} from 'rxjs';
+import {BehaviorSubject, combineLatest, mergeMap, tap} from 'rxjs';
 import {DatePaginatorComponent} from '../../../shared/components/date-paginator/date-paginator.component';
 import {IntakeEventListComponent} from '../../components/intake-event-list/intake-event-list.component';
 import {SwipeGestureDirective} from '../../../shared/directives/swipe-gesture.directive';
@@ -9,6 +8,7 @@ import {addDays, subDays} from 'date-fns';
 import {IntakeEvent} from '../../models/intake-event';
 import {ToastrService} from 'ngx-toastr';
 import {EmptyStateComponent} from '../../../shared/components/empty-state/empty-state.component';
+import {IntakeEventCacheService} from '../../services/intake-event-cache.service';
 
 @Component({
   selector: 'mediminder-intake-event-overview',
@@ -25,13 +25,13 @@ import {EmptyStateComponent} from '../../../shared/components/empty-state/empty-
 export class IntakeEventOverviewComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly toastr = inject(ToastrService);
-  private readonly service = inject(IntakeEventService);
+  private readonly service = inject(IntakeEventCacheService);
+  private refresh = new BehaviorSubject<void>(undefined);
   loading = signal(true);
   targetDate = model(new Date());
-  refreshDate = signal(new Date());
   events = toSignal(combineLatest([
     toObservable(this.targetDate),
-    toObservable(this.refreshDate)
+    this.refresh,
   ]).pipe(
     takeUntilDestroyed(this.destroyRef),
     tap(() => this.loading.set(true)),
@@ -49,15 +49,8 @@ export class IntakeEventOverviewComponent {
 
   complete(event: IntakeEvent) {
     this.service.complete(event.scheduleId, this.targetDate()).subscribe({
-      next: () => this.refreshDate.set(new Date()),
+      next: () => this.refresh.next(),
       error: () => this.toastr.error(`Could not complete ${event.medication.name}`),
-    });
-  }
-
-  delete(event: IntakeEvent) {
-    this.service.delete(event.id!).subscribe({
-      next: () => this.refreshDate.set(new Date()),
-      error: () => this.toastr.error(`Could not cancel ${event.medication.name}`),
     });
   }
 }

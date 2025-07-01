@@ -30,7 +30,6 @@ export class IntakeEventListComponent {
   private readonly router = inject(Router);
   events = input.required<IntakeEvent[]>();
   complete = output<IntakeEvent>();
-  delete = output<IntakeEvent>();
   eventsPerTime = computed(() => groupPerTime(this.events()));
 
   viewDetailPage(event: IntakeEvent) {

@@ -16,8 +16,7 @@
   @else if (events().length > 0) {
     <mediminder-intake-event-list
       [events]="events()"
-      (complete)="complete($event)"
-      (delete)="delete($event)">
+      (complete)="complete($event)">
     </mediminder-intake-event-list>
   }
   @else {
