@@ -2,7 +2,7 @@ import {Component, inject, input} from '@angular/core';
 import {MedicationTypeIconComponent} from '../medication-type-icon/medication-type-icon.component';
 import {Router, RouterLink} from '@angular/router';
 import {Medication} from '../../models/medication';
-import {MatIconAnchor} from '@angular/material/button';
+import {MatIconAnchor, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {ListItemComponent} from '../../../shared/components/list-item/list-item.component';
 import {ListItemTitleDirective} from '../../../shared/components/list-item/list-item-title.directive';
@@ -22,6 +22,7 @@ import {ListItemActionsDirective} from '../../../shared/components/list-item/lis
     ListItemDescriptionDirective,
     ListItemIconDirective,
     ListItemActionsDirective,
+    MatIconButton,
   ],
   templateUrl: './medication-list-item.component.html',
   styleUrl: './medication-list-item.component.scss'

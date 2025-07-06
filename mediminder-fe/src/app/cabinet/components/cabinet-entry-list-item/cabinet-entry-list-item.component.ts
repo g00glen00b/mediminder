@@ -9,7 +9,7 @@ import {CabinetEntry} from '../../models/cabinet-entry';
 import {differenceInDays} from 'date-fns';
 import {DecimalPipe} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
-import {MatIconAnchor} from '@angular/material/button';
+import {MatIconAnchor, MatIconButton} from '@angular/material/button';
 import {Router, RouterLink} from '@angular/router';
 import {ListItemComponent} from '../../../shared/components/list-item/list-item.component';
 import {ListItemTitleDirective} from '../../../shared/components/list-item/list-item-title.directive';
@@ -35,6 +35,7 @@ import {TagComponent} from '../../../shared/components/tag/tag.component';
     ListItemActionsDirective,
     ListItemIconDirective,
     TagComponent,
+    MatIconButton,
   ],
   templateUrl: './cabinet-entry-list-item.component.html',
   styleUrl: './cabinet-entry-list-item.component.scss'
