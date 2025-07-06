@@ -10,11 +10,7 @@
           #fileInput="ngModel"
           accept="application/pdf|image/*|application/vnd.*|application/msword">
         </ngx-mat-file-input>
-        <mat-icon
-          fontSet="material-symbols-outlined"
-          matSuffix>
-          attach_file
-        </mat-icon>
+        <mat-icon matSuffix>attach_file</mat-icon>
         @if (fileInput.hasError('maxContentSize')) {
           <mat-error>File size must be less than 5MB</mat-error>
         }
@@ -33,7 +29,6 @@
           required
           value="{{document()?.filename}}" />
         <mat-icon
-          fontSet="material-symbols-outlined"
           matSuffix>
           attach_file
         </mat-icon>
@@ -86,7 +81,7 @@
           color="warn"
           type="button"
           (click)="delete.emit()">
-          <mat-icon fontSet="material-symbols-outlined">delete</mat-icon>
+          <mat-icon>delete</mat-icon>
           Delete document
         </button>
       </secondary-actions>

@@ -12,9 +12,3 @@ export interface Medication {
   dosesPerPackage: number;
   color: Color;
 }
-
-export function getMedicationLabel(medication?: string | Medication): string {
-  if (medication == null) return '';
-  if (typeof medication == 'string') return medication;
-  return medication.name;
-}

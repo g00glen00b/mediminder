@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {IntakeEvent} from '../models/intake-event';
 import {IntakeEventService} from './intake-event.service';
 import {Observable, of, tap} from 'rxjs';
-import {addDays, format, subDays} from 'date-fns';
+import {addDays, DateArg, format, subDays} from 'date-fns';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +23,15 @@ export class IntakeEventCacheService {
     return result;
   }
 
-  complete(scheduleId: string, targetDate: Date): Observable<IntakeEvent> {
-    this.deleteFromCache(targetDate);
-    return this.service.complete(scheduleId, targetDate);
+  complete(event: IntakeEvent): Observable<IntakeEvent> {
+    const key = this.getCacheKey(event.targetDate);
+    return this.service.complete(event).pipe(tap(resultEvent => {
+      if (this.cache.has(key)) {
+        const events = this.cache.get(key)!;
+        const results = events.map(currentEvent => currentEvent === event ? resultEvent : currentEvent);
+        this.cache.set(key, results);
+      }
+    }));
   }
 
   deleteFromCache(targetDate: Date): void {
@@ -47,7 +53,7 @@ export class IntakeEventCacheService {
     );
   }
 
-  private getCacheKey(targetDate: Date): string {
+  private getCacheKey(targetDate: DateArg<Date>): string {
     return format(targetDate, 'yyyy-MM-dd');
   }
 }

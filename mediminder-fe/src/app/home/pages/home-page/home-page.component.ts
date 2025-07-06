@@ -9,7 +9,7 @@ import {
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
 import {HeroTitleDirective} from '../../../shared/components/hero/hero-title.directive';
 import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
-import {MatFabAnchor} from '@angular/material/button';
+import {MatFabAnchor, MatFabButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {RouterLink} from '@angular/router';
 
@@ -25,6 +25,7 @@ import {RouterLink} from '@angular/router';
     MatFabAnchor,
     MatIcon,
     RouterLink,
+    MatFabButton,
   ],
   templateUrl: './home-page.component.html',
   standalone: true,

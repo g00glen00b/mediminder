@@ -16,7 +16,6 @@ import {ConfirmationService} from '../../../shared/services/confirmation.service
 import {ConfirmationDialogData} from '../../../shared/models/confirmation-dialog-data';
 import {mergeMap} from 'rxjs';
 import {Router} from '@angular/router';
-import {environment} from '../../../../environment/environment';
 import {AuthService} from '@auth0/auth0-angular';
 
 @Component({

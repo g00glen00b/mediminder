@@ -1,10 +1,6 @@
 <mediminder-list-item (click)="navigateToScheduleEdit()">
   <list-item-icon>
-    <mat-icon
-      class="icon"
-      fontSet="material-symbols-outlined">
-      schedule
-    </mat-icon>
+    <mat-icon class="icon">schedule</mat-icon>
   </list-item-icon>
   <list-item-title>
     {{schedule().dose | number}} {{schedule().medication.doseType.name}} at {{schedule().time | dfnsParsePure: 'HH:mm:ss':0 | dfnsFormat: 'HH:mm'}}
@@ -19,7 +15,7 @@
     <a
       [routerLink]="['/medication', schedule().medication.id, 'schedule', schedule().id, 'edit']"
       mat-icon-button>
-      <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
+      <mat-icon>edit</mat-icon>
     </a>
   </list-item-actions>
 </mediminder-list-item>

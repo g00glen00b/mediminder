@@ -30,7 +30,7 @@ import {CreateMedicationRequest} from '../../models/create-medication-request';
     ReactiveFormsModule,
     MedicationWizardBasicStepComponent,
     MedicationWizardDoseStepComponent,
-    MedicationWizardColorStepComponent
+    MedicationWizardColorStepComponent,
   ],
   templateUrl: './medication-wizard.component.html',
   styleUrl: './medication-wizard.component.scss'

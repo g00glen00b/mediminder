@@ -51,11 +51,13 @@ public class ScheduleEntity {
     }
 
     public BigDecimal calculateTakenDosesInPeriod(LocalDate start, LocalDate endInclusive) {
-        LocalDate actualStart = start.isBefore(period.getStartingAt()) ? period.getStartingAt() : start;
-        LocalDate actualEnd = period.getEndingAtInclusive() == null || period.getEndingAtInclusive().isAfter(endInclusive) ? endInclusive : period.getEndingAtInclusive();
-        long daysBetweenDates = ChronoUnit.DAYS.between(actualStart, actualEnd) + 1;
         int intervalDays = interval.getDays();
-        int timesTaken = (int) Math.ceil(((double) daysBetweenDates) / intervalDays);
-        return dose.multiply(new BigDecimal(timesTaken));
+        LocalDate actualEnd = period.getEndingAtInclusive() == null || period.getEndingAtInclusive().isAfter(endInclusive) ? endInclusive : period.getEndingAtInclusive();
+        LocalDate actualStart = start.isAfter(period.getStartingAt()) ?  start : period.getStartingAt();
+        long daysBetweenStartEndGivenEnd = ChronoUnit.DAYS.between(period.getStartingAt(), actualEnd) + 1;
+        long daysBetweenStartAndGivenStart = ChronoUnit.DAYS.between(period.getStartingAt(), actualStart);
+        int timesTakenTotal = (int) Math.ceil(((double) daysBetweenStartEndGivenEnd) / intervalDays);
+        int timesTakenBefore = (int) Math.ceil(((double) daysBetweenStartAndGivenStart) / intervalDays);
+        return dose.multiply(new BigDecimal(timesTakenTotal - timesTakenBefore));
     }
 }

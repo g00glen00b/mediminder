@@ -1,4 +1,5 @@
 import {Component, input, output} from '@angular/core';
+import {DoseType} from '../../models/dose-type';
 
 @Component({
   selector: 'mediminder-dose-picker',
@@ -8,5 +9,6 @@ import {Component, input, output} from '@angular/core';
 })
 export class DosePickerComponent {
   doses = input.required<number[]>();
+  doseType = input.required<DoseType>();
   select = output<number>();
 }

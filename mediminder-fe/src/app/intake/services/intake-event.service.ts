@@ -16,8 +16,9 @@ export class IntakeEventService {
     return this.httpClient.get<IntakeEvent[]>(`${environment.apiUrl}/event/${targetDateString}`);
   }
 
-  complete(scheduleId: string, targetDate: Date): Observable<IntakeEvent> {
-    const targetDateString = format(targetDate, 'yyyy-MM-dd');
+  complete(event: IntakeEvent): Observable<IntakeEvent> {
+    const targetDateString = format(event.targetDate, 'yyyy-MM-dd');
+    const scheduleId = event.scheduleId;
     return this.httpClient.post<IntakeEvent>(`${environment.apiUrl}/schedule/${scheduleId}/event/${targetDateString}`, null);
   }
 

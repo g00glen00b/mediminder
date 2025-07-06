@@ -1,9 +1,6 @@
 <mediminder-list-item (click)="navigateToDocumentEdit()">
   <list-item-icon>
-    <mat-icon
-      fontSet="material-symbols-outlined">
-      description
-    </mat-icon>
+    <mat-icon>description</mat-icon>
   </list-item-icon>
   <list-item-title>
     {{document().filename}}
@@ -23,10 +20,7 @@
     <a
       mat-icon-button
       [routerLink]="['/medication', document().relatedMedication.id, 'document', document().id, 'edit']">
-      <mat-icon
-        fontSet="material-symbols-outlined">
-        edit
-      </mat-icon>
+      <mat-icon>edit</mat-icon>
     </a>
   </list-item-actions>
 </mediminder-list-item>

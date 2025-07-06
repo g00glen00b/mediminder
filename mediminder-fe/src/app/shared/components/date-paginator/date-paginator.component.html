@@ -4,9 +4,7 @@
     mat-icon-button
     [disabled]="previousDisabled()"
     (click)="onPreviousClick()">
-    <mat-icon fontSet="material-symbols-outlined">
-      chevron_left
-    </mat-icon>
+    <mat-icon>chevron_left</mat-icon>
   </button>
   <h3>
     @if (isToday()) {
@@ -18,17 +16,13 @@
     class="next"
     mat-icon-button
     (click)="onNextClick()">
-    <mat-icon fontSet="material-symbols-outlined">
-      chevron_right
-    </mat-icon>
+    <mat-icon>chevron_right</mat-icon>
   </button>
   <button
     class="calendar"
     [matMenuTriggerFor]="pickerMenu"
     mat-icon-button>
-    <mat-icon fontSet="material-symbols-outlined">
-      calendar_today
-    </mat-icon>
+    <mat-icon>calendar_today</mat-icon>
   </button>
 </section>
 <mat-menu #pickerMenu="matMenu">

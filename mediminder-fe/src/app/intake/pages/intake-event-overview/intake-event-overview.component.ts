@@ -16,7 +16,7 @@ import {IntakeEventCacheService} from '../../services/intake-event-cache.service
     DatePaginatorComponent,
     IntakeEventListComponent,
     SwipeGestureDirective,
-    EmptyStateComponent
+    EmptyStateComponent,
   ],
   templateUrl: './intake-event-overview.component.html',
   standalone: true,
@@ -48,7 +48,7 @@ export class IntakeEventOverviewComponent {
   }
 
   complete(event: IntakeEvent) {
-    this.service.complete(event.scheduleId, this.targetDate()).subscribe({
+    this.service.complete(event).subscribe({
       next: () => this.refresh.next(),
       error: () => this.toastr.error(`Could not complete ${event.medication.name}`),
     });
