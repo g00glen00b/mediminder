@@ -41,16 +41,29 @@ public class PushNotificationWriter implements ItemWriter<NotificationEntity> {
         Subscription.Keys keys = new Subscription.Keys(subscriptionEntity.getKey(), subscriptionEntity.getAuth());
         Subscription subscription = new Subscription(subscriptionEntity.getEndpoint(), keys);
         try {
-            PushNotificationPayloadWrapper pushNotification = PushNotificationPayload.simple(
-                entity.getTitle(),
-                entity.getMessage(),
-                properties.applicationIconUrl()
-            );
+            PushNotificationPayloadWrapper pushNotification = mapToNotificationPayload(entity);
             String jsonPayload = objectMapper.writeValueAsString(pushNotification);
             Notification notification = new Notification(subscription, jsonPayload);
             pushService.send(notification);
         } catch (GeneralSecurityException | IOException | ExecutionException | InterruptedException | JoseException ex) {
             log.error("Could not deliver push notification for {}", entity.getId(), ex);
         }
+    }
+
+    private PushNotificationPayloadWrapper mapToNotificationPayload(NotificationEntity entity) {
+        return switch (entity.getType()) {
+            case INTAKE_EVENT -> PushNotificationPayload.completable(
+                entity.getTitle(),
+                entity.getMessage(),
+                properties.applicationIconUrl(),
+                entity.getId(),
+                "Take"
+            );
+            default -> PushNotificationPayload.simple(
+                entity.getTitle(),
+                entity.getMessage(),
+                properties.applicationIconUrl()
+            );
+        };
     }
 }
