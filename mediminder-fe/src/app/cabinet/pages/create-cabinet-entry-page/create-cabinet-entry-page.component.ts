@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, input, OnInit} from '@angular/core';
+import {Component, computed, DestroyRef, inject, input, OnInit} from '@angular/core';
 import {ContainerComponent} from '../../../shared/components/container/container.component';
 import {HeroComponent} from '../../../shared/components/hero/hero.component';
 import {HeroDescriptionDirective} from '../../../shared/components/hero/hero-description.directive';
@@ -15,6 +15,7 @@ import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-int
 import {filter, switchMap} from 'rxjs';
 import {MedicationService} from '../../../medication/services/medication.service';
 import {NavbarService} from '../../../shared/services/navbar.service';
+import {CabinetEntry} from '../../models/cabinet-entry';
 
 @Component({
   selector: 'mediminder-create-cabinet-entry-page',
@@ -50,6 +51,10 @@ export class CreateCabinetEntryPageComponent implements OnInit {
     filter(id => id != null),
     switchMap(id => this.cabinetService.findById(id))
   ));
+  partialCabinetEntry = computed<Partial<CabinetEntry>>(() => ({
+    remainingDoses: this.medication()?.dosesPerPackage
+  }));
+  cabinetEntry = computed(() => this.originalCabinetEntry() || this.partialCabinetEntry());
 
   ngOnInit() {
     this.navbarService.setTitle('Create cabinet entry');

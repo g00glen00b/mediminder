@@ -41,7 +41,7 @@ import {MatIcon} from '@angular/material/icon';
 })
 export class CabinetEntryFormComponent implements OnChanges {
   okLabel = input('Add');
-  cabinetEntry = input<CabinetEntry>();
+  cabinetEntry = input<Partial<CabinetEntry>>();
   medication = input.required<Medication>();
   hideSecondaryActions = input(true);
   cancel = output<void>();
@@ -60,6 +60,6 @@ export class CabinetEntryFormComponent implements OnChanges {
 
   ngOnChanges() {
     this.remainingDoses.set(this.cabinetEntry()?.remainingDoses || 0);
-    this.expiryDate.set(this.cabinetEntry()?.expiryDate == undefined ? new Date() : parseISO(this.cabinetEntry()!.expiryDate));
+    this.expiryDate.set(this.cabinetEntry()?.expiryDate == undefined ? new Date() : parseISO(this.cabinetEntry()!.expiryDate!));
   }
 }

@@ -10,7 +10,7 @@
   }
   @if (medication() != undefined) {
     <mediminder-cabinet-entry-form
-      [cabinetEntry]="originalCabinetEntry()"
+      [cabinetEntry]="cabinetEntry()"
       [medication]="medication()!"
       okLabel="Add"
       (cancel)="cancel()"
