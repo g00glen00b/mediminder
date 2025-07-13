@@ -1,7 +1,7 @@
 import {Component, computed, input, model, OnChanges, output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Medication} from '../../../medication/models/medication';
-import {format, parseISO} from 'date-fns';
+import {format, lastDayOfMonth, parseISO} from 'date-fns';
 import {CabinetEntry} from '../../models/cabinet-entry';
 import {MatError, MatFormField, MatHint, MatLabel, MatSuffix} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
@@ -13,6 +13,7 @@ import {PrimaryActionsDirective} from '../../../shared/components/action-bar/pri
 import {SecondaryActionsDirective} from '../../../shared/components/action-bar/secondary-actions.directive';
 import {RouterLink} from '@angular/router';
 import {MatIcon} from '@angular/material/icon';
+import {provideDateFnsAdapter} from '@angular/material-date-fns-adapter';
 
 @Component({
   selector: 'mediminder-cabinet-entry-form',
@@ -37,7 +38,20 @@ import {MatIcon} from '@angular/material/icon';
     MatIcon,
   ],
   templateUrl: './cabinet-entry-form.component.html',
-  styleUrl: './cabinet-entry-form.component.scss'
+  styleUrl: './cabinet-entry-form.component.scss',
+  providers: [
+    provideDateFnsAdapter({
+      parse: {
+        dateInput: 'MM/yyyy',
+      },
+      display: {
+        dateInput: 'MM/yyyy',
+        monthYearLabel: 'MMM yyyy',
+        dateA11yLabel: 'LL',
+        monthYearA11yLabel: 'MMMM yyyy',
+      },
+    })
+  ]
 })
 export class CabinetEntryFormComponent implements OnChanges {
   okLabel = input('Add');
@@ -61,5 +75,10 @@ export class CabinetEntryFormComponent implements OnChanges {
   ngOnChanges() {
     this.remainingDoses.set(this.cabinetEntry()?.remainingDoses || 0);
     this.expiryDate.set(this.cabinetEntry()?.expiryDate == undefined ? new Date() : parseISO(this.cabinetEntry()!.expiryDate!));
+  }
+
+  selectExpiryDate(date: Date, expiryDatePicker: MatDatepicker<any>) {
+    this.expiryDate.set(lastDayOfMonth(date));
+    expiryDatePicker.close();
   }
 }

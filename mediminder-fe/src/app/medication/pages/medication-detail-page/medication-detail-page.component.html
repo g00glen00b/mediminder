@@ -1,10 +1,12 @@
 <mediminder-hero>
   <hero-title>
-    <mediminder-medication-type-icon
-      [medicationType]="medication()!.medicationType"
-      [color]="medication()!.color">
-    </mediminder-medication-type-icon>
-    {{ medication()?.name }}
+    @if (medication() != undefined) {
+      <mediminder-medication-type-icon
+        [medicationType]="medication()!.medicationType"
+        [color]="medication()!.color">
+      </mediminder-medication-type-icon>
+      {{ medication()?.name }}
+    }
   </hero-title>
 </mediminder-hero>
 <mediminder-container>
@@ -35,7 +37,7 @@
   <mediminder-action-header title="Schedules">
     <a
       mat-flat-button
-      [routerLink]="['/medication', medication()!.id, 'schedule', 'create']"
+      [routerLink]="['/medication', medication()?.id, 'schedule', 'create']"
       color="accent">
       <mat-icon>add</mat-icon>
       Add schedule
@@ -49,7 +51,7 @@
   <mediminder-action-header title="Cabinet">
     <a
       mat-flat-button
-      [routerLink]="['/medication', medication()!.id, 'cabinet', 'create']"
+      [routerLink]="['/medication', medication()?.id, 'cabinet', 'create']"
       color="accent">
       <mat-icon>add</mat-icon>
       Add entry
@@ -64,7 +66,7 @@
     <mediminder-action-header title="Documents">
       <a
         mat-flat-button
-        [routerLink]="['/medication', medication()!.id, 'document', 'create']"
+        [routerLink]="['/medication', medication()?.id, 'document', 'create']"
         color="accent">
         <mat-icon>add</mat-icon>
         Add document

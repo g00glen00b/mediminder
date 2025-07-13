@@ -15,7 +15,7 @@
           name="endingAtInclusive" />
       </mat-date-range-input>
       <mat-datepicker-toggle matIconSuffix [for]="periodPicker"></mat-datepicker-toggle>
-      <mat-date-range-picker #periodPicker></mat-date-range-picker>
+      <mat-date-range-picker touchUi #periodPicker></mat-date-range-picker>
       <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
       @if (startingAtInput.errors?.['required']) {
         <mat-error>

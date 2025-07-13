@@ -37,9 +37,14 @@
         [(ngModel)]="expiryDate"
         #expiryDateInput="ngModel"
         [matDatepicker]="expiryDatePicker" />
-      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-hint>MM/YYYY</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="expiryDatePicker"></mat-datepicker-toggle>
-      <mat-datepicker #expiryDatePicker></mat-datepicker>
+      <mat-datepicker
+        touchUi
+        startView="multi-year"
+        (monthSelected)="selectExpiryDate($event, expiryDatePicker)"
+        #expiryDatePicker>
+      </mat-datepicker>
       @if (expiryDateInput.errors?.['required']) {
         <mat-error>
           Please enter an amount of remaining doses
